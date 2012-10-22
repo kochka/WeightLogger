@@ -6,7 +6,7 @@ WeightLogger is an Android app to logg body composition data using a Tanita scal
 Main features :
 * Viewflow display of your data.
 * Scrollable and zoomable graphs of weight, body fat, body water and muscle mass.
-* One click export to your “Garmin Connect” account.
+* One click export to “Garmin Connect” account.
 * FIT and CSV export.
 * Support of Kg or Lb mass unit.
 * Support of mass or percent muscle mass unit.
@@ -40,3 +40,5 @@ This project is licensed under the [Apache License, Version 2.0](http://www.apac
      * See the License for the specific language governing permissions and
      * limitations under the License.
      */
+
+Some pictograms used in this app are the property of [Tanita]http://www.tanita.eu
