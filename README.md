@@ -41,4 +41,4 @@ This project is licensed under the [Apache License, Version 2.0](http://www.apac
      * limitations under the License.
      */
 
-Some pictograms used in this app are the property of [Tanita]http://www.tanita.eu
+Some pictograms used in this app are the property of [Tanita](http://www.tanita.eu)
