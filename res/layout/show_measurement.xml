@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res/org.kochka.android.weightlogger"
+  android:orientation="vertical" android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+  
+  <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" />
+  
+  <org.taptwo.android.widget.ViewFlow android:id="@+id/viewflow" style="@style/Show" app:sidebuffer="2"/>
+
+</LinearLayout>

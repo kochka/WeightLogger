@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2012 Ids van der Leij
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <string name="translator">Ids van der Leij</string>
+  
+  <!-- Common -->
+  <string name="edit">Bewerken</string>
+  <string name="delete">Verwijderen</string>
+  <string name="title_new">Nieuw</string>
+  <string name="title_edit">Bewerken</string>
+  <string name="change">Aanpassen</string>
+  <string name="title_delete">Verwijderen</string>
+  <string name="confirm_delete">Dit record verwijderen?</string>
+  <string name="record_saved">Opgeslagen</string>
+  <string name="record_deleted">Record verwijderd</string>
+  <string name="missing_fields">Niet alle velden zijn ingevuld!</string>
+  <string name="preload">Gegevens van laatste record zijn nu ingevuld.</string>
+  <string name="gender_male">Man</string>
+  <string name="gender_female">Vrouw</string>
+  <string name="quit">Stoppen</string>
+  <string name="ok">Ok</string>
+  <string name="coming_soon">Binnenkort !</string>
+  
+  <!-- Fields -->
+  <string name="weight">Gewicht</string>
+  <string name="body_fat">Vetpercentage</string>
+  <string name="body_water">Vochtpercentage</string>
+  <string name="muscle_mass">Spiermassa</string>
+  <string name="daily_calorie_intake">Dagelijkse calorie inname</string>
+  <string name="physique_rating">Cijfer fysiek</string>
+  <string name="visceral_fat_rating">Cijfer orgaanvet</string>
+  <string name="bone_mass">Botmassa</string>
+  <string name="metabolic_age">Metabolische leeftijd</string>
+  <string name="metabolic_age_years_old">jaar</string>
+  
+  <string name="physique_rating_1">Verborgen Obees</string>
+  <string name="physique_rating_2">Obees</string>
+  <string name="physique_rating_3">Stevig Gebouwd</string>
+  <string name="physique_rating_4">Ondertraind</string>
+  <string name="physique_rating_5">Standaard</string>
+  <string name="physique_rating_6">Standaard Gespierd</string>
+  <string name="physique_rating_7">Dun</string>
+  <string name="physique_rating_8">Dun en Gespierd</string>
+  <string name="physique_rating_9">Zeer Gespierd</string>
+  
+  <!-- Export -->
+  <string name="storage_not_mounted">Opslagruimte niet gemount !</string>
+  <string name="network_error">Networkfout!</string>
+  <string name="gc_configure_account">AUB uw Garmin Connect account instellen bij voorkeuren !</string>
+  <string name="gc_account_error">Foutieve Garmin Connect gebruikersnaam of wachtwoord !</string>
+  
+  <!-- Show -->
+  <string name="normal">Normaal</string>
+  <string name="abnormal">Abnormaal</string>
+  <string name="bf_underfat">Te lag vet</string>
+  <string name="bf_healthy">Gezond</string>
+  <string name="bf_overfat">Te hoog vet</string>
+  <string name="bf_obese">Obees</string>
+  <string name="vfr_healthy">Gezond</string>
+  <string name="vfr_excess">Te hoog</string>
+  
+  <!-- Edit -->
+  <string name="exported">Geexporteerd</string>
+  
+  <!-- Graph -->  
+  <string name="graph_title">Grafiek</string>
+  
+  <!-- Export -->
+  <string name="export">Exporteren</string>
+  <string name="file_generated">Bestand aangemaakt</string>
+  <string name="no_export">Er is niets te exporteren</string>
+  <plurals name="exported_records_count">
+    <item quantity="one">1 record</item>
+    <item quantity="other">%d records</item>
+  </plurals>
+  <string name="export_share_subject">WeightLogger export</string>
+  <string name="export_upload_ok">Succesvol geüpload</string>
+  <string name="export_upload_failed">Upload niet geslaagd</string>
+  
+  <!-- Preferences -->
+  <string name="pref">Voorkeuren</string>
+  <string name="pref_general_category">Algemeen</string>
+  <string name="pref_gender">Geslacht</string>
+  <string name="pref_age">Leeftijd</string>
+  <string name="pref_age_summary">Kies je leeftijd.</string>
+  <string name="pref_unit">Gewicht eenheden</string>
+  <string name="pref_muscle_mass_unit">Spiermassa eenheden</string>
+  <string name="pref_muscle_mass_unit_mass">Gewicht (kg / lb)</string>
+  <string name="pref_muscle_mass_unit_percent">Percentage</string>
+  <string name="pref_preload">Vooraf invullen</string>
+  <string name="pref_preload_summary">De nieuwe records zijn ingevuld met het laatste record voor snellere gegevensinvoer.</string>
+  <string name="pref_fields">Optionele velden</string>
+  <string name="pref_fields_summary">Kies welke velden getoond moeten worden voor een nieuw record.</string>
+  <string name="pref_export_dir">Export directory</string>
+  <string name="pref_garmin_category">Garmin Connect</string>
+  <string name="pref_garmin_login">Login</string>
+  <string name="pref_garmin_login_summary">Je Garmin Connect login.</string>
+  <string name="pref_garmin_password">Wachtwoord</string>
+  <string name="pref_garmin_password_summary">Je Garmin Connect wachtwoord.</string>
+  <string name="pref_database_category">Database</string>
+  <string name="pref_backup_database">Back-up database</string>
+  <string name="pref_backup_database_summary">Back-up database in de export directory.</string>
+  <string name="pref_backup_database_ok">Back-up van de database was succesvol (File : %1$s)</string>
+  <string name="pref_backup_database_failed">Back-up van de database niet geslaagd</string>
+  <string name="pref_restore_database">Database herstellen</string>
+  <string name="pref_restore_database_summary">Database terugzetten uit een back-up bestand.</string>
+  <string name="pref_restore_database_nofiles">Er zijn geen back-up bestanden om terug te zetten !</string>
+  <string name="pref_restore_database_confirm">Dit bestand terugzetten : %1$s ? De huidige database wordt vervangen !</string>
+  <string name="pref_restore_database_ok">Database succesvol teruggezet</string>
+  <string name="pref_restore_database_failed">Database terugzetten niet geslaagd</string>
+  <string name="pref_purge_database">Database leegmaken</string>
+  <string name="pref_purge_database_summary">ALLE records uit de database verwijderen. Voorzichtig met gebruik !</string>
+  <string name="pref_purge_database_confirm">Wilt u echt ALLE data uit de database verwijderen ???</string>
+  <string name="pref_database_purged">Database leeggemaakt</string>
+  <string name="pref_load_test_data">Testgegevens laden</string>
+  <string name="pref_load_test_data_summary">Veel testrecords laten voor testdoeleinden.</string>
+  <string name="pref_test_data_loaded">Testgegevens geladen</string>
+  <string name="pref_misc_category">Diverse</string>
+  <string name="pref_about">Over</string>
+</resources>

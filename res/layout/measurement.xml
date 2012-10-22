@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/ListMeasurement">
+  
+  <TextView android:id="@+id/day" android:text="day" style="@style/ListMeasurementDay" />
+  
+  <LinearLayout android:id="@+id/linearLayout1" android:orientation="horizontal" style="@style/FillFill" >
+    <TextView android:id="@+id/date" android:text="date" style="@style/ListMeasurementDate" />
+	  <TextView android:id="@+id/weight" android:text="weight" style="@style/ListMeasurementWeight" />
+  </LinearLayout>
+  
+</LinearLayout>

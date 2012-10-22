@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2012 Oriol Garrote
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <string name="translator">Oriol Garrote</string>
+  
+  <!-- Common -->
+  <string name="edit">Editar</string>
+  <string name="delete">Borrar</string>
+  <string name="title_new">Nuevo</string>
+  <string name="title_edit">Edición</string>
+  <string name="change">Modificar</string>
+  <string name="title_delete">Borrar</string>
+  <string name="confirm_delete">Borrar este registro?</string>
+  <string name="record_saved">Guardado</string>
+  <string name="record_deleted">Registro borrado</string>
+  <string name="missing_fields">Faltan campos!</string>
+  <string name="preload">Los últimos valores se han precargado.</string>
+  <string name="gender_male">Hombre</string>
+  <string name="gender_female">Mujer</string>
+  <string name="quit">Salir</string>
+  <string name="ok">Ok</string>
+  <string name="coming_soon">Pronto disponible!</string>
+  
+  <!-- Fields -->
+  <string name="weight">Peso</string>
+  <string name="body_fat">Grasa corporal</string>
+  <string name="body_water">Agua corporal</string>
+  <string name="muscle_mass">Masa muscular</string>
+  <string name="daily_calorie_intake">Calorias diarias</string>
+  <string name="physique_rating">Evaluación fisica</string>
+  <string name="visceral_fat_rating">Índice de grasa visceral</string>
+  <string name="bone_mass">Masa ósea</string>
+  <string name="metabolic_age">Edad metabólica</string>
+  <string name="metabolic_age_years_old">años</string>
+  
+  <string name="physique_rating_1">Muy obeso</string>
+  <string name="physique_rating_2">Obeso</string>
+  <string name="physique_rating_3">Corpulento</string>
+  <string name="physique_rating_4">Falta ejercicio</string>
+  <string name="physique_rating_5">Normal</string>
+  <string name="physique_rating_6">Normal y musculado</string>
+  <string name="physique_rating_7">Delgado</string>
+  <string name="physique_rating_8">Delgado y musculado</string> 
+  <string name="physique_rating_9">Muy musculoso</string>
+    
+  <!-- Export -->    
+  <string name="storage_not_mounted">La unidad de salvado no está montada</string>
+  <string name="network_error">Error de red!</string>
+  <string name="gc_configure_account">Has de configurar tu cuenta Garmin Connect en las preferencias!</string>
+  <string name="gc_account_error">Error de nombre de usuario o contraseña Garmin Connect!</string>
+  
+  <!-- Show -->
+  <string name="normal">Normal</string>
+  <string name="abnormal">Anormal</string>
+  <string name="bf_underfat">Falta de peso</string>
+  <string name="bf_healthy">Normal</string>
+  <string name="bf_overfat">Sobrepeso</string>
+  <string name="bf_obese">Obeso</string>
+  <string name="vfr_healthy">Riesgo débil</string>
+  <string name="vfr_excess">Riesgo elevado</string>
+
+  <!-- Edit -->
+  <string name="exported">Exportado</string>
+  
+  <!-- Graph -->    
+  <string name="graph_title">Gráfico</string>
+  
+  <!-- Export -->
+  <string name="export">Exportar</string>
+  <string name="file_generated">Archivo generado</string>
+  <string name="no_export">Nada para exportar</string>
+  <plurals name="exported_records_count"> 
+    <item quantity="one">1 registro</item> 
+    <item quantity="other">%d registros</item> 
+  </plurals>
+  <string name="export_share_subject">Exportar WeightLogger</string>
+  <string name="export_upload_ok">Cargado con éxito</string>
+  <string name="export_upload_failed">La carga ha fallado</string>
+  
+  <!-- Preferences -->
+  <string name="pref">Preferencias</string>
+  <string name="pref_general_category">General</string>
+  <string name="pref_gender">Sexo</string>
+  <string name="pref_age">Edad</string>
+  <string name="pref_age_summary">Elige tu edad.</string>
+  <string name="pref_unit">Unidad de peso</string>
+  <string name="pref_muscle_mass_unit">Unidad de masa muscular</string>
+  <string name="pref_muscle_mass_unit_mass">Peso (kg / lb)</string>
+  <string name="pref_muscle_mass_unit_percent">Porcentaje</string>
+  <string name="pref_preload">Precarga</string>
+  <string name="pref_preload_summary">Los nuevos registros serán precargados con los datos del último para una entrada más rápida.</string>
+  <string name="pref_fields">Campos opcionales</string>
+  <string name="pref_fields_summary">Elige los campos opcionales a mostrar para nuevos registros.</string>
+  <string name="pref_export_dir">Directorio de exportación</string>
+  <string name="pref_garmin_category">Garmin Connect</string>
+  <string name="pref_garmin_login">Nombre de usuario</string>
+  <string name="pref_garmin_login_summary">Tu nombre de usuario Garmin Connect.</string>
+  <string name="pref_garmin_password">Contraseña</string>
+  <string name="pref_garmin_password_summary">Tu contraseña Garmin Connect.</string>
+  <string name="pref_database_category">Base de datos</string>
+  <string name="pref_backup_database">Copia de seguridad de la base de datos</string>
+  <string name="pref_backup_database_summary">Guardar la base de datos en el directorio de exportación.</string>
+  <string name="pref_backup_database_ok">La base de datos se ha guardado con éxito (Fichero: %1$s)</string>
+  <string name="pref_backup_database_failed">La copia de seguridad ha fallado</string>
+  <string name="pref_restore_database">Restaurar la base de datos</string>
+  <string name="pref_restore_database_summary">Restaurar la base de datos desde un fichero de copia de seguridad.</string>
+  <string name="pref_restore_database_nofiles">Ningún fichero de copia de seguridad a restaurar!</string>
+  <string name="pref_restore_database_confirm">Realmente quieres restaurar esta copia: %1$s? La base de datos actual será reemplazada!</string>
+  <string name="pref_restore_database_ok">La base de datos se ha restaurado con éxito</string>
+  <string name="pref_restore_database_failed">La restauración ha fallado</string>
+  <string name="pref_purge_database">Purgar la base de datos</string>
+  <string name="pref_purge_database_summary">Purgar la base de dades de TODOS los registros. Utilitzar con prudencia!</string>
+  <string name="pref_purge_database_confirm">Realmente quieres purgar TODOS los registros de la base de datos???</string>
+  <string name="pref_database_purged">Base de datos purgada</string>
+  <string name="pref_load_test_data">Cargar datos de prueba</string>
+  <string name="pref_load_test_data_summary">Cargar decenas de registros para tests.</string>
+  <string name="pref_test_data_loaded">Datos de prueba cargados</string>
+  <string name="pref_misc_category">Otros</string>
+  <string name="pref_about">Sobre</string>
+</resources>

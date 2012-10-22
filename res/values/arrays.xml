@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="gender">
+    <item>@string/gender_male</item>
+    <item>@string/gender_female</item>
+  </string-array>
+  <string-array name="gender_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>  
+  
+  <string-array name="units">
+    <item>kg</item>
+    <item>lb</item>
+  </string-array>
+
+  <string-array name="muscle_mass_units">
+    <item>@string/pref_muscle_mass_unit_mass</item>
+    <item>@string/pref_muscle_mass_unit_percent</item>
+  </string-array>
+  <string-array name="muscle_mass_unit_values">
+    <item>1</item>
+    <item>2</item>
+  </string-array>
+  
+	<string-array name="physique_rating">
+    <item>@string/physique_rating_1</item>
+    <item>@string/physique_rating_2</item>
+    <item>@string/physique_rating_3</item>
+    <item>@string/physique_rating_4</item>
+    <item>@string/physique_rating_5</item>
+    <item>@string/physique_rating_6</item>
+    <item>@string/physique_rating_7</item>
+    <item>@string/physique_rating_8</item>
+    <item>@string/physique_rating_9</item>
+  </string-array>
+
+  <string-array name="export_dir">
+    <item>/WeightLogger</item>
+    <item>/Android/data/org.kochka.android.weightlogger/files</item>
+    <item>/Download/WeightLogger</item>
+    <item>/Download</item>
+  </string-array>
+</resources>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2012 Johannes Frühwirt
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <string name="translator">Johannes Frühwirt</string>
+  
+  <!-- Common -->
+  <string name="edit">Bearbeiten</string>
+  <string name="delete">Löschen</string>
+  <string name="title_new">Neu</string>
+  <string name="title_edit">Bearbeiten</string>
+  <string name="change">Ändern</string>
+  <string name="title_delete">Löschen</string>
+  <string name="confirm_delete">Diese Aufzeichnung löschen ?</string>
+  <string name="record_saved">Gespeichert</string>
+  <string name="record_deleted">Aufzeichnung gelöscht</string>
+  <string name="missing_fields">Fehlende Felder !</string>
+  <string name="preload">Letzte Aufzeichnungsdaten wurden vorgeladen.</string>
+  <string name="gender_male">Männlich</string>
+  <string name="gender_female">Weiblich</string>
+  <string name="quit">Beenden</string>
+  <string name="ok">Ok</string>
+  <string name="coming_soon">Kommt bald !</string>
+      
+  <!-- Fields -->
+  <string name="weight">Gewicht</string>
+  <string name="body_fat">Körperfett</string>
+  <string name="body_water">Körperwasser</string>
+  <string name="muscle_mass">Muskelmasse</string>
+  <string name="daily_calorie_intake">Tägliche Kalorienaufnahme</string>
+  <string name="physique_rating">Körperbau</string>
+  <string name="visceral_fat_rating">Viszerales Fett</string>
+  <string name="bone_mass">Knochenmasse</string>
+  <string name="metabolic_age">Metabolisches Alter</string>
+  <string name="metabolic_age_years_old">yo</string>
+  
+  <string name="physique_rating_1">Verdeckt Fettleibig</string>
+  <string name="physique_rating_2">Fettleibig</string>
+  <string name="physique_rating_3">Korpulent</string>
+  <string name="physique_rating_4">Mangelnde Bewegung</string>
+  <string name="physique_rating_5">Normal</string>
+  <string name="physique_rating_6">Durchschnittlich Muskulär</string>
+  <string name="physique_rating_7">Dünn</string>
+  <string name="physique_rating_8">Dünn und Muskulär</string> 
+  <string name="physique_rating_9">Sehr Muskulär</string>
+  
+  <!-- Export -->    
+  <string name="storage_not_mounted">Speicherkarte ist nicht eingelegt !</string>
+  <string name="network_error">Netzwerkfehler !</string>
+  <string name="gc_configure_account">Bitte Garmin Connect Konto konfigurieren !</string>
+  <string name="gc_account_error">Garmin Connect Benutzername oder Passwort falsch !</string>
+  
+  <!-- Show -->
+  <string name="normal">Normal</string>
+  <string name="abnormal">Abnormal</string>
+  <string name="bf_underfat">Untergewichtig</string>
+  <string name="bf_healthy">Gesund</string>
+  <string name="bf_overfat">Übergewichtig</string>
+  <string name="bf_obese">Fettleibig</string>
+  <string name="vfr_healthy">Gesund</string>
+  <string name="vfr_excess">Excess</string>
+
+  <!-- Edit -->
+  <string name="exported">Exportiert</string>
+  
+  <!-- Graph -->
+  <string name="graph_title">Diagramm</string>
+  
+  <!-- Export -->
+  <string name="export">Exportieren</string>
+  <string name="file_generated">Datei erstellt</string>
+  <string name="no_export">Nichts zu exportieren</string>
+  <plurals name="exported_records_count"> 
+    <item quantity="one">eine Aufzeichnung</item> 
+    <item quantity="other">%d Aufzeichnungen</item> 
+  </plurals>
+  <string name="export_share_subject">WeightLogger exportieren</string>
+  <string name="export_upload_ok">Upload war erfolgreich</string>
+  <string name="export_upload_failed">Upload ist fehlgeschlagen</string>
+  
+  <!-- Preferences -->
+  <string name="pref">Einstellungen</string>
+  <string name="pref_general_category">Allgemein</string>
+  <string name="pref_gender">Geschlecht</string>
+  <string name="pref_age">Alter</string>
+  <string name="pref_age_summary">Alter wählen.</string>
+  <string name="pref_unit">Gewichtseinheit</string>
+  <string name="pref_muscle_mass_unit">Einheit der Muskelmasse</string>
+  <string name="pref_muscle_mass_unit_mass">Masse (kg / lb)</string>
+  <string name="pref_muscle_mass_unit_percent">Prozent</string>
+  <string name="pref_preload">Pre-loading</string>
+  <string name="pref_preload_summary">Neue Aufzeichnungen sind zur schnelleren Bearbeitungen mit den letzten Werten vorbefüllt.</string>
+  <string name="pref_fields">Optionale Felder</string>
+  <string name="pref_fields_summary">Anzuzeigende optionale Felder für neue Aufzeichnung wählen.</string>
+  <string name="pref_export_dir">Export- Verzeichnis</string>       
+  <string name="pref_garmin_category">Garmin Connect</string>
+  <string name="pref_garmin_login">Anmeldung</string>
+  <string name="pref_garmin_login_summary">Ihr Garmin Connect Login.</string> 
+  <string name="pref_garmin_password">Passwort</string>
+  <string name="pref_garmin_password_summary">Ihr Garmin Connect Passwort.</string>
+  <string name="pref_database_category">Datenbank</string>
+  <string name="pref_backup_database">Datenbank sichern</string>
+  <string name="pref_backup_database_summary">Datenbank in das Export- Verzeichnis sichern.</string>
+  <string name="pref_backup_database_ok">Datenbank erfolgreich gesichert (Datei : %1$s)</string>
+  <string name="pref_backup_database_failed">Wiederherstellen der Datenbank fehlgeschlagen</string>
+  <string name="pref_restore_database">Datenbank wiederherstellen</string>
+  <string name="pref_restore_database_summary">Datenbank von einer Sicherungsdatei wiederherstellen.</string>
+  <string name="pref_restore_database_nofiles">Keine Sicherungsdateien zum Wiederherstellen !</string>
+  <string name="pref_restore_database_confirm">Die Sicherung wirklich wiederherstellen : %1$s ? Die aktuelle Datenbank wird ersetzt !</string>
+  <string name="pref_restore_database_ok">Datenbank erfolgreich wiederherrgestellt</string>
+  <string name="pref_restore_database_failed">Datenbankwiederherstellung ist fehlgeschlagen</string>
+  <string name="pref_purge_database">Datenbank säubern</string>
+  <string name="pref_purge_database_summary">ALLE Einträge der Datenbank löschen. Vorsichtig verwenden !</string>
+  <string name="pref_purge_database_confirm">Wirklich ALLE Einträge der Datenbank löschen ???</string>
+  <string name="pref_database_purged">Datenbank gesäubert</string>
+  <string name="pref_load_test_data">Testdaten laden</string>
+  <string name="pref_load_test_data_summary">Viele Testdaten zum Testen laden.</string>
+  <string name="pref_test_data_loaded">Testdaten geladen</string>
+  <string name="pref_misc_category">Verschieden</string>
+  <string name="pref_about">Über</string>
+</resources>

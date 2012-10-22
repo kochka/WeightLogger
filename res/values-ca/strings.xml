@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2012 Oriol Garrote
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<resources>
+  <string name="translator">Oriol Garrote</string>
+  
+  <!-- Common -->
+  <string name="edit">Editar</string>
+  <string name="delete">Eliminar</string>
+  <string name="title_new">Nou</string>
+  <string name="title_edit">Edició</string>
+  <string name="change">Modificar</string>
+  <string name="title_delete">Eliminar</string>
+  <string name="confirm_delete">Eliminar aquest registre?</string>
+  <string name="record_saved">Desat</string>
+  <string name="record_deleted">Registre eliminat</string>
+  <string name="missing_fields">Falten camps!</string>
+  <string name="preload">Els últims valors han estat precarregats.</string>
+  <string name="gender_male">Home</string>
+  <string name="gender_female">Dona</string>
+  <string name="quit">Sortir</string>
+  <string name="ok">Ok</string>
+  <string name="coming_soon">Disponible aviat!</string>
+  
+  <!-- Fields -->
+  <string name="weight">Pes</string>
+  <string name="body_fat">Greix corporal</string>
+  <string name="body_water">Aigua corporal</string>
+  <string name="muscle_mass">Massa muscular</string>
+  <string name="daily_calorie_intake">Calories diàries</string>
+  <string name="physique_rating">Avaluació física</string>
+  <string name="visceral_fat_rating">Índex de greix visceral</string>
+  <string name="bone_mass">Massa òssia</string>
+  <string name="metabolic_age">Edat metabòlica</string>
+  <string name="metabolic_age_years_old">anys</string>
+  
+  <string name="physique_rating_1">Molt obès</string>
+  <string name="physique_rating_2">Obès</string>
+  <string name="physique_rating_3">Corpulent</string>
+  <string name="physique_rating_4">Falta exercici</string>
+  <string name="physique_rating_5">Normal</string>
+  <string name="physique_rating_6">Normal i musculat</string>
+  <string name="physique_rating_7">Prim</string>
+  <string name="physique_rating_8">Prim i musculat</string> 
+  <string name="physique_rating_9">Molt musculat</string>
+    
+  <!-- Export -->    
+  <string name="storage_not_mounted">La unitat d\'enregistrament no està muntada</string>
+  <string name="network_error">Error de xarxa!</string>
+  <string name="gc_configure_account">Has de configurar el teu compte Garmin Connect a les preferències!</string>
+  <string name="gc_account_error">Error de nom d\'usuari o de mot de pas Garmin Connect!</string>
+  
+  <!-- Show -->
+  <string name="normal">Normal</string>
+  <string name="abnormal">Anormal</string>
+  <string name="bf_underfat">Manca de pes</string>
+  <string name="bf_healthy">Normal</string>
+  <string name="bf_overfat">Sobrepès</string>
+  <string name="bf_obese">Obès</string>
+  <string name="vfr_healthy">Risc feble</string>
+  <string name="vfr_excess">Risc elevat</string>
+
+  <!-- Edit -->
+  <string name="exported">Exportat</string>
+  
+  <!-- Graph -->    
+  <string name="graph_title">Gràfic</string>
+  
+  <!-- Export -->
+  <string name="export">Exportar</string>
+  <string name="file_generated">Arxiu generat</string>
+  <string name="no_export">Res a exportar</string>
+  <plurals name="exported_records_count"> 
+    <item quantity="one">1 registre</item> 
+    <item quantity="other">%d registres</item> 
+  </plurals>
+  <string name="export_share_subject">Exportar WeightLogger</string>
+  <string name="export_upload_ok">Carregat amb èxit</string>
+  <string name="export_upload_failed">La càrrega ha fallat</string>
+  
+  <!-- Preferences -->
+  <string name="pref">Preferències</string>
+  <string name="pref_general_category">General</string>
+  <string name="pref_gender">Sexe</string>
+  <string name="pref_age">Edat</string>
+  <string name="pref_age_summary">Trieu la vostra edat.</string>
+  <string name="pref_unit">Unitat de pes</string>
+  <string name="pref_muscle_mass_unit">Unitat de massa muscular</string>
+  <string name="pref_muscle_mass_unit_mass">Pes (kg / lb)</string>
+  <string name="pref_muscle_mass_unit_percent">Percentatge</string>
+  <string name="pref_preload">Precàrrega</string>
+  <string name="pref_preload_summary">Els nous registres seran precarregats amb les dades del darrer registre per una entrada més ràpida.</string>
+  <string name="pref_fields">Camps opcionals</string>
+  <string name="pref_fields_summary">Trieu els camps opcionals a mostrar per nous registres.</string>
+  <string name="pref_export_dir">Directori d\'exportació</string>
+  <string name="pref_garmin_category">Garmin Connect</string>
+  <string name="pref_garmin_login">Nom d\'usuari</string>
+  <string name="pref_garmin_login_summary">El vostre nom d\'usuari Garmin Connect.</string>
+  <string name="pref_garmin_password">Contrasenya</string>
+  <string name="pref_garmin_password_summary">La vostra contrasenya Garmin Connect.</string>
+  <string name="pref_database_category">Base de dades</string>
+  <string name="pref_backup_database">Còpia de seguretat de la base de dades</string>
+  <string name="pref_backup_database_summary">Desar la base de dades dins del directori d\'exportació.</string>
+  <string name="pref_backup_database_ok">La còpia de seguretat de la base de dades s\'ha realitzat amb èxit (Fitxer : %1$s)</string>
+  <string name="pref_backup_database_failed">La còpia de seguretat ha fallat</string>
+  <string name="pref_restore_database">Restaurar la base de dades</string>
+  <string name="pref_restore_database_summary">Restaurar la base de dades des d\'un fitxer de còpia de seguretat.</string>
+  <string name="pref_restore_database_nofiles">Cap fitxer de còpia de seguretat per restaurar!</string>
+  <string name="pref_restore_database_ok">La base de dades ha estat restaurada amb èxit</string>
+  <string name="pref_restore_database_confirm">Realment vols restaurar aquesta còpia de seguretat: %1$s? La base de dades actual serà substituïda!</string>
+  <string name="pref_restore_database_failed">La restauració ha fallat</string>
+  <string name="pref_purge_database">Purgar la base de dades</string>
+  <string name="pref_purge_database_summary">Purgar la base de dades de TOTS els registres. Utilitzar amb prudència!</string>
+  <string name="pref_purge_database_confirm">Realment vols purgar TOTS els registres de la base de dades???</string>
+  <string name="pref_database_purged">Base de dades purgada</string>
+  <string name="pref_load_test_data">Carregar dades de prova</string>
+  <string name="pref_load_test_data_summary">Carregar desenes de registres per tests.</string>
+  <string name="pref_test_data_loaded">Dades de prova carregades</string>
+  <string name="pref_misc_category">Altres</string>
+  <string name="pref_about">Sobre</string>
+</resources>

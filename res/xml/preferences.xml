@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    
+  <PreferenceCategory android:title="@string/pref_general_category">
+    <ListPreference android:key="gender" android:entries="@array/gender" android:entryValues="@array/gender_values" android:title="@string/pref_gender" android:defaultValue="1" />
+    <EditTextPreference android:key="age" android:title="@string/pref_age" android:summary="@string/pref_age_summary" android:singleLine="true" />
+    <ListPreference android:key="unit" android:entries="@array/units" android:entryValues="@array/units" android:title="@string/pref_unit" android:defaultValue="kg" />
+    <ListPreference android:key="muscle_mass_unit" android:entries="@array/muscle_mass_units" android:entryValues="@array/muscle_mass_unit_values" android:title="@string/pref_muscle_mass_unit" android:defaultValue="1" />
+    <CheckBoxPreference android:key="preload" android:title="@string/pref_preload" android:summary="@string/pref_preload_summary" android:defaultValue="true" />
+	  <PreferenceScreen android:title="@string/pref_fields" android:summary="@string/pref_fields_summary">
+	    <CheckBoxPreference android:key="body_fat" android:title="@string/body_fat" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="body_water" android:title="@string/body_water" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="muscle_mass" android:title="@string/muscle_mass" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="daily_calorie_intake" android:title="@string/daily_calorie_intake" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="physique_rating" android:title="@string/physique_rating" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="visceral_fat_rating" android:title="@string/visceral_fat_rating" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="bone_mass" android:title="@string/bone_mass" android:defaultValue="true" />
+	    <CheckBoxPreference android:key="metabolic_age" android:title="@string/metabolic_age" android:defaultValue="true" />
+	  </PreferenceScreen>
+	  <ListPreference android:key="export_dir" android:entries="@array/export_dir" android:entryValues="@array/export_dir" android:title="@string/pref_export_dir" android:defaultValue="/WeightLogger" />
+  </PreferenceCategory>
+  
+  <PreferenceCategory android:title="@string/pref_garmin_category">
+    <EditTextPreference android:key="garmin_login" android:title="@string/pref_garmin_login" android:summary="@string/pref_garmin_login_summary" android:singleLine="true" />
+    <EditTextPreference android:key="garmin_password" android:title="@string/pref_garmin_password" android:summary="@string/pref_garmin_password_summary" android:password="true" android:singleLine="true" />
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/pref_database_category">
+    <Preference android:key="db_backup" android:title="@string/pref_backup_database" android:summary="@string/pref_backup_database_summary" />
+    <Preference android:key="db_restore" android:title="@string/pref_restore_database" android:summary="@string/pref_restore_database_summary" />
+    <Preference android:key="db_purge" android:title="@string/pref_purge_database" android:summary="@string/pref_purge_database_summary" />
+    <Preference android:key="db_loadtest" android:title="@string/pref_load_test_data" android:summary="@string/pref_load_test_data_summary" />
+  </PreferenceCategory>
+  
+  <PreferenceCategory android:title="@string/pref_misc_category">
+    <Preference android:key="about" android:title="@string/pref_about"/>
+  </PreferenceCategory>
+  
+</PreferenceScreen>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:id="@+id/item_preferences" android:icon="@drawable/ic_menu_preference" />
+  <item android:id="@+id/item_export" android:icon="@drawable/ic_menu_export" />
+  <item android:id="@+id/item_graph" android:icon="@drawable/ic_menu_graph" />
+  <item android:id="@+id/item_add" android:icon="@drawable/ic_menu_add" />
+</menu>
