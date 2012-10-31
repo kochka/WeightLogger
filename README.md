@@ -13,7 +13,7 @@ Main features :
 * Languages supported : English (default), Catalan, Dutch, French, German, Italian, Polish, Spanish, Swedish.
 
 ## Requires as library projects
-* [android-actionbar](https://github.com/johannilsson/android-actionbar)
+* [android-actionbar](https://github.com/johannilsson/android-actionbar/tree/honeycomb-support)
 * [android-viewflow](https://github.com/pakerfeldt/android-viewflow)
 * [GraphView](https://github.com/renard314/GraphView)
 
