@@ -134,4 +134,6 @@
   <string name="pref_test_data_loaded">Тестовые данные были загружены</string>
   <string name="pref_misc_category">Разное</string>
   <string name="pref_about">О программе</string>
+  <string name="units_kg">кг</string>
+  <string name="units_lb">фт</string>
 </resources>
