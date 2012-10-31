@@ -10,8 +10,8 @@
   </string-array>  
   
   <string-array name="units">
-    <item>kg</item>
-    <item>lb</item>
+    <item>@string/units_kg</item>
+    <item>@string/units_lb</item>
   </string-array>
 
   <string-array name="muscle_mass_units">
