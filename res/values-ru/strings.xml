@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2012 Sébastien Vrillaud
-  
+  Copyright 2012 Maxim Kot <work.maydjin@gmail.com>
+    
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
@@ -16,9 +17,7 @@
 -->
 
 <resources>
-  <string name="app_name">Weight Logger</string>
-  <string name="app_version">1.05</string>
-  <string name="translator">Maxim Kot work.maydjin@gmail.com</string>
+  <string name="translator">Maxim Kot</string>
   
   <!-- Common -->
   <string name="edit">Редактировать</string>
@@ -101,6 +100,8 @@
   <string name="pref_age">Возвраст</string>
   <string name="pref_age_summary">Укажите ваш возвраст.</string>
   <string name="pref_unit">Единицы измерения веса</string>
+  <string name="pref_unit_kg">кг</string>
+  <string name="pref_unit_lb">фт</string>
   <string name="pref_muscle_mass_unit">Единицы измерения мускульной массы</string>
   <string name="pref_muscle_mass_unit_mass">Масса (кг / фт)</string>
   <string name="pref_muscle_mass_unit_percent">Проценты</string>
@@ -134,6 +135,4 @@
   <string name="pref_test_data_loaded">Тестовые данные были загружены</string>
   <string name="pref_misc_category">Разное</string>
   <string name="pref_about">О программе</string>
-  <string name="units_kg">кг</string>
-  <string name="units_lb">фт</string>
 </resources>

@@ -363,7 +363,7 @@ public class Measurement {
   }
   
   private String formatToUnit(Float value) {
-    return convertToUnit(value, true) + (convert_to_lb ? " lbs" : " kg");
+    return convertToUnit(value, true) + " " + (convert_to_lb ? context.getString(R.string.pref_unit_lb) : context.getString(R.string.pref_unit_kg));
   }
   
   public boolean isNew() {

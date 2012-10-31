@@ -10,10 +10,14 @@
   </string-array>  
   
   <string-array name="units">
-    <item>@string/units_kg</item>
-    <item>@string/units_lb</item>
+    <item>@string/pref_unit_kg</item>
+    <item>@string/pref_unit_lb</item>
   </string-array>
-
+  <string-array name="unit_values">
+    <item>kg</item>
+    <item>lb</item>
+  </string-array>
+  
   <string-array name="muscle_mass_units">
     <item>@string/pref_muscle_mass_unit_mass</item>
     <item>@string/pref_muscle_mass_unit_percent</item>
