@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2012 Yogev Itamar
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <string name="translator">Yogev Itamar</string>
+  
+  <!-- Common -->
+  <string name="edit">ערוך</string>
+  <string name="delete">מחק</string>
+  <string name="title_new">חדש</string>
+  <string name="title_edit">ערוך</string>
+  <string name="change">שנה</string>
+  <string name="title_delete">מחק</string>
+  <string name="confirm_delete">למחוק רשומה?</string>
+  <string name="record_saved">נשמר</string>
+  <string name="record_deleted">רשומה נמחקה</string>
+  <string name="missing_fields">חסר שדה !</string>
+  <string name="preload">רשומה אחרונה נטענה מראש</string>
+  <string name="gender_male">זכר</string>
+  <string name="gender_female">נקבה</string>
+  <string name="quit">יציאה</string>
+  <string name="ok">אישור</string>
+  <string name="coming_soon">בקרוב !</string>
+      
+  <!-- Fields -->
+  <string name="weight">משקל</string>
+  <string name="body_fat">שומן בגוף</string>
+  <string name="body_water">נוזלים בגוף</string>
+  <string name="muscle_mass">מסת שריר</string>
+  <string name="daily_calorie_intake">צריכת קלוריות יומית</string>
+  <string name="physique_rating">דירוג מבנה-גוף</string>
+  <string name="visceral_fat_rating">דירוג שומן קרבי</string>
+  <string name="bone_mass">מסת עצמות</string>
+  <string name="metabolic_age">גיל מטאבולי</string>
+  <string name="metabolic_age_years_old">שנים</string>
+  
+  <string name="physique_rating_1">שומן חבוי</string>
+  <string name="physique_rating_2">שמן</string>
+  <string name="physique_rating_3">מבנה מוצק</string>
+  <string name="physique_rating_4">באימונים</string>
+  <string name="physique_rating_5">רגיל</string>
+  <string name="physique_rating_6">שרירי רגיל</string>
+  <string name="physique_rating_7">רזה</string>
+  <string name="physique_rating_8">שרירי רזה</string> 
+  <string name="physique_rating_9">שרירי מאד</string>
+  
+  <!-- Export -->    
+  <string name="storage_not_mounted">זיכרון לא עלה (not mounted) !</string>
+  <string name="network_error">שגיאת רשת !</string>
+  <string name="gc_configure_account">נא להגדיר חשבון Garmin בתפריט העדפות !</string>
+  <string name="gc_account_error">שם משתמש או סיסמא שגויים !</string>
+  
+  <!-- Show -->
+  <string name="normal">רגיל</string>
+  <string name="abnormal">חריג</string>
+  <string name="bf_underfat">תת-שומן</string>
+  <string name="bf_healthy">בריא</string>
+  <string name="bf_overfat">שומן עודף</string>
+  <string name="bf_obese">שמן</string>
+  <string name="vfr_healthy">בריא</string>
+  <string name="vfr_excess">שומן עודף</string>
+
+  <!-- Edit -->
+  <string name="exported">ייצא</string>
+  
+  <!-- Graph -->
+  <string name="graph_title">גרף</string>
+  
+  <!-- Export -->
+  <string name="export">ייצוא</string>
+  <string name="file_generated">קובץ נוצר</string>
+  <string name="no_export">אין מידע לייצא</string>
+  <plurals name="exported_records_count"> 
+    <item quantity="one">1 רשומה</item> 
+    <item quantity="other">%d רשומה</item> 
+  </plurals>
+  <string name="export_share_subject">WeightLogger ייצוא</string>
+  <string name="export_upload_ok">נטען בהצלחה</string>
+  <string name="export_upload_failed">נעינה נכשלה</string>
+  
+  <!-- Preferences -->
+  <string name="pref">העדפות</string>
+  <string name="pref_general_category">מין</string>
+  <string name="pref_gender">מין</string>
+  <string name="pref_age">גיל</string>
+  <string name="pref_age_summary">בחר גיל</string>
+  <string name="pref_unit">יחידות משקל</string>
+  <string name="pref_unit_kg">ק"ג</string>
+  <string name="pref_unit_lb">ליברה</string>
+  <string name="pref_muscle_mass_unit">יחידות מסת שריר</string>
+  <string name="pref_muscle_mass_unit_mass">מסה  (ק"ג / ליברה)</string>
+  <string name="pref_muscle_mass_unit_percent">אחוזים</string>
+  <string name="pref_preload">טעינה מוקדמת</string>
+  <string name="pref_preload_summary">רשומה חדשה תרשם עם תאריך הרשומה הקודם למילוי מהיר יותר.</string>
+  <string name="pref_fields">בחירת שדות</string>
+  <string name="pref_fields_summary">בחר אילו שדות יופיעו עבור רשומה חדשה.</string>
+  <string name="pref_export_dir">ספריית ייצוא</string>       
+  <string name="pref_garmin_category">Garmin חשבון</string>
+  <string name="pref_garmin_login">שם משתמש</string>
+  <string name="pref_garmin_login_summary">שם משתמש בחשבון Garmin שלך</string> 
+  <string name="pref_garmin_password">סיסמא</string>
+  <string name="pref_garmin_password_summary">סיסמא בחשבון Garmin שלך</string>
+  <string name="pref_database_category">בסיס נתונים</string>
+  <string name="pref_backup_database">גבה בסיס נתונים</string>
+  <string name="pref_backup_database_summary">גבה בסיס נתונים בספריית הייצוא</string>
+  <string name="pref_backup_database_ok">בסיס נתונים גובה בהצלחה (קובץ : %1$s)</string>
+  <string name="pref_backup_database_failed">גיבוי בסיס נתונים נכשל</string>
+  <string name="pref_restore_database">שחזר בסיס נתונים</string>
+  <string name="pref_restore_database_summary">שחזר בסיס נתונים מקובץ גיבוי</string>
+  <string name="pref_restore_database_nofiles">קובץ גיבוי לא נמצא !</string>
+  <string name="pref_restore_database_confirm">בטוח שברצונך לשחזר ?  : %1$s ? בסיס הנתונים הנוכחי יוחלף!</string>
+  <string name="pref_restore_database_ok">בסיס הנתונים שוחזר בהצלחה</string>
+  <string name="pref_restore_database_failed">שחזור בסיס הנתונים נכשל</string>
+  <string name="pref_purge_database">נקה בסיס נתונים</string>
+  <string name="pref_purge_database_summary">נקה בסיס נתונים לכל הרשומות . להשתמש בזהירות !</string>
+  <string name="pref_purge_database_confirm">באמת? למחוק את כל הרשומות ???</string>
+  <string name="pref_database_purged">בסיס הנתונים נמחק</string>
+  <string name="pref_load_test_data">טען נתוני בקרה</string>
+  <string name="pref_load_test_data_summary">טען מספר רשומות , למטרות בדיקה</string>
+  <string name="pref_test_data_loaded">נתוני בקרה נטענו</string>
+  <string name="pref_misc_category">שונות</string>
+  <string name="pref_about">אודות</string>
+</resources>
