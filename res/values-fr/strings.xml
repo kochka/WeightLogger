@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2012 Sébastien Vrillaud
+  Copyright 2013 Sébastien Vrillaud
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -24,12 +24,12 @@
   <string name="title_new">Nouveau</string>
   <string name="title_edit">Edition</string>
   <string name="change">Modifier</string>
-  <string name="title_delete">Supression</string>
+  <string name="title_delete">Suppression</string>
   <string name="confirm_delete">Supprimer cet enregistrement ?</string>
   <string name="record_saved">Sauvegardé</string>
   <string name="record_deleted">Eregistrement supprimé</string>
   <string name="missing_fields">Champs manquants !</string>
-  <string name="preload">Les dernière valeurs ont été préchargées.</string>
+  <string name="preload">Les dernières valeurs ont été préchargées.</string>
   <string name="gender_male">Homme</string>
   <string name="gender_female">Femme</string>
   <string name="quit">Quitter</string>
