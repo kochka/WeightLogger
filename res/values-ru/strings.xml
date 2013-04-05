@@ -51,13 +51,13 @@
   
   <string name="physique_rating_1">Скрытое ожирение</string>
   <string name="physique_rating_2">Ожирение</string>
-  <string name="physique_rating_3">Плотное сложение</string>
+  <string name="physique_rating_3">Полнота</string>
   <string name="physique_rating_4">Тренированное</string>
   <string name="physique_rating_5">Стандартное</string>
   <string name="physique_rating_6">Стандартное мускулистое</string>
   <string name="physique_rating_7">Худое</string>
   <string name="physique_rating_8">Худое и мускулистое</string> 
-  <string name="physique_rating_9">Очень мускулистое</string>
+  <string name="physique_rating_9">Значительное ожирение</string>
   
   <!-- Export -->    
   <string name="storage_not_mounted">Хранилище данных не смонтированно !</string>

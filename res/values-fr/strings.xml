@@ -59,7 +59,7 @@
   <string name="physique_rating_9">Très musclé</string>
     
   <!-- Export -->    
-  <string name="storage_not_mounted">L\'espace de stokage n\'est pas monté</string>
+  <string name="storage_not_mounted">L\'espace de stockage n\'est pas monté</string>
   <string name="network_error">Erreur réseau !</string>
   <string name="gc_configure_account">Merci de configurer votre compte Garmin Connect dans les préférences !</string>
   <string name="gc_account_error">Erreur de nom d\'utilisateur ou de mot de passe Garmin Connect !</string>
