@@ -76,7 +76,7 @@ public class Export {
     
     try {
       FileWriter fCsv = new FileWriter(new File(path(context), filename));
-      fCsv.append("Recorded At,Weight,Body Fat,Body Water,Muscle Mass,Muscle Mass,Daily Calorie Intake,Physique Rating,Bone Mass,Metabolic Age\n");
+      fCsv.append("Recorded At,Weight,Body Fat,Body Water,Muscle Mass,Daily Calorie Intake,Physique Rating,Visceral Fat Rating,Bone Mass,Metabolic Age\n");
       
       for (Measurement measurement : measurements) {
         fCsv.append(measurement.getFormatedRecordedAt() + " " + measurement.getFormatedRecordedAtTime()  + ",");
