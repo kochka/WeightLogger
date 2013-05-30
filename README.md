@@ -10,7 +10,7 @@ Main features :
 * FIT and CSV export.
 * Support of Kg or Lb mass unit.
 * Support of mass or percent muscle mass unit.
-* Languages supported : English (default), Catalan, Dutch, French, German, Italian, Polish, Spanish, Swedish.
+* Languages supported : English (default), Catalan, Dutch, French, German, Hebrew, Italian, Polish, Russian, Spanish, Swedish, Ukrainian.
 
 ## Requires as library projects
 * [android-actionbar](https://github.com/johannilsson/android-actionbar/tree/honeycomb-support)
