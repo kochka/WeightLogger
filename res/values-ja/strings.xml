@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2012 Sébastien Vrillaud
-  Copyright 2014 goldbook
+  Copyright 2014 Goldbook
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,125 +14,125 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
---><resources>
-  <string name="app_name">"Weight Logger"</string>
-  <string name="app_version">"1.0.8"</string>
-  <string name="translator">""</string>
+-->
+
+<resources>
+  <string name="translator">Goldbook</string>
   
   <!-- Common -->
-  <string name="edit">"編集"</string>
-  <string name="delete">"削除"</string>
-  <string name="title_new">"New"</string>
-  <string name="title_edit">"編集"</string>
-  <string name="change">"変更"</string>
-  <string name="title_delete">"削除"</string>
-  <string name="confirm_delete">"このレコードを削除しますか？"</string>
-  <string name="record_saved">"保存しました"</string>
-  <string name="record_deleted">"レコードを削除"</string>
-  <string name="missing_fields">"未入力の項目があります！"</string>
-  <string name="preload">"最新のレコードがプリロードされています。"</string>
-  <string name="gender_male">"男性"</string>
-  <string name="gender_female">"女性"</string>
-  <string name="quit">"終了 "</string>
-  <string name="ok">"はい"</string>
-  <string name="coming_soon">"Coming soon !"</string>
+  <string name="edit">編集</string>
+  <string name="delete">削除</string>
+  <string name="title_new">新規</string>
+  <string name="title_edit">編集</string>
+  <string name="change">変更</string>
+  <string name="title_delete">削除</string>
+  <string name="confirm_delete">このレコードを削除しますか？</string>
+  <string name="record_saved">保存しました</string>
+  <string name="record_deleted">レコードを削除</string>
+  <string name="missing_fields">未入力の項目があります！</string>
+  <string name="preload">最新のレコードがプリロードされています。</string>
+  <string name="gender_male">男性</string>
+  <string name="gender_female">女性</string>
+  <string name="quit">終了 </string>
+  <string name="ok">はい</string>
+  <string name="coming_soon">Coming soon !</string>
       
   <!-- Fields -->
-  <string name="weight">"体重"</string>
-  <string name="body_fat">"体脂肪"</string>
-  <string name="body_water">"体内の水分量"</string>
-  <string name="muscle_mass">"筋肉量"</string>
-  <string name="daily_calorie_intake">"毎日のカロリー摂取量"</string>
-  <string name="physique_rating">"体格評価"</string>
-  <string name="visceral_fat_rating">"内臓脂肪の評価"</string>
-  <string name="bone_mass">"骨量"</string>
-  <string name="metabolic_age">"代謝の年齢"</string>
-  <string name="metabolic_age_years_old">"yo"</string>
+  <string name="weight">体重</string>
+  <string name="body_fat">体脂肪</string>
+  <string name="body_water">体内の水分量</string>
+  <string name="muscle_mass">筋肉量</string>
+  <string name="daily_calorie_intake">毎日のカロリー摂取量</string>
+  <string name="physique_rating">体格評価</string>
+  <string name="visceral_fat_rating">内臓脂肪の評価</string>
+  <string name="bone_mass">骨量</string>
+  <string name="metabolic_age">代謝の年齢</string>
+  <string name="metabolic_age_years_old">yo</string>
   
-  <string name="physique_rating_1">"隠れ肥満"</string>
-  <string name="physique_rating_2">"肥満"</string>
-  <string name="physique_rating_3">"がっちり"</string>
-  <string name="physique_rating_4">"引き締まっている"</string>
-  <string name="physique_rating_5">"普通"</string>
-  <string name="physique_rating_6">"標準筋肉質"</string>
-  <string name="physique_rating_7">"やせ型"</string>
-  <string name="physique_rating_8">"やせて筋肉質"</string> 
-  <string name="physique_rating_9">"非常に筋肉質"</string>
+  <string name="physique_rating_1">隠れ肥満</string>
+  <string name="physique_rating_2">肥満</string>
+  <string name="physique_rating_3">がっちり</string>
+  <string name="physique_rating_4">引き締まっている</string>
+  <string name="physique_rating_5">普通</string>
+  <string name="physique_rating_6">標準筋肉質</string>
+  <string name="physique_rating_7">やせ型</string>
+  <string name="physique_rating_8">やせて筋肉質</string> 
+  <string name="physique_rating_9">非常に筋肉質</string>
   
   <!-- Export -->    
-  <string name="storage_not_mounted">"ストレージがマウントされていません！"</string>
-  <string name="network_error">"ネットワークエラー！"</string>
-  <string name="gc_configure_account">"環境設定でお使いのGarmin Connectアカウントを設定してください！"</string>
-  <string name="gc_account_error">"ガーミンコネクトのユーザ名、またはパスワードが間違っています！"</string>
+  <string name="storage_not_mounted">ストレージがマウントされていません！</string>
+  <string name="network_error">ネットワークエラー！</string>
+  <string name="gc_configure_account">環境設定でお使いのGarmin Connectアカウントを設定してください！</string>
+  <string name="gc_account_error">ガーミンコネクトのユーザ名、またはパスワードが間違っています！</string>
   
   <!-- Show -->
-  <string name="normal">"ノーマル"</string>
-  <string name="abnormal">"不正"</string>
-  <string name="bf_underfat">"やせている"</string>
-  <string name="bf_healthy">"健康"</string>
-  <string name="bf_overfat">"軽い肥満"</string>
-  <string name="bf_obese">"肥満"</string>
-  <string name="vfr_healthy">"健康"</string>
-  <string name="vfr_excess">"過剰"</string>
+  <string name="normal">ノーマル</string>
+  <string name="abnormal">不正</string>
+  <string name="bf_underfat">やせている</string>
+  <string name="bf_healthy">健康</string>
+  <string name="bf_overfat">軽い肥満</string>
+  <string name="bf_obese">肥満</string>
+  <string name="vfr_healthy">健康</string>
+  <string name="vfr_excess">過剰</string>
 
   <!-- Edit -->
-  <string name="exported">"エクスポート"</string>
+  <string name="exported">エクスポート</string>
   
   <!-- Graph -->
-  <string name="graph_title">"グラフ"</string>
+  <string name="graph_title">グラフ</string>
   
   <!-- Export -->
-  <string name="export">"エクスポート"</string>
-  <string name="file_generated">"生成されたファイル"</string>
-  <string name="no_export">"エクスポートするものがありません"</string>
+  <string name="export">エクスポート</string>
+  <string name="file_generated">生成されたファイル</string>
+  <string name="no_export">エクスポートするものがありません</string>
   <plurals name="exported_records_count"> 
-    <item quantity="one">"1レコード"</item> 
-    <item quantity="other">"%dレコード"</item> 
+    <item quantity="one">1レコード</item> 
+    <item quantity="other">%dレコード</item> 
   </plurals>
-  <string name="export_share_subject">"WeightLoggerエクスポート"</string>
-  <string name="export_upload_ok">"正常にアップロードされました"</string>
-  <string name="export_upload_failed">"アップロードが失敗しました"</string>
+  <string name="export_share_subject">WeightLoggerエクスポート</string>
+  <string name="export_upload_ok">正常にアップロードされました</string>
+  <string name="export_upload_failed">アップロードが失敗しました</string>
   
   <!-- Preferences -->
-  <string name="pref">"設定"</string>
-  <string name="pref_general_category">"一般"</string>
-  <string name="pref_gender">"性別"</string>
-  <string name="pref_age">"年齢"</string>
-  <string name="pref_age_summary">"あなたの年齢を選んでください。"</string>
-  <string name="pref_unit">"重量単位"</string>
-  <string name="pref_unit_kg">"kg"</string>
-  <string name="pref_unit_lb">"ポンド"</string>
-  <string name="pref_muscle_mass_unit">"筋肉量の単位"</string>
-  <string name="pref_muscle_mass_unit_mass">"質量（kg /ポンド）"</string>
-  <string name="pref_muscle_mass_unit_percent">"パーセンテージ"</string>
-  <string name="pref_preload">"プリロード"</string>
-  <string name="pref_preload_summary">"素早いデータ入力のため、新しいレコードに直近のレコードの数値を表示します。"</string>
-  <string name="pref_fields">"追加のフィールド"</string>
-  <string name="pref_fields_summary">"新しいレコードに表示する追加のフィールドを選択してください。"</string>
-  <string name="pref_export_dir">"エクスポート先ディレクトリ"</string>       
-  <string name="pref_garmin_category">"ガーミンコネクト"</string>
-  <string name="pref_garmin_login">"ログイン"</string>
-  <string name="pref_garmin_login_summary">"ガーミンコネクトログイン"</string> 
-  <string name="pref_garmin_password">"パスワード"</string>
-  <string name="pref_garmin_password_summary">"ガーミンコネクトのパスワード"</string>
-  <string name="pref_database_category">"データベース"</string>
-  <string name="pref_backup_database">"データベースにバックアップ"</string>
-  <string name="pref_backup_database_summary">"エクスポートディレクトリ内のデータベースにバックアップ"</string>
-  <string name="pref_backup_database_ok">"データベースへ正常にバックアップされました(ファイル: %1$s )"</string>
-  <string name="pref_backup_database_failed">"データベースへのバックアップが失敗しました"</string>
-  <string name="pref_restore_database">"データベースから復元"</string>
-  <string name="pref_restore_database_summary">"バックアップファイルからデータベースを復元します。"</string>
-  <string name="pref_restore_database_nofiles">"復元するバックアップファイルがありません！"</string>
-  <string name="pref_restore_database_confirm">"本当にこのバックアップ :%1$s からリストアしますか？　現在のデータベースが置き換えられます!"</string>
-  <string name="pref_restore_database_ok">"データベースが正常に復元されました"</string>
-  <string name="pref_restore_database_failed">"データベースの復元が失敗しました"</string>
-  <string name="pref_purge_database">"データベースを削除"</string>
-  <string name="pref_purge_database_summary">"すべてのレコードのデータベースを削除。慎重に使用してください！"</string>
-  <string name="pref_purge_database_confirm">"本当にすべてのレコードのデータベースを削除しますか？"</string>
-  <string name="pref_database_purged">"データベースが削除されました"</string>
-  <string name="pref_load_test_data">"テストデータ読み込み"</string>
-  <string name="pref_load_test_data_summary">"テストのために複数のテストレコードをロードします。"</string>
-  <string name="pref_test_data_loaded">"テストデータを読み込み"</string>
-  <string name="pref_misc_category">"その他"</string>
-  <string name="pref_about">"このアプリについて"</string>
+  <string name="pref">設定</string>
+  <string name="pref_general_category">一般</string>
+  <string name="pref_gender">性別</string>
+  <string name="pref_age">年齢</string>
+  <string name="pref_age_summary">あなたの年齢を選んでください。</string>
+  <string name="pref_unit">重量単位</string>
+  <string name="pref_unit_kg">kg</string>
+  <string name="pref_unit_lb">ポンド</string>
+  <string name="pref_muscle_mass_unit">筋肉量の単位</string>
+  <string name="pref_muscle_mass_unit_mass">質量（kg /ポンド）</string>
+  <string name="pref_muscle_mass_unit_percent">パーセンテージ</string>
+  <string name="pref_preload">プリロード</string>
+  <string name="pref_preload_summary">素早いデータ入力のため、新しいレコードに直近のレコードの数値を表示します。</string>
+  <string name="pref_fields">追加のフィールド</string>
+  <string name="pref_fields_summary">新しいレコードに表示する追加のフィールドを選択してください。</string>
+  <string name="pref_export_dir">エクスポート先ディレクトリ</string>       
+  <string name="pref_garmin_category">ガーミンコネクト</string>
+  <string name="pref_garmin_login">ログイン</string>
+  <string name="pref_garmin_login_summary">ガーミンコネクトログイン</string> 
+  <string name="pref_garmin_password">パスワード</string>
+  <string name="pref_garmin_password_summary">ガーミンコネクトのパスワード</string>
+  <string name="pref_database_category">データベース</string>
+  <string name="pref_backup_database">データベースにバックアップ</string>
+  <string name="pref_backup_database_summary">エクスポートディレクトリ内のデータベースにバックアップ</string>
+  <string name="pref_backup_database_ok">データベースへ正常にバックアップされました(ファイル: %1$s )</string>
+  <string name="pref_backup_database_failed">データベースへのバックアップが失敗しました</string>
+  <string name="pref_restore_database">データベースから復元</string>
+  <string name="pref_restore_database_summary">バックアップファイルからデータベースを復元します。</string>
+  <string name="pref_restore_database_nofiles">復元するバックアップファイルがありません！</string>
+  <string name="pref_restore_database_confirm">本当にこのバックアップ :%1$s からリストアしますか？　現在のデータベースが置き換えられます!</string>
+  <string name="pref_restore_database_ok">データベースが正常に復元されました</string>
+  <string name="pref_restore_database_failed">データベースの復元が失敗しました</string>
+  <string name="pref_purge_database">データベースを削除</string>
+  <string name="pref_purge_database_summary">すべてのレコードのデータベースを削除。慎重に使用してください！</string>
+  <string name="pref_purge_database_confirm">本当にすべてのレコードのデータベースを削除しますか？</string>
+  <string name="pref_database_purged">データベースが削除されました</string>
+  <string name="pref_load_test_data">テストデータ読み込み</string>
+  <string name="pref_load_test_data_summary">テストのために複数のテストレコードをロードします。</string>
+  <string name="pref_test_data_loaded">テストデータを読み込み</string>
+  <string name="pref_misc_category">その他</string>
+  <string name="pref_about">このアプリについて</string>
 </resources>
