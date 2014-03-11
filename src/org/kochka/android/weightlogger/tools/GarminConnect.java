@@ -18,17 +18,24 @@ package org.kochka.android.weightlogger.tools;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
-import org.kochka.android.weightlogger.tools.SimpleMultipartEntity;
+// Disable custom entity, need to find a fix to avoid heavy external Apache libs
+// import org.kochka.android.weightlogger.tools.SimpleMultipartEntity;
 
 public class GarminConnect {
  
@@ -36,22 +43,42 @@ public class GarminConnect {
     
   public boolean signin(final String username, final String password) {
     httpclient = new DefaultHttpClient();
-    final String signin_url = "https://connect.garmin.com/signin";
+    final String signin_url = "https://sso.garmin.com/sso/login?service=http://connect.garmin.com/post-auth/login&clientId=GarminConnect&consumeServiceTicket=false";
+    final String auth_url = "http://connect.garmin.com/post-auth/login";
+    
     try {
+      HttpEntity entity;
+      Pattern r;
+      Matcher m;
+      
+      HttpParams params = new BasicHttpParams();
+      params.setParameter("http.protocol.handle-redirects", false);
+      
       // Create session
-      httpclient.execute(new HttpGet(signin_url)).getEntity().consumeContent();
+      entity = httpclient.execute(new HttpGet(signin_url)).getEntity();
+      r = Pattern.compile("name=\"lt\"\\s+value=\"([^\"]+)\"");
+      m = r.matcher(EntityUtils.toString(entity));
+      m.find();
+      String lt_param = m.group(1);
 
       // Sign in
       HttpPost post = new HttpPost(signin_url);
+      post.setParams(params);
       List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-      nvp.add(new BasicNameValuePair("javax.faces.ViewState", "j_id1"));
-      nvp.add(new BasicNameValuePair("login", "login"));
-      nvp.add(new BasicNameValuePair("login:signInButton", "Sign In"));
-      nvp.add(new BasicNameValuePair("login:loginUsernameField", username));
-      nvp.add(new BasicNameValuePair("login:password", password));
+      nvp.add(new BasicNameValuePair("_eventId", "submit"));
+      nvp.add(new BasicNameValuePair("displayNameRequired", "false"));
+      nvp.add(new BasicNameValuePair("embed", "true"));
+      nvp.add(new BasicNameValuePair("lt", lt_param));
+      nvp.add(new BasicNameValuePair("username", username));
+      nvp.add(new BasicNameValuePair("password", password));
       post.setEntity(new UrlEncodedFormEntity(nvp));
-      httpclient.execute(post).getEntity().consumeContent();
-      
+      entity = httpclient.execute(post).getEntity();
+      r = Pattern.compile("ticket=([^']+)'");
+      m = r.matcher(EntityUtils.toString(entity));
+      m.find();
+      String ticket = m.group(1);
+      httpclient.execute(new HttpGet(auth_url + "?ticket=" + ticket)).getEntity().consumeContent();
+
       return isSignedIn();
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
@@ -75,10 +102,20 @@ public class GarminConnect {
     if (httpclient == null) return false;
     try {
       HttpPost post = new HttpPost("http://connect.garmin.com/proxy/upload-service-1.1/json/upload/.fit");
+      
+      /*
       SimpleMultipartEntity mpEntity = new SimpleMultipartEntity();
+      mpEntity.addPart("data", fitFile);
       mpEntity.addPart("responseContentType", "text/html");
-      mpEntity.addPart("fitFile", fitFile);
-      post.setEntity(mpEntity); 
+      post.setEntity(mpEntity);
+      */
+      
+      MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
+      multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+      multipartEntity.addBinaryBody("data", fitFile);
+      multipartEntity.addTextBody("responseContentType", "text/html");
+      post.setEntity(multipartEntity.build());
+      
       HttpEntity entity = httpclient.execute(post).getEntity();
       JSONObject js_upload = new JSONObject(EntityUtils.toString(entity));
       entity.consumeContent();
