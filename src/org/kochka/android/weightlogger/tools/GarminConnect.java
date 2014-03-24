@@ -77,8 +77,12 @@ public class GarminConnect {
       m = r.matcher(EntityUtils.toString(entity));
       m.find();
       String ticket = m.group(1);
-      httpclient.execute(new HttpGet(auth_url + "?ticket=" + ticket)).getEntity().consumeContent();
-
+      
+      // Ticket
+      HttpGet get = new HttpGet(auth_url + "?ticket=" + ticket);
+      get.setParams(params);
+      httpclient.execute(get).getEntity().consumeContent();
+      
       return isSignedIn();
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
