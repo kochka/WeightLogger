@@ -241,7 +241,7 @@ public class EditPreferences extends PreferenceActivity implements OnSharedPrefe
   /* Display "About" dialog */
   private void showAbout() {
     String message = "v" + getString(R.string.app_version);
-    message += "\nSébastien Vrillaud © 2013";
+    message += "\nSébastien Vrillaud © 2015";
     
     if (!getString(R.string.translator).equals("")) {
       message += "\n\n" + Locale.getDefault().getDisplayLanguage().substring(0,1).toUpperCase() + Locale.getDefault().getDisplayLanguage().substring(1);

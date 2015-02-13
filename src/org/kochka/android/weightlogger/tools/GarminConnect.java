@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -37,6 +38,7 @@ import org.json.JSONObject;
 // Disable custom entity, need to find a fix to avoid heavy external Apache libs
 // import org.kochka.android.weightlogger.tools.SimpleMultipartEntity;
 
+
 public class GarminConnect {
  
   private DefaultHttpClient httpclient;
@@ -44,10 +46,11 @@ public class GarminConnect {
   public boolean signin(final String username, final String password) {
     httpclient = new DefaultHttpClient();
     final String signin_url = "https://sso.garmin.com/sso/login?service=http://connect.garmin.com/post-auth/login&clientId=GarminConnect&consumeServiceTicket=false";
-    final String auth_url = "http://connect.garmin.com/post-auth/login";
+    final String auth_url = "https://connect.garmin.com/post-auth/login";
     
     try {
       HttpEntity entity;
+      Header[] h;
       Pattern r;
       Matcher m;
       
@@ -81,7 +84,20 @@ public class GarminConnect {
       // Ticket
       HttpGet get = new HttpGet(auth_url + "?ticket=" + ticket);
       get.setParams(params);
-      httpclient.execute(get).getEntity().consumeContent();
+      h = httpclient.execute(get).getHeaders("location");
+      
+      // Follow redirections
+      String redirect;
+      r = Pattern.compile("Location: (.*)");
+      
+      for(int i=0; i<5; i++){
+	    m = r.matcher(h[0].toString());
+	    m.find();
+	    redirect = m.group(1);
+	    get = new HttpGet(redirect);
+	    get.setParams(params);
+	    h = httpclient.execute(get).getHeaders("location");
+      }
       
       return isSignedIn();
     } catch (Exception e) {
@@ -105,7 +121,7 @@ public class GarminConnect {
   public boolean uploadFitFile(File fitFile) {
     if (httpclient == null) return false;
     try {
-      HttpPost post = new HttpPost("http://connect.garmin.com/proxy/upload-service-1.1/json/upload/.fit");
+      HttpPost post = new HttpPost("https://connect.garmin.com/proxy/upload-service-1.1/json/upload/.fit");
       
       /*
       SimpleMultipartEntity mpEntity = new SimpleMultipartEntity();
