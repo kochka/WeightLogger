@@ -1,5 +1,5 @@
 /*
-  Copyright 2012 Sébastien Vrillaud
+  Copyright 2015 Sébastien Vrillaud
   
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,28 +16,26 @@
 package org.kochka.android.weightlogger;
 
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 
 import org.kochka.android.weightlogger.data.Measurement;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.GraphViewSeries.GraphViewData;
-import com.jjoe64.graphs.LineGraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 import com.markupartist.android.widget.ActionBar;
 
 public class GraphActivity extends Activity {
-
+  
   LinearLayout graphLayout;
   
   @Override
@@ -100,69 +98,54 @@ public class GraphActivity extends Activity {
     Measurement measurement;
     long dt;
     
-    ArrayList<GraphViewData> data = new ArrayList<GraphViewData>();
-
+    ArrayList<DataPoint> data = new ArrayList<DataPoint>();
+    
     for (int i=0; i < measurements.size(); i++) {
       measurement = measurements.get(i);
       dt = measurement.getRecordedAt().getTime().getTime();
       switch (item_id) {
         case R.id.item_graph_weight:
-          data.add(new GraphViewData(dt, measurement.getConvertedWeight()));
+          data.add(new DataPoint(dt, measurement.getConvertedWeight()));
           break;
         case R.id.item_graph_body_fat:
           if (measurement.getBodyFat() != null)
-            data.add(new GraphViewData(dt, measurement.getBodyFat()));
+            data.add(new DataPoint(dt, measurement.getBodyFat()));
           break;
         case R.id.item_graph_body_water:
           if (measurement.getBodyWater() != null)
-            data.add(new GraphViewData(dt, measurement.getBodyWater()));
+            data.add(new DataPoint(dt, measurement.getBodyWater()));
           break;
         case R.id.item_graph_muscle_mass:
           if (measurement.getMuscleMass() != null)
-            data.add(new GraphViewData(dt, measurement.getConvertedMuscleMass()));
+            data.add(new DataPoint(dt, measurement.getConvertedMuscleMass()));
           break;
       }
     }
     
-    GraphViewSeries series = new GraphViewSeries("", Color.rgb(0, 171, 188), data);
-    
-    GraphView graphView = new MLineGraphView(this);
-    
-    // Calculate viewport size
-    graphView.setViewPortSize(864000000);
-    
-    
+    // Series
+    GraphView graphView = new GraphView(this);
+    LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data.toArray(new DataPoint[data.size()]));
+    series.setColor(Color.rgb(0, 171, 188));
+    series.setDrawDataPoints(true);
+    series.setDrawBackground(true);
+    series.setBackgroundColor(Color.argb(150, 0, 171, 188));
+    series.setDataPointsRadius(3);
+    series.setThickness(3);
     graphView.addSeries(series);
-    graphView.moveViewPortStartToTheEnd();
+    
+    // Labels
+    graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this, DateFormat.getDateInstance(DateFormat.SHORT)));
+    graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
+    
+    // Viewport
+    graphView.getViewport().setScrollable(true);
+    graphView.getViewport().setScalable(true);
+    graphView.getViewport().setXAxisBoundsManual(true);
+    graphView.getViewport().setMinX(0);
+    graphView.getViewport().setMaxX(1000 * 3600 * 24 * 10);
+    graphView.getViewport().scrollToEnd();
     
     graphLayout.removeAllViews();
     graphLayout.addView(graphView);
-  }
-}
-
-class MLineGraphView extends LineGraphView {
-  private DateFormat dateFormatter;
-  private NumberFormat numberFormatter;
-  
-  public MLineGraphView(Context context) {
-    super(context);
-    this.setDrawBackground(true);
-    this.setScalable(true);
-  }
-  
-  @Override  
-  protected String formatLabel(double value, boolean isValueX) {
-    if (dateFormatter == null) {
-      dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);  
-    }
-    if (numberFormatter == null) {
-      numberFormatter = NumberFormat.getNumberInstance();
-      numberFormatter.setMaximumFractionDigits(1);
-    }
-   
-    if (isValueX) {  
-      return dateFormatter.format(new Date((long) value));  
-    } else 
-      return numberFormatter.format(value);
   }
 }
