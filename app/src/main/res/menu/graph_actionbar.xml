@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <!--<item android:id="@id/actionbar_item_home" android:icon="@drawable/ic_menu_home" />-->
+  <item android:id="@+id/item_graph_weight" android:icon="@drawable/ic_menu_weight" />
+  <item android:id="@+id/item_graph_body_fat" android:icon="@drawable/ic_menu_body_fat" />
+  <item android:id="@+id/item_graph_body_water" android:icon="@drawable/ic_menu_body_water" />
+  <item android:id="@+id/item_graph_muscle_mass" android:icon="@drawable/ic_menu_muscle_mass" />
+</menu>

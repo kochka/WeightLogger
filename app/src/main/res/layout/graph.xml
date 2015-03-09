@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" style="@style/FillFill">
+<!--   <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" /> -->
+  <FrameLayout style="@style/FillFill" android:padding="5dip">
+    <ImageView android:id="@+id/graph_pic" android:layout_width="55dip" android:layout_height="55dip" android:layout_gravity="right"
+               android:layout_marginRight="5dip" android:layout_marginTop="25dip" android:scaleType="center" android:src="@drawable/ic_weight" />
+
+    <LinearLayout style="@style/FillFill" android:id="@+id/graph" />
+   </FrameLayout>
+</LinearLayout>

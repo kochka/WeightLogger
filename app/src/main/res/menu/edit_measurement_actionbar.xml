@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<!--<item android:id="@id/actionbar_item_home" android:icon="@drawable/ic_menu_home" />-->
+	<item android:id="@+id/item_delete" android:icon="@drawable/ic_menu_delete" />
+	<item android:id="@+id/item_save" android:icon="@drawable/ic_menu_save" />
+</menu>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+   
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/FillWrap" android:orientation="vertical" android:focusable="true" android:focusableInTouchMode="true">
+<!--   <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" /> -->
+	<ScrollView style="@style/Edit">
+	  <TableLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:stretchColumns="1" >
+       
+	     <TableRow android:id="@+id/recorded_at_row" style="@style/EditTableRow">
+	       <LinearLayout android:orientation="vertical" android:layout_span="2" android:layout_weight="1">
+           <TextView android:id="@+id/recorded_at" style="@style/EditTableRowDate" android:text="date" />
+           <TextView android:id="@+id/recorded_at_time" style="@style/EditTableRowTime" android:text="time" android:gravity="center"/>
+         </LinearLayout>
+	       <Button android:id="@+id/recorded_at_button" android:layout_width="80dip" android:text="@string/change" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/weight_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_weight" />
+	       <TextView android:text="@string/weight" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/weight" android:inputType="numberDecimal" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/body_fat_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_body_fat" />
+	       <TextView android:text="@string/body_fat" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/body_fat" android:inputType="numberDecimal" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	
+	     <TableRow android:id="@+id/body_water_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_body_water" />
+	       <TextView android:text="@string/body_water" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/body_water" android:inputType="numberDecimal" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/muscle_mass_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_muscle_mass" />
+	       <TextView android:text="@string/muscle_mass" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/muscle_mass" android:inputType="numberDecimal" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/daily_calorie_intake_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_daily_calorie_intake" />
+	       <TextView android:text="@string/daily_calorie_intake" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/daily_calorie_intake" android:inputType="number" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/physique_rating_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_physique_rating" />
+	       <TextView android:text="@string/physique_rating" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/physique_rating" android:inputType="number" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/visceral_fat_rating_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_visceral_fat_rating" />
+	       <TextView android:text="@string/visceral_fat_rating" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/visceral_fat_rating" android:inputType="number" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	
+	     <TableRow android:id="@+id/bone_mass_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_bone_mass" />
+	       <TextView android:text="@string/bone_mass" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/bone_mass" android:inputType="numberDecimal" style="@style/EditTableRowEditText" />
+	     </TableRow>
+	     
+	     <TableRow android:id="@+id/metabolic_age_row" style="@style/EditTableRow">
+	       <ImageView android:src="@drawable/ic_metabolic_age" />
+	       <TextView android:text="@string/metabolic_age" style="@style/EditTableRowText" />
+	       <EditText android:id="@+id/metabolic_age" android:inputType="number" style="@style/EditTableRowEditText" />
+	     </TableRow> 
+	
+       <TableRow android:id="@+id/exported_row" style="@style/EditTableRow">
+         <ImageView android:src="@drawable/ic_fit" />
+         <TextView android:text="@string/exported" style="@style/EditTableRowText" />
+         <CheckBox android:id="@+id/exported"/>
+       </TableRow>
+	     
+	  </TableLayout>
+	</ScrollView>
+</LinearLayout>
+
+
+

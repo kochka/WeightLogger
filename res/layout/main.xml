@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" style="@style/FillFill">
-  <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" />
-  <ListView android:id="@+id/mListView" style="@style/List"></ListView>
-</LinearLayout>
