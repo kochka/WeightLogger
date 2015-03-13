@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.kochka.android.weightlogger"
-        minSdkVersion 14
+        minSdkVersion 11
         targetSdkVersion 21
     }
 
@@ -27,12 +27,11 @@ android {
 }
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:21.0.+'
     compile project(':viewflow')
-    compile 'com.android.support:support-v4:21.0.3'
     compile files('libs/fit.jar')
     compile 'com.jjoe64:graphview:4.0.0'
-    //compile files('libs/httpcore-4.3.2.jar')
-    //compile files('libs/httpmime-4.3.3.jar')
+    compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'org.apache.httpcomponents:httpcore:4.3.2'
     compile 'org.apache.httpcomponents:httpmime:4.3.3'
 }

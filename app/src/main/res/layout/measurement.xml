@@ -3,7 +3,7 @@
   
   <TextView android:id="@+id/day" android:text="day" style="@style/ListMeasurementDay" />
   
-  <LinearLayout android:id="@+id/linearLayout1" android:orientation="horizontal" style="@style/FillFill" >
+  <LinearLayout android:id="@+id/linearLayout1" android:orientation="horizontal" style="@style/MatchMatch" >
     <TextView android:id="@+id/date" android:text="date" style="@style/ListMeasurementDate" />
 	  <TextView android:id="@+id/weight" android:text="weight" style="@style/ListMeasurementWeight" />
   </LinearLayout>

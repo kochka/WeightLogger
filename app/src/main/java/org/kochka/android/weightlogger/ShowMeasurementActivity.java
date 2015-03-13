@@ -19,15 +19,16 @@ import org.kochka.android.weightlogger.adapter.MeasurementsShowAdapter;
 import org.kochka.android.weightlogger.data.Measurement;
 import org.taptwo.android.widget.ViewFlow;
 
-//import com.markupartist.android.widget.ActionBar;
-
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ShowMeasurementActivity  extends Activity {
+public class ShowMeasurementActivity extends ActionBarActivity {
 
   ViewFlow viewFlow;
   boolean dataChanged = false;
@@ -36,22 +37,30 @@ public class ShowMeasurementActivity  extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.show_measurement);
-    
-//    ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-//    
-//    getMenuInflater().inflate(R.menu.show_measurement_actionbar, actionBar.asMenu());
-//    actionBar.findAction(R.id.actionbar_item_home).setIntent(WeightLoggerActivity.createIntent(this));
-//    
-//    actionBar.setDisplayShowHomeEnabled(true);
-//    actionBar.setDisplayHomeAsUpEnabled(true);
-    
+
+    Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
+    setSupportActionBar(actionBar);
+    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    actionBar.setNavigationOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onBackPressed();
+      }
+    });
+
     Bundle b = getIntent().getExtras();
     
     MeasurementsShowAdapter adapter = new MeasurementsShowAdapter(this);
     viewFlow = (ViewFlow) findViewById(R.id.viewflow);
     viewFlow.setAdapter(adapter, b.getInt("position"));
   }
-  
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.show_measurement_actionbar, menu);
+    return true;
+  }
+
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {

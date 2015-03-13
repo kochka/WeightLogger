@@ -21,11 +21,14 @@ import java.util.LinkedList;
 
 import org.kochka.android.weightlogger.data.Measurement;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.ViewTreeObserver;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -33,9 +36,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-//import com.markupartist.android.widget.ActionBar;
 
-public class GraphActivity extends Activity {
+
+public class GraphActivity extends ActionBarActivity {
   
   LinearLayout graphLayout;
   
@@ -43,59 +46,62 @@ public class GraphActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.graph);
-    
-    //ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-    
-    //getMenuInflater().inflate(R.menu.graph_actionbar, actionBar.asMenu());
-    //actionBar.findAction(R.id.actionbar_item_home).setIntent(WeightLoggerActivity.createIntent(this));
-    
-    //actionBar.setTitle(R.string.graph_title);
-    
-    //actionBar.setDisplayShowHomeEnabled(true);
-    //actionBar.setDisplayHomeAsUpEnabled(true);
+
+    Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
+    setSupportActionBar(actionBar);
+    actionBar.setTitle(R.string.graph_title);
+    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    actionBar.setNavigationOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onBackPressed();
+      }
+    });
     
     graphLayout = (LinearLayout) findViewById(R.id.graph);
-     
-    //loadGraph(R.id.item_graph_weight);
+
+    loadGraph(R.id.item_graph_weight);
   }
   
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.graph_actionbar, menu);
+    Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
+    actionBar.getMenu().getItem(0).setVisible(false);
     return true;
   } 
   
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-//    if (item.getItemId() != R.id.actionbar_item_home)
-//      loadGraph(item.getItemId());
+    loadGraph(item.getItemId());
     return super.onOptionsItemSelected(item);
   }
   
   private void loadGraph(int item_id) {
-    //ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
+    Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     ImageView logo = (ImageView) findViewById(R.id.graph_pic);
     
     // Hide active menu and show others
-    //for (int i=0; i < actionBar.getActionCount(); i++) actionBar.getActionAt(i).setVisible(true);
-    //actionBar.findAction(item_id).setVisible(false);
-    
-    // Display subtitle
+    for (int i=0; i < actionBar.getMenu().size(); i++) {
+      MenuItem item = actionBar.getMenu().getItem(i);
+      item.setVisible(item.getItemId() != item_id);
+    }
+
     switch (item_id) {
       case R.id.item_graph_weight:
-        //actionBar.setSubtitle(R.string.weight);
+        actionBar.setSubtitle(R.string.weight);
         logo.setImageResource(R.drawable.ic_weight);
         break;
       case R.id.item_graph_body_fat:
-        //actionBar.setSubtitle(R.string.body_fat);
+        actionBar.setSubtitle(R.string.body_fat);
         logo.setImageResource(R.drawable.ic_body_fat);
         break;
       case R.id.item_graph_body_water:
-        //actionBar.setSubtitle(R.string.body_water);
+        actionBar.setSubtitle(R.string.body_water);
         logo.setImageResource(R.drawable.ic_body_water);
         break;
       case R.id.item_graph_muscle_mass:
-        //actionBar.setSubtitle(R.string.muscle_mass);
+        actionBar.setSubtitle(R.string.muscle_mass);
         logo.setImageResource(R.drawable.ic_muscle_mass);
         break;
     }

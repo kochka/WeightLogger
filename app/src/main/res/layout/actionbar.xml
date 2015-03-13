@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/actionbar"
+  app:contentInsetStart="10dp"
+  app:contentInsetEnd="0dp"
+  style="@style/ToolBar"
+  app:theme="@style/Theme.WeightLogger.actionbar"
+  app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
+  app:titleTextAppearance="@style/Theme.WeightLogger.actionbar.TitleTextStyle"
+  app:subtitleTextAppearance="@style/Theme.WeightLogger.actionbar.SubtitleTextStyle"
+  >
+
+    <ProgressBar
+      android:id="@+id/progress_spinner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="right"
+      android:indeterminateDrawable="@drawable/progress"
+      android:indeterminate="true"
+      android:visibility="gone" />
+
+</android.support.v7.widget.Toolbar>

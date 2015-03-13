@@ -24,9 +24,8 @@ import org.kochka.android.weightlogger.tools.Export;
 import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
-//import com.markupartist.android.widget.ActionBar;
-
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -47,9 +46,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class WeightLoggerActivity extends Activity {
+import com.melnykov.fab.FloatingActionButton;
+
+public class WeightLoggerActivity extends ActionBarActivity {
   
   ListView mList;
   
@@ -60,9 +62,9 @@ public class WeightLoggerActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
-    
-//    ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-//    getMenuInflater().inflate(R.menu.home_actionbar, actionBar.asMenu());
+
+    Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
+    setSupportActionBar(actionBar);
     
     mList = (ListView)findViewById(R.id.mListView);
     MeasurementsListAdapter adapter = new MeasurementsListAdapter(this);
@@ -75,8 +77,18 @@ public class WeightLoggerActivity extends Activity {
         startActivityForResult(i, 0);
       }
     });
-    
+
     registerForContextMenu(mList);
+
+    // Fab
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    fab.attachToListView(mList);
+    fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivityForResult(new Intent(WeightLoggerActivity.this, EditMeasurementActivity.class), 0);
+      }
+    });
   }
    
   @Override
@@ -118,12 +130,13 @@ public class WeightLoggerActivity extends Activity {
   
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == Activity.RESULT_OK) {
-      ((MeasurementsListAdapter) mList.getAdapter()).refresh(); 
+    if (resultCode == ActionBarActivity.RESULT_OK) {
+      ((MeasurementsListAdapter) mList.getAdapter()).refresh();
     }
   }
   
   /* Creates the menu items */
+  @Override
   public boolean onCreateOptionsMenu(Menu menu) {
 //    MenuItem mClose = menu.add(0, 1, 1, R.string.quit);
 //    mClose.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
@@ -137,9 +150,6 @@ public class WeightLoggerActivity extends Activity {
   /* Handles menu selections */
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.item_add:
-        startActivityForResult(new Intent(this, EditMeasurementActivity.class), 0);
-        break;
       case R.id.item_graph:
         startActivity((new Intent(this, GraphActivity.class)).putExtra("type", "line"));
         break;
@@ -276,8 +286,8 @@ public class WeightLoggerActivity extends Activity {
           displayToast(e.getMessage());
         } finally {
           WeightLoggerActivity.this.runOnUiThread(new Runnable() { public void run() {
-//            ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-//            actionBar.setProgressBarVisibility(View.GONE);
+            ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+            progressBar.setVisibility(View.GONE);
           }});
         }
       }
@@ -291,8 +301,8 @@ public class WeightLoggerActivity extends Activity {
       }
     }
 
-//    ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-//    actionBar.setProgressBarVisibility(View.VISIBLE);
+    ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
+    progressBar.setVisibility(View.VISIBLE);
     
     Runnable r = new ExportThread(type, garmin_upload);
     new Thread(r).start();

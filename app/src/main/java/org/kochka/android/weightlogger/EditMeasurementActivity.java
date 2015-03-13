@@ -20,9 +20,6 @@ import java.util.GregorianCalendar;
 
 import org.kochka.android.weightlogger.data.Measurement;
 
-//import com.markupartist.android.widget.ActionBar;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -31,7 +28,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -42,7 +42,7 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class EditMeasurementActivity extends Activity {
+public class EditMeasurementActivity extends ActionBarActivity {
   
   Measurement measurement;
   
@@ -59,14 +59,16 @@ public class EditMeasurementActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.edit_measurement);
-    
-//    ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-//    
-//    getMenuInflater().inflate(R.menu.edit_measurement_actionbar, actionBar.asMenu());
-//    actionBar.findAction(R.id.actionbar_item_home).setIntent(WeightLoggerActivity.createIntent(this));
-//    
-//    actionBar.setDisplayShowHomeEnabled(true);
-//    actionBar.setDisplayHomeAsUpEnabled(true);
+
+    Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
+    setSupportActionBar(actionBar);
+    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    actionBar.setNavigationOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onBackPressed();
+      }
+    });
     
     // Set recorded_at date
     ((Button) findViewById(R.id.recorded_at_button)).setOnClickListener(new View.OnClickListener() {
@@ -83,7 +85,7 @@ public class EditMeasurementActivity extends Activity {
       // Load preferences
       SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
       
-//      actionBar.setTitle(R.string.title_new);
+      actionBar.setTitle(R.string.title_new);
       measurement = new Measurement(this, preferences.getString("unit", "kg").equals("lb"), Short.parseShort(preferences.getString("muscle_mass_unit", "1")) == 2);
       
       body_fat_required             = preferences.getBoolean("body_fat", true);
@@ -95,14 +97,14 @@ public class EditMeasurementActivity extends Activity {
       bone_mass_required            = preferences.getBoolean("bone_mass", true);
       metabolic_age_required        = preferences.getBoolean("metabolic_age", true);
       findViewById(R.id.exported_row).setVisibility(View.GONE);
-//      actionBar.findAction(R.id.item_delete).setVisible(false);
+
       if (preferences.getBoolean("preload", true) && Measurement.getCount(this) > 0) {
         preload();
-//        actionBar.setSubtitle(R.string.preload);
+        actionBar.setSubtitle(R.string.preload);
       }
     // Edit  
     } else {
-//      actionBar.setTitle(R.string.title_edit);
+      actionBar.setTitle(R.string.title_edit);
       measurement = Measurement.getById(this, b.getInt("id"));
       
       body_fat_required             = (measurement.getBodyFat() != null);
@@ -118,7 +120,17 @@ public class EditMeasurementActivity extends Activity {
     loadFields();
     hideRows();
   }
-  
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.edit_measurement_actionbar, menu);
+    if (getIntent().getExtras() == null) {
+      Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
+      actionBar.getMenu().findItem(R.id.item_delete).setVisible(false);
+    }
+    return true;
+  }
+
   @Override
   public void onStop() {
     super.onStop();

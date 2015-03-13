@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" style="@style/FillFill">
-<!--   <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" /> -->
-  <ListView android:id="@+id/mListView" style="@style/List"></ListView>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" style="@style/MatchMatch">
+  <include layout="@layout/actionbar" />
+  <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+               xmlns:fab="http://schemas.android.com/apk/res-auto"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+    <ListView android:id="@+id/mListView" style="@style/List" />
+    <com.melnykov.fab.FloatingActionButton style="@style/WrapWrap"
+      android:id="@+id/fab"
+      android:layout_gravity="bottom|right"
+      android:layout_margin="16dp"
+      android:src="@drawable/ic_menu_add"
+      fab:fab_colorNormal="@color/primary"
+      fab:fab_colorPressed="@color/primary_light"
+      fab:fab_colorRipple="@color/primary_dark" />
+  </FrameLayout>
 </LinearLayout>

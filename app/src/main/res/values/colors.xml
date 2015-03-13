@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="actionbar_divider">#006c77</color>
-  <color name="actionbar_background_start">#00abbc</color>
-  <color name="actionbar_background_end">#006c77</color>
-  <color name="actionbar_background_item_pressed_start">#7fd4dd</color>
-  <color name="actionbar_background_item_pressed_end">#7fb5ba</color>
+  <color name="primary">#ff00abbc</color>
+  <color name="primary_dark">#ff008b9c</color>
+  <color name="primary_light">#ff00cfe0</color>
+  <color name="list_selector">#9600abbc</color>
 </resources> 

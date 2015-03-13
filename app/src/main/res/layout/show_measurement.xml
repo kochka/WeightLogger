@@ -4,8 +4,8 @@
   xmlns:app="http://schemas.android.com/apk/res/org.kochka.android.weightlogger"
   android:orientation="vertical" android:layout_width="fill_parent"
   android:layout_height="fill_parent">
-  
-<!--   <com.markupartist.android.widget.ActionBar android:id="@+id/actionbar" style="@style/ActionBar" /> -->
+
+  <include layout="@layout/actionbar" />
   
   <org.taptwo.android.widget.ViewFlow android:id="@+id/viewflow" style="@style/Show" app:sidebuffer="2"/>
 
