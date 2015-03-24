@@ -71,7 +71,7 @@ public class EditMeasurementActivity extends ActionBarActivity {
     });
     
     // Set recorded_at date
-    ((Button) findViewById(R.id.recorded_at_button)).setOnClickListener(new View.OnClickListener() {
+    findViewById(R.id.recorded_at_button).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         GregorianCalendar dt = measurement.getRecordedAt();
@@ -84,8 +84,8 @@ public class EditMeasurementActivity extends ActionBarActivity {
     if (b == null) {
       // Load preferences
       SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-      
-      actionBar.setTitle(R.string.title_new);
+
+      getSupportActionBar().setTitle(R.string.title_new);
       measurement = new Measurement(this, preferences.getString("unit", "kg").equals("lb"), Short.parseShort(preferences.getString("muscle_mass_unit", "1")) == 2);
       
       body_fat_required             = preferences.getBoolean("body_fat", true);
@@ -104,7 +104,7 @@ public class EditMeasurementActivity extends ActionBarActivity {
       }
     // Edit  
     } else {
-      actionBar.setTitle(R.string.title_edit);
+      getSupportActionBar().setTitle(R.string.title_edit);
       measurement = Measurement.getById(this, b.getInt("id"));
       
       body_fat_required             = (measurement.getBodyFat() != null);
@@ -151,14 +151,6 @@ public class EditMeasurementActivity extends ActionBarActivity {
   
   private void saveMeasurement() {
     if (unloadFields()) {
-      /* => Change to finish, so this block become useless
-      if (measurement.isNew()) {
-        ActionBar actionBar = (ActionBar) findViewById(R.id.actionbar);
-        actionBar.setTitle("Edition");
-        actionBar.setSubtitle("");
-        actionBar.findAction(R.id.item_delete).setVisible(true);
-      }
-      */
       measurement.save();
       Toast.makeText(this, R.string.record_saved, Toast.LENGTH_SHORT).show();
       setResult(RESULT_OK, new Intent().putExtra("position", Measurement.getPosition(this, measurement.getId())));

@@ -49,7 +49,6 @@ public class GraphActivity extends ActionBarActivity {
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    actionBar.setTitle(R.string.graph_title);
     actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
@@ -57,7 +56,8 @@ public class GraphActivity extends ActionBarActivity {
         onBackPressed();
       }
     });
-    
+    getSupportActionBar().setTitle(R.string.graph_title);
+
     graphLayout = (LinearLayout) findViewById(R.id.graph);
 
     loadGraph(R.id.item_graph_weight);

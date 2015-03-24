@@ -138,11 +138,6 @@ public class WeightLoggerActivity extends ActionBarActivity {
   /* Creates the menu items */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
-//    MenuItem mClose = menu.add(0, 1, 1, R.string.quit);
-//    mClose.setIcon(android.R.drawable.ic_menu_close_clear_cancel);
-//    MenuItem mPref = menu.add(0, R.id.item_preferences, 2, R.string.pref);
-//    mPref.setIcon(android.R.drawable.ic_menu_preferences);
-//    return(super.onCreateOptionsMenu(menu));
     getMenuInflater().inflate(R.menu.home_actionbar, menu);
     return true;
   }
@@ -279,7 +274,7 @@ public class WeightLoggerActivity extends ActionBarActivity {
           nBuilder.setContentText((garmin_upload) ? upload_message : gen_text);
           nBuilder.setContentIntent(pi);
           
-          notificationManager.notify(1, nBuilder.getNotification());
+          notificationManager.notify(1, nBuilder.build());
         } catch (StorageNotMountedException e) {
           displayToast(getString(R.string.storage_not_mounted));
         } catch (Exception e) {

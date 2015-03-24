@@ -136,4 +136,7 @@
   <string name="pref_test_data_loaded">Test data loaded</string>
   <string name="pref_misc_category">Misc</string>
   <string name="pref_about">About</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

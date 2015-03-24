@@ -29,6 +29,10 @@
     <item name="android:ellipsize">marquee</item>
   </style>
 
+  <style name="Theme.WeightLogger.preferences" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:listSelector">@drawable/list_selector</item>
+  </style>
+
   <!-- Common -->
   <style name="WrapWrap">
     <item name="android:layout_width">wrap_content</item>
@@ -55,13 +59,12 @@
   </style>
 
   <style name="CommonList">
-    <!-- <item name="android:listSelector">@drawable/list_selector</item> -->
+    <item name="android:listSelector">@drawable/list_selector</item>
     <item name="android:cacheColorHint">@android:color/transparent</item>
   </style>  
   
   <!-- List view -->
   <style name="List" parent="MatchMatch">
-    <item name="android:listSelector">@drawable/list_selector</item>
     <item name="android:scrollbars">vertical</item>
     <item name="android:fadingEdge">vertical</item>
     <item name="android:fastScrollEnabled">true</item>
