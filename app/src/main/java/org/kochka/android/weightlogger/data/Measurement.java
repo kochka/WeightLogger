@@ -76,11 +76,10 @@ public class Measurement {
   private boolean muscle_mass_in_percent = false;
   
   private DateFormat dateFormater = DateFormat.getDateInstance(DateFormat.LONG);
-  private DateFormat timeFormater =  DateFormat.getTimeInstance(DateFormat.SHORT);
+  private DateFormat timeFormater = DateFormat.getTimeInstance(DateFormat.SHORT);
   
   public Measurement(Context context) {
     this.context = context;
-    
   }
 
   public Measurement(Context context, boolean convert_to_lb, boolean muscle_mass_in_percent) {

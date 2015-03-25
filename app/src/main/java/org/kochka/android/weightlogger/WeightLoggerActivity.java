@@ -20,6 +20,7 @@ import java.util.LinkedList;
 
 import org.kochka.android.weightlogger.adapter.MeasurementsListAdapter;
 import org.kochka.android.weightlogger.data.Measurement;
+import org.kochka.android.weightlogger.tools.AntPlus;
 import org.kochka.android.weightlogger.tools.Export;
 import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
@@ -57,7 +58,7 @@ public class WeightLoggerActivity extends ActionBarActivity {
   
   final int EXPORT_FIT = 0;
   final int EXPORT_CSV = 1;
-  
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -153,6 +154,9 @@ public class WeightLoggerActivity extends ActionBarActivity {
         break;
       case R.id.item_preferences:
     	  startActivityForResult(new Intent(this, EditPreferences.class), 0);
+        break;
+      case R.id.item_ant:
+        antTest();
         break;
       case 1:
         this.finish();
@@ -301,6 +305,10 @@ public class WeightLoggerActivity extends ActionBarActivity {
     
     Runnable r = new ExportThread(type, garmin_upload);
     new Thread(r).start();
+  }
+
+  private void antTest() {
+    new AntPlus(this);
   }
   
   public static Intent createIntent(Context context) {
