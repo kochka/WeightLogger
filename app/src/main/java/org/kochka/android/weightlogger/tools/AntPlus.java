@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc;
+import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.UserProfile;
 import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.AdvancedMeasurement;
 import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.IAdvancedMeasurementFinishedReceiver;
 import com.dsi.ant.plugins.antplus.pcc.AntPlusWeightScalePcc.WeightScaleRequestStatus;
@@ -21,6 +22,7 @@ import com.dsi.ant.plugins.antplus.pccbase.AntPluginPcc.IDeviceStateChangeReceiv
 import com.dsi.ant.plugins.antplus.pccbase.AntPluginPcc.IPluginAccessResultReceiver;
 import com.dsi.ant.plugins.antplus.pccbase.PccReleaseHandle;
 
+import org.kochka.android.weightlogger.ShowMeasurementActivity;
 import org.kochka.android.weightlogger.data.Measurement;
 
 import java.util.EnumSet;
@@ -95,6 +97,13 @@ public class AntPlus {
     }
 
     private void requestAdvancedMeasurement() {
+      // Test profile
+      UserProfile p = new UserProfile();
+      p.age = 38;
+      p.height = 175;
+      p.activityLevel = 4;
+      p.lifetimeAthlete = false;
+
       boolean submitted = wgtPcc.requestAdvancedMeasurement(new IAdvancedMeasurementFinishedReceiver() {
         @Override
         public void onAdvancedMeasurementFinished(long estTimestamp, EnumSet<EventFlag> eventFlags, final WeightScaleRequestStatus status, final AdvancedMeasurement aMeasurement) {
@@ -123,17 +132,22 @@ public class AntPlus {
                   measurement.setDailyCalorieIntake(aMeasurement.activeMetabolicRate.shortValue());
 
                 measurement.save();
+
+                Intent i = new Intent(context, ShowMeasurementActivity.class);
+                i.putExtra("position", Measurement.getPosition(context, measurement.getId()));
+                ((Activity) context).startActivityForResult(i, 0);
               }
             }
           });
         }
       },
-      null);
+      p);
     }
 
     private boolean checkRequestResult(WeightScaleRequestStatus status) {
       switch(status) {
         case SUCCESS:
+        case FAIL_PROFILE_MISMATCH:
           return true;
         case FAIL_ALREADY_BUSY_EXTERNAL:
           displayToast("Fail: Busy");
