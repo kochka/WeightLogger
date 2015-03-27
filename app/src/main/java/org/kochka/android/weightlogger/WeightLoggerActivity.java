@@ -21,10 +21,12 @@ import java.util.LinkedList;
 import org.kochka.android.weightlogger.adapter.MeasurementsListAdapter;
 import org.kochka.android.weightlogger.data.Measurement;
 import org.kochka.android.weightlogger.tools.AntPlus;
+import org.kochka.android.weightlogger.tools.BleSmartLab;
 import org.kochka.android.weightlogger.tools.Export;
 import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
+import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.app.AlertDialog;
@@ -157,6 +159,9 @@ public class WeightLoggerActivity extends ActionBarActivity {
         break;
       case R.id.item_ant:
         antTest();
+        break;
+      case R.id.item_ble_smartlab:
+        bleTest();
         break;
       case 1:
         this.finish();
@@ -310,7 +315,17 @@ public class WeightLoggerActivity extends ActionBarActivity {
   private void antTest() {
     new AntPlus(this);
   }
-  
+
+  private void bleTest() {
+    if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
+      Toast.makeText(this, "BLE not supported", Toast.LENGTH_SHORT).show();
+      return;
+    }
+
+    BleSmartLab BleSL = new BleSmartLab(this);
+    BleSL.startScan();
+  }
+
   public static Intent createIntent(Context context) {
     Intent i = new Intent(context, WeightLoggerActivity.class);
     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

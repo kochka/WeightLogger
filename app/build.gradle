@@ -30,6 +30,7 @@ dependencies {
     compile project(':viewflow')
     compile files('libs/fit.jar')
     compile files('libs/antpluginlib.jar')
+    compile files('libs/hmmapiwsble.jar')
     compile 'com.jjoe64:graphview:4.0.0'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'org.apache.httpcomponents:httpcore:4.3.2'

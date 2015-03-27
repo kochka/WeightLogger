@@ -80,7 +80,8 @@
   
   <!-- Graph -->
   <string name="graph_title">Wykres</string>
-  
+  <string name="graph_date_format">dd.MM</string>
+
   <!-- Export -->
   <string name="export">Eksport</string>
   <string name="file_generated">Utworzono plik</string>

@@ -81,6 +81,7 @@
   
   <!-- Graph -->
   <string name="graph_title">Graph</string>
+  <string name="graph_date_format">dd/MM</string>
   
   <!-- Export -->
   <string name="export">Export</string>

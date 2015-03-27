@@ -6,4 +6,5 @@
   <item android:id="@+id/item_export" android:icon="@drawable/ic_menu_export" app:showAsAction="ifRoom" android:title="@string/export" />
   <item android:id="@+id/item_preferences" android:icon="@drawable/ic_menu_preference" app:showAsAction="ifRoom" android:title="@string/pref" />
   <item android:id="@+id/item_ant" app:showAsAction="never" android:title="ANT+ (alpha)" />
+  <item android:id="@+id/item_ble_smartlab" app:showAsAction="never" android:title="BLE SmartLAB (alpha)" />
 </menu>

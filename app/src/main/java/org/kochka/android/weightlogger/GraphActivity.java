@@ -16,6 +16,7 @@
 package org.kochka.android.weightlogger;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -134,7 +135,7 @@ public class GraphActivity extends ActionBarActivity {
           break;
       }
     }
-    
+
     // Series
     GraphView graphView = new GraphView(this);
     LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(data.toArray(new DataPoint[data.size()]));
@@ -145,17 +146,17 @@ public class GraphActivity extends ActionBarActivity {
     series.setDataPointsRadius(3);
     series.setThickness(3);
     graphView.addSeries(series);
-    
+
     // Labels
-    graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this, DateFormat.getDateInstance(DateFormat.SHORT)));
-    graphView.getGridLabelRenderer().setNumHorizontalLabels(3);
-    
+    graphView.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(GraphActivity.this, new SimpleDateFormat(getResources().getString(R.string.graph_date_format))));
+    graphView.getGridLabelRenderer().setNumHorizontalLabels(4);
+
     // Viewport
     graphView.getViewport().setScrollable(true);
     graphView.getViewport().setScalable(true);
-    graphView.getViewport().setXAxisBoundsManual(true);
     graphView.getViewport().setMinX(0);
     graphView.getViewport().setMaxX(1000 * 3600 * 24 * 10);
+    graphView.getViewport().setXAxisBoundsManual(true);
     graphView.getViewport().scrollToEnd();
     
     graphLayout.removeAllViews();
