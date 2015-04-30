@@ -1,5 +1,6 @@
 package org.kochka.android.weightlogger.tools;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -22,6 +23,7 @@ import info.hmm.hmmapiws.WeightScaleSettings;
 /**
  * Created by kochka on 27/03/15.
  */
+@TargetApi(18)
 public class BleSmartLab implements BluetoothAdapter.LeScanCallback {
 
   private BluetoothAdapter mBluetoothAdapter;

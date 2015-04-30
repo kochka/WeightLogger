@@ -24,6 +24,7 @@ import org.kochka.android.weightlogger.tools.AntPlus;
 import org.kochka.android.weightlogger.tools.BleSmartLab;
 import org.kochka.android.weightlogger.tools.Export;
 import org.kochka.android.weightlogger.tools.GarminConnect;
+import org.kochka.android.weightlogger.tools.GoogleFit;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
 import android.content.pm.PackageManager;
@@ -171,7 +172,7 @@ public class WeightLoggerActivity extends ActionBarActivity {
   }
   
   private void export(){
-    final CharSequence[] items = {"FIT", "CSV", "Garmin Connect ©"};
+    final CharSequence[] items = {"FIT", "CSV", "Garmin Connect ©", "Google FIT"};
 
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(R.string.export);
@@ -186,6 +187,10 @@ public class WeightLoggerActivity extends ActionBarActivity {
             break;
           case 2:
             export(EXPORT_FIT, true);
+            break;
+          case 3:
+            GoogleFit gf;
+            gf = new GoogleFit(WeightLoggerActivity.this);
             break;
           default:
             break;

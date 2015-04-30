@@ -27,6 +27,7 @@ android {
 
 dependencies {
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.google.android.gms:play-services:7.0.0'
     compile project(':viewflow')
     compile files('libs/fit.jar')
     compile files('libs/antpluginlib.jar')
