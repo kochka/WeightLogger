@@ -134,8 +134,14 @@ public class WeightLoggerActivity extends ActionBarActivity {
   
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == ActionBarActivity.RESULT_OK) {
-      ((MeasurementsListAdapter) mList.getAdapter()).refresh();
+    if (resultCode == RESULT_OK) {
+      switch (requestCode) {
+        case GoogleFit.REQUEST_OAUTH:
+          GoogleFit.getInstance(WeightLoggerActivity.this).sendData();
+          break;
+        default:
+          ((MeasurementsListAdapter) mList.getAdapter()).refresh();
+      }
     }
   }
   
@@ -189,8 +195,7 @@ public class WeightLoggerActivity extends ActionBarActivity {
             export(EXPORT_FIT, true);
             break;
           case 3:
-            GoogleFit gf;
-            gf = new GoogleFit(WeightLoggerActivity.this);
+            GoogleFit.getInstance(WeightLoggerActivity.this).sendData();
             break;
           default:
             break;
