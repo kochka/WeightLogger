@@ -15,146 +15,209 @@
 */
 package org.kochka.android.weightlogger.tools;
 
+import android.support.annotation.NonNull;
+
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpStatus;
+import cz.msebera.android.httpclient.NameValuePair;
+import cz.msebera.android.httpclient.client.RedirectStrategy;
+import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
+import cz.msebera.android.httpclient.client.methods.CloseableHttpResponse;
+import cz.msebera.android.httpclient.client.methods.HttpGet;
+import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.cookie.Cookie;
+import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
+import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
+import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
+import cz.msebera.android.httpclient.impl.conn.PoolingClientConnectionManager;
+import cz.msebera.android.httpclient.impl.conn.SchemeRegistryFactory;
+import cz.msebera.android.httpclient.message.BasicNameValuePair;
+import cz.msebera.android.httpclient.params.BasicHttpParams;
+import cz.msebera.android.httpclient.params.HttpParams;
+import cz.msebera.android.httpclient.util.EntityUtils;
 // Disable custom entity, need to find a fix to avoid heavy external Apache libs
 // import org.kochka.android.weightlogger.tools.SimpleMultipartEntity;
 
 
 public class GarminConnect {
- 
+
+  private static final String GET_TICKET_URL = "https://connect.garmin.com/modern/?ticket=";
+  private static final String LEGACY_INIT_SESSION_URL = "http://connect.garmin.com/legacy/session";
+
+  private static final Pattern LOCATION_PATTERN = Pattern.compile("Location: (.*)");
+  private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
+  public static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/modern/proxy/upload-service/upload/.fit";
+
   private DefaultHttpClient httpclient;
-    
+
   public boolean signin(final String username, final String password) {
-    httpclient = new DefaultHttpClient();
-    final String signin_url = "https://sso.garmin.com/sso/login?service=http://connect.garmin.com/post-auth/login&clientId=GarminConnect&consumeServiceTicket=false";
-    final String auth_url = "https://connect.garmin.com/post-auth/login";
-    
+    PoolingClientConnectionManager conman = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
+    conman.setMaxTotal(20);
+    conman.setDefaultMaxPerRoute(20);
+    httpclient = new DefaultHttpClient(conman);
+
+    final String signin_url = "https://sso.garmin.com/sso/login?service=" +
+            "https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
+            "&webhost=olaxpw-conctmodern010.garmin.com" +
+            "&source=https%3A%2F%2Fconnect.garmin.com%2Fen-EN%2Fsignin" +
+            "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
+            "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
+            "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso" +
+            "&locale=en" +
+            "&id=gauth-widget" +
+            "&cssUrl=https%3A%2F%2Fstatic.garmincdn.com%2Fcom.garmin.connect%2Fui%2Fcss%2Fgauth-custom-v1.2-min.css" +
+            "&privacyStatementUrl=%2F%2Fconnect.garmin.com%2Fen-EN%2Fprivacy%2F" +
+            "&clientId=GarminConnect" +
+            "&rememberMeShown=true" +
+            "&rememberMeChecked=false" +
+            "&createAccountShown=true" +
+            "&openCreateAccount=false" +
+            "&usernameShown=false" +
+            "&displayNameShown=false" +
+            "&consumeServiceTicket=false" +
+            "&initialFocus=true" +
+            "&embedWidget=false" +
+            "&generateExtraServiceTicket=false" +
+            "&globalOptInShown=false" +
+            "&globalOptInChecked=false" +
+            "&mobile=false" +
+            "&connectLegalTerms=true";
+
     try {
-      HttpEntity entity;
-      Header[] h;
-      Pattern r;
-      Matcher m;
-      
       HttpParams params = new BasicHttpParams();
       params.setParameter("http.protocol.handle-redirects", false);
-      
+
       // Create session
-      entity = httpclient.execute(new HttpGet(signin_url)).getEntity();
-      r = Pattern.compile("name=\"lt\"\\s+value=\"([^\"]+)\"");
-      m = r.matcher(EntityUtils.toString(entity));
-      m.find();
-      String lt_param = m.group(1);
+      httpclient.execute(new HttpGet(signin_url)).getEntity();
 
       // Sign in
       HttpPost post = new HttpPost(signin_url);
       post.setParams(params);
-      List<NameValuePair> nvp = new ArrayList<NameValuePair>();
-      nvp.add(new BasicNameValuePair("_eventId", "submit"));
-      nvp.add(new BasicNameValuePair("displayNameRequired", "false"));
-      nvp.add(new BasicNameValuePair("embed", "true"));
-      nvp.add(new BasicNameValuePair("lt", lt_param));
+      List<NameValuePair> nvp = new ArrayList<>();
+      nvp.add(new BasicNameValuePair("embed", "false"));
       nvp.add(new BasicNameValuePair("username", username));
       nvp.add(new BasicNameValuePair("password", password));
       post.setEntity(new UrlEncodedFormEntity(nvp));
-      entity = httpclient.execute(post).getEntity();
-      r = Pattern.compile("ticket=([^']+)'");
-      m = r.matcher(EntityUtils.toString(entity));
-      m.find();
-      String ticket = m.group(1);
-      
+      HttpEntity entity1 = httpclient.execute(post).getEntity();
+      String responseAsString = EntityUtils.toString(entity1);
+      String ticket = getTicketIdFromResponse(responseAsString);
+
       // Ticket
-      HttpGet get = new HttpGet(auth_url + "?ticket=" + ticket);
+      HttpGet get = new HttpGet(GET_TICKET_URL + ticket);
       get.setParams(params);
-      h = httpclient.execute(get).getHeaders("location");
-      
+      Header getTicketLocation = httpclient.execute(get).getFirstHeader("location");
+
       // Follow redirections
-      String redirect;
-      r = Pattern.compile("Location: (.*)");
-      
+      get = createHttpGetFromLocationHeader(getTicketLocation);
+      get.setParams(params);
+      httpclient.execute(get);
+
+      // Initialise session. Redirect manually, as there are two URLs
+      // marked by HttpClient as duplicates (but in fact these differ by queryparams).
+      RedirectStrategy oldRedirectStrategy = httpclient.getRedirectStrategy();
+      httpclient.setRedirectStrategy(new NoRedirectStrategy());
+      CloseableHttpResponse initSessionResponse = httpclient.execute(new HttpGet(LEGACY_INIT_SESSION_URL));
+      Header initSessionLocation = initSessionResponse.getFirstHeader("location");
       for(int i=0; i<5; i++){
-	    m = r.matcher(h[0].toString());
-	    m.find();
-	    redirect = m.group(1);
-	    get = new HttpGet(redirect);
-	    get.setParams(params);
-	    h = httpclient.execute(get).getHeaders("location");
+        get = createHttpGetFromLocationHeader(initSessionLocation);
+        get.setParams(params);
+        initSessionLocation = httpclient.execute(get).getFirstHeader("location");
       }
-      
+      httpclient.setRedirectStrategy(oldRedirectStrategy);
+
       return isSignedIn();
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
       return false;
     }
   }
-  
+
+  @NonNull
+  private HttpGet createHttpGetFromLocationHeader(Header h1) {
+    Matcher matcher = LOCATION_PATTERN.matcher(h1.toString());
+    matcher.find();
+    String redirect = matcher.group(1);
+
+    return new HttpGet(redirect);
+  }
+
+  private String getTicketIdFromResponse(String responseAsString) {
+    Pattern pattern = Pattern.compile(TICKET_FINDER_PATTERN);
+    Matcher matcher = pattern.matcher(responseAsString);
+    matcher.find();
+    return matcher.group(1);
+  }
+
   public boolean isSignedIn() {
     if (httpclient == null) return false;
     try {
-      HttpEntity entity = httpclient.execute(new HttpGet("http://connect.garmin.com/user/username")).getEntity();
-      JSONObject js_user = new JSONObject(EntityUtils.toString(entity));
+      CloseableHttpResponse execute = httpclient.execute(new HttpGet("http://connect.garmin.com/user/username"));
+      HttpEntity entity = execute.getEntity();
+      String json = EntityUtils.toString(entity);
+      JSONObject js_user = new JSONObject(json);
       entity.consumeContent();
       return !js_user.getString("username").equals("");
     } catch (Exception e) {
       return false;
     }
   }
-  
+
   public boolean uploadFitFile(File fitFile) {
     if (httpclient == null) return false;
     try {
-      HttpPost post = new HttpPost("https://connect.garmin.com/proxy/upload-service-1.1/json/upload/.fit");
-      
-      /*
-      SimpleMultipartEntity mpEntity = new SimpleMultipartEntity();
-      mpEntity.addPart("data", fitFile);
-      mpEntity.addPart("responseContentType", "text/html");
-      post.setEntity(mpEntity);
-      */
-      
+      HttpPost post = new HttpPost(FIT_FILE_UPLOAD_URL);
+
+      post.setHeader("origin", "https://connect.garmin.com");
+      post.setHeader("nk", "NT");
+      post.setHeader("accept", "*/*");
+      post.setHeader("referer", "https://connect.garmin.com/modern/import-data");
+      post.setHeader("authority", "connect.garmin.com");
+      post.setHeader("language", "EN");
+
       MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
       multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
-      multipartEntity.addBinaryBody("data", fitFile);
-      multipartEntity.addTextBody("responseContentType", "text/html");
+      multipartEntity.addBinaryBody("file", fitFile);
       post.setEntity(multipartEntity.build());
-      
-      HttpEntity entity = httpclient.execute(post).getEntity();
-      JSONObject js_upload = new JSONObject(EntityUtils.toString(entity));
+
+      CloseableHttpResponse httpResponse = httpclient.execute(post);
+      if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED){
+        Header locationHeader = httpResponse.getFirstHeader("Location");
+        String uploadStatusUrl = locationHeader.getValue();
+        CloseableHttpResponse getStatusResponse = httpclient.execute(new HttpGet(uploadStatusUrl));
+        String responseString = EntityUtils.toString(getStatusResponse.getEntity());
+        JSONObject js_upload = new JSONObject(responseString);
+      }
+
+      HttpEntity entity = httpResponse.getEntity();
+      String responseString = EntityUtils.toString(entity);
+      JSONObject js_upload = new JSONObject(responseString);
       entity.consumeContent();
-      if (js_upload.getJSONObject("detailedImportResult").getJSONArray("failures").length() != 0) throw new Exception("upload error");    
-      
+      if (js_upload.getJSONObject("detailedImportResult").getJSONArray("failures").length() != 0) throw new Exception("upload error");
+
       return true;
     } catch (Exception e) {
       return false;
     }
   }
-  
+
   public boolean uploadFitFile(String fitFilePath) {
     return uploadFitFile(new File(fitFilePath));
   }
-  
+
   public void close() {
     if (httpclient != null) {
       httpclient.getConnectionManager().shutdown();
       httpclient = null;
     }
   }
+
 }
