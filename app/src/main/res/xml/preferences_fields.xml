@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:title="@string/pref_fields">
+  <PreferenceCategory android:title="@string/pref_fields">
+    <CheckBoxPreference android:key="body_fat" android:title="@string/body_fat" android:defaultValue="true" />
+    <CheckBoxPreference android:key="body_water" android:title="@string/body_water" android:defaultValue="true" />
+    <CheckBoxPreference android:key="muscle_mass" android:title="@string/muscle_mass" android:defaultValue="true" />
+    <CheckBoxPreference android:key="daily_calorie_intake" android:title="@string/daily_calorie_intake" android:defaultValue="true" />
+    <CheckBoxPreference android:key="physique_rating" android:title="@string/physique_rating" android:defaultValue="true" />
+    <CheckBoxPreference android:key="visceral_fat_rating" android:title="@string/visceral_fat_rating" android:defaultValue="true" />
+    <CheckBoxPreference android:key="bone_mass" android:title="@string/bone_mass" android:defaultValue="true" />
+    <CheckBoxPreference android:key="metabolic_age" android:title="@string/metabolic_age" android:defaultValue="true" />
+  </PreferenceCategory>
+</PreferenceScreen>

@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2012 Bartłomiej Czerwiński
+  
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <string name="translator">Bartłomiej Czerwiński</string>
+  
+  <!-- Common -->
+  <string name="edit">Edytuj</string>
+  <string name="delete">Usuń</string>
+  <string name="title_new">Nowy pomiar</string>
+  <string name="title_edit">Edycja</string>
+  <string name="change">Zmień</string>
+  <string name="title_delete">Usuń</string>
+  <string name="confirm_delete">Usunąć pomiar?</string>
+  <string name="record_saved">Zapisano</string>
+  <string name="record_deleted">Usunięto pomiar</string>
+  <string name="missing_fields">Brakujące pola!</string>
+  <string name="preload">Załadowano dane z ostatniego pomiaru.</string>
+  <string name="gender_male">Mężczyzna</string>
+  <string name="gender_female">Kobieta</string>
+  <string name="quit">Wyjście</string>
+  <string name="ok">Ok</string>
+  <string name="coming_soon">Wkrótce!</string>
+  
+  <!-- Fields -->
+  <string name="weight">Waga</string>
+  <string name="body_fat">Tkanka tłuszczowa</string>
+  <string name="body_water">Woda w organizmie</string>
+  <string name="muscle_mass">Tkanka mięśniowa</string>
+  <string name="daily_calorie_intake">Dzienne spożycie kalorii</string>
+  <string name="physique_rating">Budowa ciała</string>
+  <string name="visceral_fat_rating">Trzewna tkanka tłuszczowa</string>
+  <string name="bone_mass">Waga kości</string>
+  <string name="metabolic_age">Wiek metaboliczny</string>
+  <string name="metabolic_age_years_old">lat</string>
+  
+  <string name="physique_rating_1">Ukryta otyłość</string>
+  <string name="physique_rating_2">Otyłość</string>
+  <string name="physique_rating_3">Dobrze zbudowany</string>
+  <string name="physique_rating_4">Niewysportowany</string>
+  <string name="physique_rating_5">Przeciętny</string>
+  <string name="physique_rating_6">Przeciętny i umięśniony</string>
+  <string name="physique_rating_7">Szczupły</string>
+  <string name="physique_rating_8">Szczupły i umięśniony</string> 
+  <string name="physique_rating_9">Muskularny</string>
+  
+  <!-- Export -->    
+  <string name="storage_not_mounted">Katalog docelowy jest niedostępny!</string>
+  <string name="network_error">Błąd połączenia!</string>
+  <string name="gc_configure_account">Proszę skonfigurować w ustawieniach swoje konto Garmin Connect!</string>
+  <string name="gc_account_error">Błąd nazwy użytkownika lub hasła Garmin Connect!</string>
+  
+  <!-- Show -->
+  <string name="normal">Prawidłowy</string>
+  <string name="abnormal">Nieprawodłowy</string>
+  <string name="bf_underfat">Zbyt niski</string>
+  <string name="bf_healthy">Prawidłowy</string>
+  <string name="bf_overfat">Zbyt wysoki</string>
+  <string name="bf_obese">Otyły</string>
+  <string name="vfr_healthy">Prawidłowy</string>
+  <string name="vfr_excess">Zbyt wysoki</string>
+
+  <!-- Edit -->
+  <string name="exported">Wyeksportowano</string>
+  
+  <!-- Graph -->
+  <string name="graph_title">Wykres</string>
+  <string name="graph_date_format">dd.MM</string>
+
+  <!-- Export -->
+  <string name="export">Eksport</string>
+  <string name="file_generated">Utworzono plik</string>
+  <string name="no_export">Brak pomiarów do wyeksportowania</string>
+  <plurals name="exported_records_count"> 
+    <item quantity="one">1 pomiar</item> 
+    <item quantity="other">%d pomiarów</item> 
+  </plurals>
+  <string name="export_share_subject">WeightLogger eksport</string>
+  <string name="export_upload_ok">Wysyłanie powiodło się</string>
+  <string name="export_upload_failed">Błąd wysyłania</string>
+  
+  <!-- Preferences -->
+  <string name="pref">Ustawienia</string>
+  <string name="pref_general_category">Ogólne</string>
+  <string name="pref_gender">Płeć</string>
+  <string name="pref_age">Wiek</string>
+  <string name="pref_age_summary">Podaj swój wiek.</string>
+  <string name="pref_unit">Jednostka wagi</string>
+  <string name="pref_muscle_mass_unit">Masa tkanki mięśniowej podawana</string>
+  <string name="pref_muscle_mass_unit_mass">Wagowo (kg / lb)</string>
+  <string name="pref_muscle_mass_unit_percent">Procentowo</string>
+  <string name="pref_preload">Autowypełnianie</string>
+  <string name="pref_preload_summary">W celu szybszej obsługi nowy pomiar zostanie wypełniony danymi z poprzedniego pomiaru.</string>
+  <string name="pref_fields">Pola pomiaru</string>
+  <string name="pref_fields_summary">Wybierz pola widoczne dla nowego pomiaru.</string>
+  <string name="pref_export_dir">Eksportuj do</string>       
+  <string name="pref_garmin_category">Garmin Connect</string>
+  <string name="pref_garmin_login">Użytkownik</string>
+  <string name="pref_garmin_login_summary">Twoja nazwa użytkownika w Garmin Connect.</string> 
+  <string name="pref_garmin_password">Hasło</string>
+  <string name="pref_garmin_password_summary">Twoje hasło w Garmin Connect.</string> 
+  <string name="pref_database_category">Baza danych</string>
+  <string name="pref_backup_database">Kopia bezpieczeństwa</string>
+  <string name="pref_backup_database_summary">Stwórz kopię bezpieczeństwa w katalogu eksportowym.</string>
+  <string name="pref_backup_database_ok">Wykonywanie kopii bezpieczeństwa powiodło się (Plik : %1$s)</string>
+  <string name="pref_backup_database_failed">Błąd wykonywania kopii bezpieczeństwa</string>
+  <string name="pref_restore_database">Odtwórz bazę danych</string>
+  <string name="pref_restore_database_summary">Odtwarza pomiary z kopii bezpieczeństwa.</string>
+  <string name="pref_restore_database_nofiles">Brak kopii bezpieczeństwa!</string>
+  <string name="pref_restore_database_confirm">Czy na pewno chcesz odtworzyć pomiary z tego pliku: %1$s ? Bieżące pomiary zostaną zastąpione!</string>
+  <string name="pref_restore_database_ok">Odtwarzanie bazy danych powiodło się</string>
+  <string name="pref_restore_database_failed">Błąd odtwarzania bazy danych</string>
+  <string name="pref_purge_database">Wyczyść bazę danych</string>
+  <string name="pref_purge_database_summary">Uwaga! Usuwa wszystkie zapisane pomiary.</string>
+  <string name="pref_purge_database_confirm">Czy na pewno chcesz usunąć wszystkie pomiary???</string>
+  <string name="pref_database_purged">Wyczyszczono bazę danych</string>
+  <string name="pref_load_test_data">Załaduj przykładowe dane</string>
+  <string name="pref_load_test_data_summary">Wczytuje przykładowe pomiary w celach testowych.</string>
+  <string name="pref_test_data_loaded">Załadowano przykładowe dane</string>
+  <string name="pref_misc_category">Inne</string>
+  <string name="pref_about">O programie</string>
+</resources>

@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '25.0.0'
+    defaultConfig {
+        applicationId "org.kochka.android.weightlogger"
+        minSdkVersion 11
+        targetSdkVersion 22
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.google.android.gms:play-services-fitness:7.3.0'
+    compile "cz.msebera.android:httpclient:4.4.1.2"
+    compile project(':viewflow')
+    compile files('libs/fit.jar')
+    compile files('libs/antpluginlib.jar')
+    compile files('libs/hmmapiwsble.jar')
+    compile 'com.jjoe64:graphview:4.0.1'
+    compile 'com.melnykov:floatingactionbutton:1.3.0'
+    compile 'org.apache.httpcomponents:httpcore:4.3.2'
+    compile 'org.apache.httpcomponents:httpmime:4.3.3'
+}

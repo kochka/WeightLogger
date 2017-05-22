@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- Themes -->
+  <style name="Theme.WeightLogger" parent="Theme.AppCompat.Light.NoActionBar" >
+    <!--<item name="android:windowBackground">@drawable/gradient_background</item>-->
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primary_dark</item>
+    <item name="colorAccent">@color/primary</item>
+    <item name="android:listViewStyle">@style/CommonList</item>
+  </style>
+
+  <style name="Theme.WeightLogger.actionbar" parent="Theme.AppCompat.Light.NoActionBar" >
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primary_dark</item>
+    <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
+    <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item>
+    <item name="android:cacheColorHint">@android:color/transparent</item>
+  </style>
+
+  <style name="Theme.WeightLogger.actionbar.TitleTextStyle">
+    <item name="android:textColor">@color/abc_primary_text_material_dark</item>
+    <item name="android:textSize">20sp</item>
+  </style>
+
+  <style name="Theme.WeightLogger.actionbar.SubtitleTextStyle">
+    <item name="android:textColor">@color/abc_primary_text_material_dark</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:ellipsize">marquee</item>
+  </style>
+
+  <style name="Theme.WeightLogger.preferences" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:listSelector">@drawable/list_selector</item>
+  </style>
+
+  <!-- Common -->
+  <style name="WrapWrap">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>  
+
+  <style name="MatchWrap">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+  </style>  
+
+  <style name="WrapMatch">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>  
+
+  <style name="MatchMatch">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+
+  <style name="ToolBar" parent="MatchWrap">
+    <item name="android:background">@color/primary</item>
+  </style>
+
+  <style name="CommonList">
+    <item name="android:listSelector">@drawable/list_selector</item>
+    <item name="android:cacheColorHint">@android:color/transparent</item>
+  </style>  
+  
+  <!-- List view -->
+  <style name="List" parent="MatchMatch">
+    <item name="android:scrollbars">vertical</item>
+    <item name="android:fadingEdge">vertical</item>
+    <item name="android:fastScrollEnabled">true</item>
+  </style>
+  <style name="ListMeasurement" parent="MatchWrap">
+    <item name="android:orientation">vertical</item>
+    <item name="android:paddingTop">5dip</item>
+    <item name="android:paddingBottom">5dip</item>
+    <item name="android:paddingLeft">10dip</item>
+    <item name="android:paddingRight">10dip</item>
+  </style>
+  <style name="ListMeasurementDay" parent="MatchWrap">
+    <item name="android:textStyle">italic</item>
+    <item name="android:textSize">15dip</item>
+    <item name="android:textColor">@color/primary</item>
+  </style>
+  <style name="ListMeasurementDate" parent="WrapWrap">
+		<item name="android:textStyle">bold</item> 
+		<item name="android:textSize">18dip</item>
+		<!--<item name="android:textColor">#FFFFFF</item>-->
+  </style>
+  <style name="ListMeasurementWeight" parent="MatchWrap">
+    <item name="android:gravity">right</item> 
+    <item name="android:textStyle">bold</item> 
+    <item name="android:textSize">18dip</item> 
+    <!--<item name="android:textColor">#FFFFFF</item> -->
+  </style>
+  
+  <!-- Show view -->
+  <style name="Show" parent="MatchMatch">
+  </style>
+  <style name="ShowTableRow" parent="WrapMatch">
+    <item name="android:layout_weight">1</item>
+  </style>
+  <style name="ShowTableCell" parent="WrapMatch">
+    <item name="android:layout_weight">1</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:layout_marginLeft">8dip</item>
+    <item name="android:layout_marginRight">8dip</item>
+  </style>
+  <style name="ShowDateCommon" parent="MatchWrap">
+    <item name="android:textColor">@color/primary</item>
+    <item name="android:gravity">center</item>
+  </style>
+  <style name="ShowDay" parent="ShowDateCommon">
+    <item name="android:textSize">20dip</item>
+  </style>
+  <style name="ShowDayLand" parent="ShowDay">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_marginRight">8dip</item>
+    <item name="android:textSize">25dip</item>
+    <item name="android:textStyle">bold</item>
+  </style>   
+  <style name="ShowDate" parent="ShowDateCommon">
+    <item name="android:textSize">25dip</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+  <style name="ShowDateLand" parent="ShowDate">
+    <item name="android:layout_width">wrap_content</item>
+  </style>
+  <style name="ShowTime" parent="ShowDateCommon">
+    <item name="android:textSize">16dip</item>
+  </style>
+  <style name="ShowTimeLand" parent="ShowTime">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_marginLeft">15dip</item>
+  </style> 
+  <style name="ShowIcon" parent="WrapMatch">
+    <item name="android:scaleType">center</item>
+  </style>
+  <style name="ShowText" parent="WrapWrap">
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:paddingLeft">10dip</item>
+    <item name="android:textSize">20dip</item>
+    <item name="android:textStyle">bold</item>
+    <!--<item name="android:textColor">#FFFFFF</item>-->
+  </style>
+  <style name="ShowTextInfo" parent="WrapWrap">
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:paddingLeft">10dip</item>
+    <item name="android:textColor">@color/primary</item>
+  </style>
+  
+  <!-- Edit view -->
+  <style name="Edit" parent="MatchWrap">
+  </style>
+	<style name="EditTableRow">
+    <item name="android:padding">8dip</item>
+	</style>
+  <style name="EditTableRowIcon">
+    <item name="android:layout_width">55dip</item>
+  </style>
+  <style name="EditTableRowText">
+    <item name="android:paddingLeft">5dip</item>
+    <!--<item name="android:textColor">#FFFFFF</item>-->
+    <item name="android:layout_weight">1</item>
+  </style>
+  <style name="EditTableRowDate" parent="MatchWrap">
+    <item name="android:gravity">center</item>
+    <item name="android:textSize">20dip</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/primary</item>
+  </style>
+  <style name="EditTableRowTime" parent="MatchWrap">
+    <item name="android:gravity">center</item>
+    <item name="android:textColor">@color/primary</item>
+  </style>   
+  <style name="EditTableRowEditText">
+    <item name="android:layout_width">80dip</item>
+  </style>
+  
+</resources>

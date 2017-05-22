@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent" android:layout_height="fill_parent" android:orientation="vertical">
+  
+  <LinearLayout style="@style/MatchWrap" android:orientation="horizontal" android:gravity="center">
+    <TextView android:id="@+id/recorded_at_day" style="@style/ShowDayLand" android:text="day" />
+    <TextView android:id="@+id/recorded_at" style="@style/ShowDateLand" android:text="date" />
+    <TextView android:id="@+id/recorded_at_time" style="@style/ShowTimeLand" android:text="time" />
+  </LinearLayout>
+      
+  <TableLayout style="@style/MatchMatch" android:layout_marginTop="20dip" android:stretchColumns="*">
+     	
+		<TableRow style="@style/ShowTableRow">
+      <LinearLayout android:id="@+id/weight_layout" style="@style/ShowTableCell">  
+        <ImageView android:src="@drawable/ic_weight" style="@style/ShowIcon" />
+        <TextView android:id="@+id/weight" android:text="@string/weight" style="@style/ShowText" />
+      </LinearLayout>
+		  <LinearLayout android:id="@+id/body_fat_layout" style="@style/ShowTableCell">  
+		    <ImageView android:src="@drawable/ic_body_fat" style="@style/ShowIcon" />
+		    <LinearLayout style="@style/WrapWrap" android:orientation="vertical">  
+		      <TextView android:id="@+id/body_fat" android:text="@string/body_fat" style="@style/ShowText" />
+		      <TextView android:id="@+id/body_fat_info" android:text="normal" style="@style/ShowTextInfo" />
+		    </LinearLayout>
+		  </LinearLayout>
+		  <LinearLayout android:id="@+id/body_water_layout" style="@style/ShowTableCell">  
+		    <ImageView android:src="@drawable/ic_body_water" style="@style/ShowIcon" />
+		    <LinearLayout style="@style/WrapWrap" android:orientation="vertical"> 
+		      <TextView android:id="@+id/body_water" android:text="@string/body_water" style="@style/ShowText" />
+          <TextView android:id="@+id/body_water_info" android:text="normal" style="@style/ShowTextInfo" />
+        </LinearLayout>
+		  </LinearLayout>
+		</TableRow>
+		
+		<TableRow style="@style/ShowTableRow">
+      <LinearLayout android:id="@+id/muscle_mass_layout" style="@style/ShowTableCell">  
+        <ImageView android:src="@drawable/ic_muscle_mass" style="@style/ShowIcon" />
+        <TextView android:id="@+id/muscle_mass" android:text="@string/muscle_mass" style="@style/ShowText" />
+      </LinearLayout>
+		  <LinearLayout android:id="@+id/physique_rating_layout" style="@style/ShowTableCell">  
+		    <ImageView android:src="@drawable/ic_physique_rating" style="@style/ShowIcon" />
+		    <LinearLayout style="@style/WrapWrap" android:orientation="vertical"> 
+		      <TextView android:id="@+id/physique_rating" android:text="@string/physique_rating" style="@style/ShowText" />
+		      <TextView android:id="@+id/physique_rating_info" android:text="normal" style="@style/ShowTextInfo" />
+        </LinearLayout>
+		  </LinearLayout>
+      <LinearLayout android:id="@+id/daily_calorie_intake_layout" style="@style/ShowTableCell">  
+        <ImageView android:src="@drawable/ic_daily_calorie_intake" style="@style/ShowIcon" />
+        <TextView android:id="@+id/daily_calorie_intake" android:text="@string/daily_calorie_intake" style="@style/ShowText" />
+      </LinearLayout>
+		</TableRow>
+		
+		<TableRow style="@style/ShowTableRow">
+      <LinearLayout android:id="@+id/visceral_fat_rating_layout" style="@style/ShowTableCell">  
+        <ImageView android:src="@drawable/ic_visceral_fat_rating" style="@style/ShowIcon" />
+        <LinearLayout style="@style/WrapWrap" android:orientation="vertical"> 
+          <TextView android:id="@+id/visceral_fat_rating" android:text="@string/visceral_fat_rating" style="@style/ShowText" />
+          <TextView android:id="@+id/visceral_fat_rating_info" android:text="normal" style="@style/ShowTextInfo" />
+        </LinearLayout>
+      </LinearLayout>
+		  <LinearLayout android:id="@+id/bone_mass_layout" style="@style/ShowTableCell">  
+		    <ImageView android:src="@drawable/ic_bone_mass" style="@style/ShowIcon" />
+		    <TextView android:id="@+id/bone_mass" android:text="@string/bone_mass" style="@style/ShowText" />
+		  </LinearLayout>
+		  <LinearLayout android:id="@+id/metabolic_age_layout" style="@style/ShowTableCell">  
+		    <ImageView android:src="@drawable/ic_metabolic_age" style="@style/ShowIcon" />
+		    <TextView android:id="@+id/metabolic_age" android:text="@string/metabolic_age" style="@style/ShowText" />
+		  </LinearLayout>
+		</TableRow>
+
+  </TableLayout>
+</LinearLayout>
