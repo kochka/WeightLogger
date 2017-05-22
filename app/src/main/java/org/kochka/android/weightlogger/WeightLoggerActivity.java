@@ -164,12 +164,14 @@ public class WeightLoggerActivity extends ActionBarActivity {
       case R.id.item_preferences:
     	  startActivityForResult(new Intent(this, EditPreferences.class), 0);
         break;
+      /*
       case R.id.item_ant:
         antTest();
         break;
       case R.id.item_ble_smartlab:
         bleTest();
         break;
+      */
       case 1:
         this.finish();
         return true;
