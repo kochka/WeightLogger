@@ -11,7 +11,7 @@ Main features :
 * FIT and CSV export.
 * Support of Kg or Lb mass unit.
 * Support of mass or percent muscle mass unit.
-* Languages supported : English (default), Catalan, Chinese, Dutch, French, German, Hebrew, Italian, Polish, Russian, Spanish, Swedish, Ukrainian.
+* Languages supported : English (default), Catalan, Chinese, Czech, Dutch, French, German, Hebrew, Italian, Polish, Russian, Spanish, Swedish, Ukrainian.
 
 Beta features :
 * Ant+ scale connection
