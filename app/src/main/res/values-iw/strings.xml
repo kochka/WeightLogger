@@ -85,9 +85,10 @@
   <string name="export">ייצוא</string>
   <string name="file_generated">קובץ נוצר</string>
   <string name="no_export">אין מידע לייצא</string>
-  <plurals name="exported_records_count"> 
-    <item quantity="one">1 רשומה</item> 
-    <item quantity="other">%d רשומה</item> 
+  <plurals name="exported_records_count">
+    <item quantity="one">%d רשומה</item>
+    <item quantity="two">%d רשומה</item>
+    <item quantity="many">%d רשומה</item>
   </plurals>
   <string name="export_share_subject">WeightLogger ייצוא</string>
   <string name="export_upload_ok">נטען בהצלחה</string>

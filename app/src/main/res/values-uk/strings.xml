@@ -87,8 +87,9 @@
   <string name="file_generated">Файл згенеровано</string>
   <string name="no_export">Об\'єкт експортації відсутній</string>
   <plurals name="exported_records_count"> 
-    <item quantity="one">1 запис</item> 
-    <item quantity="other">%d записи(ів)</item> 
+    <item quantity="one">%d запис</item>
+    <item quantity="few">%d записи</item>
+    <item quantity="many">%d записів</item>
   </plurals>
   <string name="export_share_subject">Експорт WeightLogger</string>
   <string name="export_upload_ok">Успішно завантажено</string>

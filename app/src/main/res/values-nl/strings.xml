@@ -87,7 +87,7 @@
   <string name="file_generated">Bestand aangemaakt</string>
   <string name="no_export">Er is niets te exporteren</string>
   <plurals name="exported_records_count">
-    <item quantity="one">1 record</item>
+    <item quantity="one">%d record</item>
     <item quantity="other">%d records</item>
   </plurals>
   <string name="export_share_subject">WeightLogger export</string>

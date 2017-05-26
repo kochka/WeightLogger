@@ -86,7 +86,7 @@
   <string name="file_generated">Archivo generado</string>
   <string name="no_export">Nada para exportar</string>
   <plurals name="exported_records_count"> 
-    <item quantity="one">1 registro</item> 
+    <item quantity="one">%d registro</item>
     <item quantity="other">%d registros</item> 
   </plurals>
   <string name="export_share_subject">Exportar WeightLogger</string>
