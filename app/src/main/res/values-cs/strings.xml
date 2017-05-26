@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2012 Sébastien Vrillaud
+  Copyright 2017 Radek Zeman
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  
+      http://www.apache.org/licenses/LICENSE-2.0
+  
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+  <string name="translator">Radek Zeman</string>
+  
+  <!-- Common -->
+  <string name="edit">Upravit</string>
+  <string name="delete">Vymazat</string>
+  <string name="title_new">Nový</string>
+  <string name="title_edit">Upravit</string>
+  <string name="change">Změnit</string>
+  <string name="title_delete">Vymazat</string>
+  <string name="confirm_delete">Vymazat tento záznam ?</string>
+  <string name="record_saved">Uloženo</string>
+  <string name="record_deleted">Záznam vymazán</string>
+  <string name="missing_fields">Chybějící pole !</string>
+  <string name="preload">Data posledního záznamu byla předvyplněna.</string>
+  <string name="gender_male">Muž</string>
+  <string name="gender_female">Žena</string>
+  <string name="quit">Konec</string>
+  <string name="ok">Ok</string>
+  <string name="coming_soon">Brzy !</string>
+      
+  <!-- Fields -->
+  <string name="weight">Váha</string>
+  <string name="body_fat">Tělesný tuk</string>
+  <string name="body_water">Tělesná voda</string>
+  <string name="muscle_mass">Svalová hmota</string>
+  <string name="daily_calorie_intake">Denní příjem kalorií</string>
+  <string name="physique_rating">Fyzická kondice</string>
+  <string name="visceral_fat_rating">Hodnocení viscerálního tuku</string>
+  <string name="bone_mass">Kostní hmota</string>
+  <string name="metabolic_age">Metabolický věk</string>
+  <string name="metabolic_age_years_old">let</string>
+  
+  <string name="physique_rating_1">Skrytá obezita</string>
+  <string name="physique_rating_2">Obezita</string>
+  <string name="physique_rating_3">Dobře stavěný</string>
+  <string name="physique_rating_4">Nevysportovaný</string>
+  <string name="physique_rating_5">Standardní</string>
+  <string name="physique_rating_6">Standardní svalnatý</string>
+  <string name="physique_rating_7">Hubený</string>
+  <string name="physique_rating_8">Hubený svalnatý</string> 
+  <string name="physique_rating_9">Velmi svalnatý</string>
+  
+  <!-- Export -->    
+  <string name="storage_not_mounted">Uložiště není připojeno !</string>
+  <string name="network_error">Síťová chyba !</string>
+  <string name="gc_configure_account">Prosím nastavte Váš Garmin Connect účet v preferencích !</string>
+  <string name="gc_account_error">Chybné jméno nebo heslo pro Garmin Connect !</string>
+  
+  <!-- Show -->
+  <string name="normal">Normální</string>
+  <string name="abnormal">Abnormální</string>
+  <string name="bf_underfat">Málo tuku</string>
+  <string name="bf_healthy">Zdravý</string>
+  <string name="bf_overfat">Příliš tuku</string>
+  <string name="bf_obese">Obézní</string>
+  <string name="vfr_healthy">Zdravý</string>
+  <string name="vfr_excess">Přebytek</string>
+
+  <!-- Edit -->
+  <string name="exported">Exportováno</string>
+  
+  <!-- Graph -->
+  <string name="graph_title">Graf</string>
+  <string name="graph_date_format">dd.MM</string>
+  
+  <!-- Export -->
+  <string name="export">Export</string>
+  <string name="file_generated">Soubor vygenerován</string>
+  <string name="no_export">Nic k exportu</string>
+  <plurals name="exported_records_count"> 
+    <item quantity="one">1 záznam</item>
+    <item quantity="few">%d záznamy</item>
+    <item quantity="other">%d záznamů</item>
+  </plurals>
+  <string name="export_share_subject">WeightLogger export</string>
+  <string name="export_upload_ok">Úspěšně načteno</string>
+  <string name="export_upload_failed">Načtení selhalo</string>
+  
+  <!-- Preferences -->
+  <string name="pref">Preference</string>
+  <string name="pref_general_category">Obecné</string>
+  <string name="pref_gender">Pohlaví</string>
+  <string name="pref_age">Věk</string>
+  <string name="pref_age_summary">Vyberte svůj věk.</string>
+  <string name="pref_unit">Váhová jednotka</string>
+  <string name="pref_unit_kg">kg</string>
+  <string name="pref_unit_lb">lb</string>
+  <string name="pref_muscle_mass_unit">Jednotka svalové hmoty</string>
+  <string name="pref_muscle_mass_unit_mass">Hmota (kg / lb)</string>
+  <string name="pref_muscle_mass_unit_percent">Procento</string>
+  <string name="pref_preload">Předvyplňování</string>
+  <string name="pref_preload_summary">Nové záznamy jsou plněny daty posledního záznamu pro rychlejší zadání.</string>
+  <string name="pref_fields">Volitelná pole</string>
+  <string name="pref_fields_summary">Vyberte volitelná pole k zobrazení u nového záznamu.</string>
+  <string name="pref_export_dir">Exportní adresář</string>       
+  <string name="pref_garmin_category">Garmin Connect</string>
+  <string name="pref_garmin_login">Uživatel</string>
+  <string name="pref_garmin_login_summary">Váš Garmin Connect uživatel.</string> 
+  <string name="pref_garmin_password">Heslo</string>
+  <string name="pref_garmin_password_summary">Vaše Garmin Connect heslo.</string>
+  <string name="pref_database_category">Databáze</string>
+  <string name="pref_backup_database">Záloha databáze</string>
+  <string name="pref_backup_database_summary">Záloha databáze do exportního adresáře.</string>
+  <string name="pref_backup_database_ok">Databáze úspěšně zazálohována (Soubor : %1$s)</string>
+  <string name="pref_backup_database_failed">Záloha databáze selhala</string>
+  <string name="pref_restore_database">Obnova databáze</string>
+  <string name="pref_restore_database_summary">Obnova databáze ze souboru zálohy.</string>
+  <string name="pref_restore_database_nofiles">Žádné soubory zálohy k obnovení !</string>
+  <string name="pref_restore_database_confirm">Skutečně obnovit tuto zálohu : %1$s ? Současná databáze bude nahrazena !</string>
+  <string name="pref_restore_database_ok">Databáze úspěšně obnovena</string>
+  <string name="pref_restore_database_failed">Obnova databáze selhala</string>
+  <string name="pref_purge_database">Výmaz databáze</string>
+  <string name="pref_purge_database_summary">Vymazat z databáze VŠECHNY záznamy. Použijte s rozmyslem !</string>
+  <string name="pref_purge_database_confirm">Skutečně vymazat z databáze VŠECHNY záznamy ???</string>
+  <string name="pref_database_purged">Databáze vymazána</string>
+  <string name="pref_load_test_data">Nahrát testovací data</string>
+  <string name="pref_load_test_data_summary">Nahrát množství testovacích záznamů pro účely testování.</string>
+  <string name="pref_test_data_loaded">Testovací data nahrána</string>
+  <string name="pref_misc_category">Různé</string>
+  <string name="pref_about">O aplikaci</string>
+</resources>
