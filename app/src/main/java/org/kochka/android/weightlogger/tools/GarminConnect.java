@@ -123,6 +123,7 @@ public class GarminConnect {
 
       // Initialise session. Redirect manually, as there are two URLs
       // marked by HttpClient as duplicates (but in fact these differ by queryparams).
+      /*
       RedirectStrategy oldRedirectStrategy = httpclient.getRedirectStrategy();
       httpclient.setRedirectStrategy(new NoRedirectStrategy());
       CloseableHttpResponse initSessionResponse = httpclient.execute(new HttpGet(LEGACY_INIT_SESSION_URL));
@@ -133,8 +134,9 @@ public class GarminConnect {
         initSessionLocation = httpclient.execute(get).getFirstHeader("location");
       }
       httpclient.setRedirectStrategy(oldRedirectStrategy);
+      */
 
-      return isSignedIn();
+      return isSignedIn(username);
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
       return false;
@@ -157,15 +159,15 @@ public class GarminConnect {
     return matcher.group(1);
   }
 
-  public boolean isSignedIn() {
+  public boolean isSignedIn(String username) {
     if (httpclient == null) return false;
     try {
-      CloseableHttpResponse execute = httpclient.execute(new HttpGet("http://connect.garmin.com/user/username"));
+      CloseableHttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/proxy/userprofile-service/socialProfile"));
       HttpEntity entity = execute.getEntity();
       String json = EntityUtils.toString(entity);
       JSONObject js_user = new JSONObject(json);
       entity.consumeContent();
-      return !js_user.getString("username").equals("");
+      return js_user.getString("userName").equals(username);
     } catch (Exception e) {
       return false;
     }
