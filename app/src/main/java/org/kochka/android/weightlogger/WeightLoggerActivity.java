@@ -27,7 +27,10 @@ import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.GoogleFit;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
+import android.app.NotificationChannel;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
@@ -65,6 +68,8 @@ public class WeightLoggerActivity extends AppCompatActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+
+    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder(); StrictMode.setVmPolicy(builder.build());
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
@@ -293,7 +298,14 @@ public class WeightLoggerActivity extends AppCompatActivity {
           nBuilder.setContentTitle(getString(R.string.file_generated));
           nBuilder.setContentText((garmin_upload) ? upload_message : gen_text);
           nBuilder.setContentIntent(pi);
-          
+
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "weightlogger";
+            NotificationChannel channel = new NotificationChannel(channelId,"Weight Logger", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+            nBuilder.setChannelId(channelId);
+          }
+
           notificationManager.notify(1, nBuilder.build());
         } catch (StorageNotMountedException e) {
           displayToast(getString(R.string.storage_not_mounted));
