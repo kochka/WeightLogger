@@ -29,7 +29,6 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpStatus;
 import cz.msebera.android.httpclient.NameValuePair;
-import cz.msebera.android.httpclient.client.RedirectStrategy;
 import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
 import cz.msebera.android.httpclient.client.methods.CloseableHttpResponse;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
@@ -51,9 +50,9 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 public class GarminConnect {
 
   private static final String GET_TICKET_URL = "https://connect.garmin.com/modern/?ticket=";
-  private static final String LEGACY_INIT_SESSION_URL = "http://connect.garmin.com/legacy/session";
 
   private static final Pattern LOCATION_PATTERN = Pattern.compile("Location: (.*)");
+  private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
   public static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/modern/proxy/upload-service/upload/.fit";
 
@@ -65,49 +64,57 @@ public class GarminConnect {
     conman.setDefaultMaxPerRoute(20);
     httpclient = new DefaultHttpClient(conman);
 
-    final String signin_url = "https://sso.garmin.com/sso/login?service=" +
+    final String signin_url = "https://sso.garmin.com/sso/signin?service=" +
             "https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
-            "&webhost=olaxpw-conctmodern010.garmin.com" +
-            "&source=https%3A%2F%2Fconnect.garmin.com%2Fen-EN%2Fsignin" +
+            "&webhost=https%3A%2F%2Fconnect.garmin.com" +
+            "&source=https%3A%2F%2Fconnect.garmin.com%2Fsignin%2F" +
             "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
             "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
             "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso" +
-            "&locale=en" +
+            "&locale=en_US" +
             "&id=gauth-widget" +
             "&cssUrl=https%3A%2F%2Fstatic.garmincdn.com%2Fcom.garmin.connect%2Fui%2Fcss%2Fgauth-custom-v1.2-min.css" +
-            "&privacyStatementUrl=%2F%2Fconnect.garmin.com%2Fen-EN%2Fprivacy%2F" +
+            "&privacyStatementUrl=https%3A%2F%2Fwww.garmin.com%2Fen-US%2Fprivacy%2Fconnect%2F" +
             "&clientId=GarminConnect" +
             "&rememberMeShown=true" +
             "&rememberMeChecked=false" +
             "&createAccountShown=true" +
             "&openCreateAccount=false" +
-            "&usernameShown=false" +
             "&displayNameShown=false" +
             "&consumeServiceTicket=false" +
             "&initialFocus=true" +
             "&embedWidget=false" +
-            "&generateExtraServiceTicket=false" +
-            "&globalOptInShown=false" +
+            "&generateExtraServiceTicket=true" +
+            "&generateTwoExtraServiceTickets=false" +
+            "&generateNoServiceTicket=false" +
+            "&globalOptInShown=true" +
             "&globalOptInChecked=false" +
             "&mobile=false" +
-            "&connectLegalTerms=true";
+            "&connectLegalTerms=true" +
+            "&locationPromptShown=true" +
+            "&showPassword=true";
 
     try {
       HttpParams params = new BasicHttpParams();
       params.setParameter("http.protocol.handle-redirects", false);
 
       // Create session
-      httpclient.execute(new HttpGet(signin_url)).getEntity();
+      HttpEntity loginEntity = httpclient.execute(new HttpGet(signin_url)).getEntity();
+      String loginContent = EntityUtils.toString(loginEntity);
+      String csrf = getCSRFToken(loginContent);
 
       // Sign in
       HttpPost post = new HttpPost(signin_url);
+      post.setHeader("Referer", signin_url);
       post.setParams(params);
       List<NameValuePair> nvp = new ArrayList<>();
       nvp.add(new BasicNameValuePair("embed", "false"));
       nvp.add(new BasicNameValuePair("username", username));
       nvp.add(new BasicNameValuePair("password", password));
+      nvp.add(new BasicNameValuePair("_csrf", csrf));
       post.setEntity(new UrlEncodedFormEntity(nvp));
       HttpEntity entity1 = httpclient.execute(post).getEntity();
+
       String responseAsString = EntityUtils.toString(entity1);
       String ticket = getTicketIdFromResponse(responseAsString);
 
@@ -153,8 +160,16 @@ public class GarminConnect {
   }
 
   private String getTicketIdFromResponse(String responseAsString) {
-    Pattern pattern = Pattern.compile(TICKET_FINDER_PATTERN);
-    Matcher matcher = pattern.matcher(responseAsString);
+    return getFirstMatch(TICKET_FINDER_PATTERN, responseAsString);
+  }
+
+  private String getCSRFToken(String responseAsString) {
+    return getFirstMatch(CSRF_TOKEN_PATTERN, responseAsString);
+  }
+
+  private String getFirstMatch(String regex, String within) {
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(within);
     matcher.find();
     return matcher.group(1);
   }
