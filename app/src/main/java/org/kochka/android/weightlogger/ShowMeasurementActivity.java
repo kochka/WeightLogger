@@ -19,7 +19,7 @@ import org.kochka.android.weightlogger.adapter.MeasurementsShowAdapter;
 import org.kochka.android.weightlogger.data.Measurement;
 import org.taptwo.android.widget.ViewFlow;
 
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ShowMeasurementActivity extends ActionBarActivity {
+public class ShowMeasurementActivity extends AppCompatActivity {
 
   ViewFlow viewFlow;
   boolean dataChanged = false;
@@ -40,7 +40,7 @@ public class ShowMeasurementActivity extends ActionBarActivity {
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_material));
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

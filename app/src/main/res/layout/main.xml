@@ -6,13 +6,10 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent">
     <ListView android:id="@+id/mListView" style="@style/List" />
-    <com.melnykov.fab.FloatingActionButton style="@style/WrapWrap"
+    <android.support.design.widget.FloatingActionButton style="@style/WrapWrap"
       android:id="@+id/fab"
       android:layout_gravity="bottom|right"
       android:layout_margin="16dp"
-      android:src="@drawable/ic_menu_add"
-      fab:fab_colorNormal="@color/primary"
-      fab:fab_colorPressed="@color/primary_light"
-      fab:fab_colorRipple="@color/primary_dark" />
+      android:src="@drawable/ic_menu_add" />
   </FrameLayout>
 </LinearLayout>

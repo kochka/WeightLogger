@@ -19,11 +19,11 @@ import org.kochka.android.weightlogger.fragments.NestedPreferenceFragment;
 import org.kochka.android.weightlogger.fragments.PreferencesFragment;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class EditPreferences extends ActionBarActivity implements PreferencesFragment.Callback {
+public class EditPreferences extends AppCompatActivity implements PreferencesFragment.Callback {
 
   private static final String TAG_NESTED = "TAG_NESTED";
 
@@ -34,7 +34,7 @@ public class EditPreferences extends ActionBarActivity implements PreferencesFra
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha));
+    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_material));
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

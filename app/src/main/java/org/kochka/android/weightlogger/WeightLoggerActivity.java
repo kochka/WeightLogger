@@ -28,8 +28,9 @@ import org.kochka.android.weightlogger.tools.GoogleFit;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
 import android.content.pm.PackageManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.support.design.widget.FloatingActionButton;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -53,9 +54,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.melnykov.fab.FloatingActionButton;
-
-public class WeightLoggerActivity extends ActionBarActivity {
+public class WeightLoggerActivity extends AppCompatActivity {
   
   ListView mList;
   
@@ -86,7 +85,7 @@ public class WeightLoggerActivity extends ActionBarActivity {
 
     // Fab
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.attachToListView(mList);
+    //fab.attachToListView(mList);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

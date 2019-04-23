@@ -55,7 +55,6 @@
     <issue id="StringFormatCount" severity="ignore" />
     <issue id="StringFormatInvalid" severity="ignore" />
     <issue id="StringFormatMatches" severity="ignore" />
-    <issue id="StyleCycle" severity="ignore" />
     <issue id="SuspiciousImport" severity="ignore" />
     <issue id="TextFields" severity="ignore" />
     <issue id="TextViewEdits" severity="ignore" />
