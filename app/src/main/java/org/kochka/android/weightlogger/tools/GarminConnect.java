@@ -182,7 +182,7 @@ public class GarminConnect {
       String json = EntityUtils.toString(entity);
       JSONObject js_user = new JSONObject(json);
       entity.consumeContent();
-      return js_user.getString("userName").equals(username);
+      return js_user.getString("userName") != null && !js_user.getString("userName").isEmpty();
     } catch (Exception e) {
       return false;
     }
