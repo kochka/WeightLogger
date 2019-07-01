@@ -33,6 +33,7 @@ import android.util.Log;
 import com.garmin.fit.DateTime;
 import com.garmin.fit.FileEncoder;
 import com.garmin.fit.WeightScaleMesg;
+import com.garmin.fit.FileIdMesg;
 
 public class Export {
   
@@ -44,6 +45,13 @@ public class Export {
     
     String filename = "ws_" + fileNameFormater.format(new Date()) + ".fit";
     FileEncoder encoder = new FileEncoder(new File(path(context), filename));
+
+    FileIdMesg fileIdMesg = new FileIdMesg();
+    fileIdMesg.setType(com.garmin.fit.File.WEIGHT);
+    fileIdMesg.setManufacturer(Manufacturer.TANITA);
+    fileIdMesg.setProduct(1);
+    fileIdMesg.setSerialNumber(1L);
+    encoder.write(fileIdMesg)
 
     WeightScaleMesg wm;
     for (Measurement measurement : measurements) {
