@@ -87,22 +87,15 @@ public class Database extends SQLiteOpenHelper {
   }
   
   private static void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
-    FileChannel fromChannel = null;
-    FileChannel toChannel = null;
     try {
-      fromChannel = fromFile.getChannel();
-      toChannel = toFile.getChannel();
-      fromChannel.transferTo(0, fromChannel.size(), toChannel);
-    } finally {
-      try {
-        if (fromChannel != null) {
-            fromChannel.close();
-        }
-      } finally {
-        if (toChannel != null) {
-            toChannel.close();
-        }
+      byte[] buffer = new byte[1024];
+      while (fromFile.read(buffer) > 0) {
+        toFile.write(buffer);
       }
+      toFile.flush();
+    } finally {
+      toFile.close();
+      fromFile.close();
     }
   }
 }

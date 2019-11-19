@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical" style="@style/MatchMatch">
+<LinearLayout style="@style/MatchMatch"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical">
 
-  <include layout="@layout/actionbar" />
-  <LinearLayout android:orientation="vertical" style="@style/MatchMatch" android:id="@+id/preferences" />
+  <include layout="@layout/actionbar"/>
+
+  <LinearLayout
+    android:id="@+id/preferences"
+    style="@style/MatchMatch"
+    android:orientation="vertical"/>
 
 </LinearLayout>

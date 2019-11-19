@@ -51,7 +51,7 @@ public class GarminConnect {
 
   private static final String GET_TICKET_URL = "https://connect.garmin.com/modern/?ticket=";
 
-  private static final Pattern LOCATION_PATTERN = Pattern.compile("Location: (.*)");
+  private static final Pattern LOCATION_PATTERN = Pattern.compile("location: (.*)");
   private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
   public static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/modern/proxy/upload-service/upload/.fit";
@@ -73,7 +73,7 @@ public class GarminConnect {
             "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso" +
             "&locale=en_US" +
             "&id=gauth-widget" +
-            "&cssUrl=https%3A%2F%2Fstatic.garmincdn.com%2Fcom.garmin.connect%2Fui%2Fcss%2Fgauth-custom-v1.2-min.css" +
+            "&cssUrl=https%3A%2F%2Fconnect.garmin.com%2Fgauth-custom-v1.2-min.css" +
             "&privacyStatementUrl=https%3A%2F%2Fwww.garmin.com%2Fen-US%2Fprivacy%2Fconnect%2F" +
             "&clientId=GarminConnect" +
             "&rememberMeShown=true" +
@@ -91,8 +91,12 @@ public class GarminConnect {
             "&globalOptInChecked=false" +
             "&mobile=false" +
             "&connectLegalTerms=true" +
+            "&showTermsOfUse=false" +
+            "&showPrivacyPolicy=false" +
+            "&showConnectLegalAge=false" +
             "&locationPromptShown=true" +
-            "&showPassword=true";
+            "&showPassword=true" +
+            "&useCustomHeader=false";
 
     try {
       HttpParams params = new BasicHttpParams();

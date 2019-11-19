@@ -34,6 +34,7 @@ import com.garmin.fit.DateTime;
 import com.garmin.fit.FileEncoder;
 import com.garmin.fit.WeightScaleMesg;
 import com.garmin.fit.FileIdMesg;
+import com.garmin.fit.Manufacturer;
 
 public class Export {
   
@@ -51,7 +52,7 @@ public class Export {
     fileIdMesg.setManufacturer(Manufacturer.TANITA);
     fileIdMesg.setProduct(1);
     fileIdMesg.setSerialNumber(1L);
-    encoder.write(fileIdMesg)
+    encoder.write(fileIdMesg);
 
     WeightScaleMesg wm;
     for (Measurement measurement : measurements) {
