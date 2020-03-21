@@ -61,8 +61,10 @@ public class WeightLoggerActivity extends AppCompatActivity {
   
   ListView mList;
   
-  final int EXPORT_FIT = 0;
-  final int EXPORT_CSV = 1;
+  final int EXPORT_NONE = 0;
+  final int EXPORT_FIT = 1;
+  final int EXPORT_CSV = 2;
+  final int EXPORT_GARMIN = 3;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -192,13 +194,13 @@ public class WeightLoggerActivity extends AppCompatActivity {
       public void onClick(DialogInterface dialog, int item) {
         switch (item) {
           case 0:
-            export(EXPORT_FIT, false);
+            exportFile(EXPORT_FIT);
             break;
           case 1:
-            export(EXPORT_CSV, false);
+            exportFile(EXPORT_CSV);
             break;
           case 2:
-            export(EXPORT_FIT, true);
+            exportFile(EXPORT_GARMIN);
             break;
           case 3:
             GoogleFit.getInstance(WeightLoggerActivity.this).sendData();
@@ -212,7 +214,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
     alert.show();
   }
 
-  private void export(int type, boolean garmin_upload) {
+  private void exportFile(int type) {
     
     class ExportThread implements Runnable {
 
@@ -220,9 +222,9 @@ public class WeightLoggerActivity extends AppCompatActivity {
       private boolean garmin_upload;
       private GarminConnect gc;
       
-      public ExportThread(int type, boolean garmin_upload) {
+      public ExportThread(int type) {
         this.type = type;
-        this.garmin_upload = garmin_upload;
+        this.garmin_upload = (type == EXPORT_GARMIN);
       }
       
       @Override
@@ -234,7 +236,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
           String upload_message = "";
           int icon;
           
-          if (type == EXPORT_FIT)         
+          if ((type == EXPORT_FIT) || (type == EXPORT_GARMIN))
             measurements = Measurement.getAllToExport(WeightLoggerActivity.this);
           else
             measurements = Measurement.getAll(WeightLoggerActivity.this);
@@ -243,7 +245,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
           if (measurements_count == 0) throw new Exception(getString(R.string.no_export));    
 
           // FIT
-          if (type == EXPORT_FIT) {
+          if ((type == EXPORT_FIT) || (type == EXPORT_GARMIN)) {
             // Test connectivity & Garmin account
             if (garmin_upload) {
               ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -331,7 +333,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
     ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
     progressBar.setVisibility(View.VISIBLE);
     
-    Runnable r = new ExportThread(type, garmin_upload);
+    Runnable r = new ExportThread(type);
     new Thread(r).start();
   }
 
