@@ -74,38 +74,34 @@ public class Export {
     encoder.close();
     return filename;
   }
-  
-  public static String buildCsvFile(Context context, LinkedList<Measurement> measurements) throws StorageNotMountedException {
+
+  public static String buildCsvFile(Context context, LinkedList<Measurement> measurements) throws StorageNotMountedException, IOException {
     checkExternalStorage();
-    
+
     createDirIfNotExists(context);
     SimpleDateFormat fileNameFormater = new SimpleDateFormat("yyyyMMdd");
-    
+
     String filename = "ws_" + fileNameFormater.format(new Date()) + ".csv";
-    
-    try {
-      FileWriter fCsv = new FileWriter(new File(path(context), filename));
-      fCsv.append("Recorded At,Weight,Body Fat,Body Water,Muscle Mass,Daily Calorie Intake,Physique Rating,Visceral Fat Rating,Bone Mass,Metabolic Age\n");
-      
-      for (Measurement measurement : measurements) {
-        fCsv.append(measurement.getFormatedRecordedAt() + " " + measurement.getFormatedRecordedAtTime()  + ",");
-        fCsv.append(measurement.getConvertedWeight() + ",");
-        fCsv.append(measurement.getBodyFat() + ",");
-        fCsv.append(measurement.getBodyWater() + ",");
-        fCsv.append(measurement.getConvertedMuscleMass() + ",");
-        fCsv.append(measurement.getDailyCalorieIntake() + ",");
-        fCsv.append(measurement.getPhysiqueRating() + ",");
-        fCsv.append(measurement.getVisceralFatRating() + ",");
-        fCsv.append(measurement.getConvertedBoneMass() + ",");
-        fCsv.append(measurement.getMetabolicAge() + "\n");
-      }
-      
-      fCsv.flush();
-      fCsv.close();
-    } catch (Exception e) {
-      Log.e("WeightLogger :: ", e.toString());
+
+    FileWriter fCsv = new FileWriter(new File(path(context), filename));
+    fCsv.append("Recorded At,Weight,Body Fat,Body Water,Muscle Mass,Daily Calorie Intake,Physique Rating,Visceral Fat Rating,Bone Mass,Metabolic Age\n");
+
+    for (Measurement measurement : measurements) {
+      fCsv.append(measurement.getFormatedRecordedAt() + " " + measurement.getFormatedRecordedAtTime() + ",");
+      fCsv.append(measurement.getConvertedWeight() + ",");
+      fCsv.append(measurement.getBodyFat() + ",");
+      fCsv.append(measurement.getBodyWater() + ",");
+      fCsv.append(measurement.getConvertedMuscleMass() + ",");
+      fCsv.append(measurement.getDailyCalorieIntake() + ",");
+      fCsv.append(measurement.getPhysiqueRating() + ",");
+      fCsv.append(measurement.getVisceralFatRating() + ",");
+      fCsv.append(measurement.getConvertedBoneMass() + ",");
+      fCsv.append(measurement.getMetabolicAge() + "\n");
     }
-    
+
+    fCsv.flush();
+    fCsv.close();
+
     return filename;
   }
   
