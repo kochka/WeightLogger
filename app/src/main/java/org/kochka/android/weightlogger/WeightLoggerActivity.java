@@ -25,12 +25,16 @@ import org.kochka.android.weightlogger.tools.BleSmartLab;
 import org.kochka.android.weightlogger.tools.Export;
 import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.GoogleFit;
+import org.kochka.android.weightlogger.tools.PermissionHelperResultListener;
+import org.kochka.android.weightlogger.tools.PermissionHelper;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
@@ -46,6 +50,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -57,12 +62,17 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class WeightLoggerActivity extends AppCompatActivity {
+public class WeightLoggerActivity extends AppCompatActivity implements PermissionHelperResultListener {
   
   ListView mList;
   
-  final int EXPORT_FIT = 0;
-  final int EXPORT_CSV = 1;
+  final int EXPORT_NONE = 0;
+  final int EXPORT_FIT = 1;
+  final int EXPORT_CSV = 2;
+  final int EXPORT_GARMIN = 3;
+
+  int exportToPerform = EXPORT_NONE;
+  PermissionHelper permissionHelper = new PermissionHelper();
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +98,8 @@ public class WeightLoggerActivity extends AppCompatActivity {
 
     registerForContextMenu(mList);
 
+    permissionHelper.setResultListener(this);
+
     // Fab
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     //fab.attachToListView(mList);
@@ -98,7 +110,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
       }
     });
   }
-   
+
   @Override
   public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     if (v.getId() == R.id.mListView) {
@@ -182,6 +194,28 @@ public class WeightLoggerActivity extends AppCompatActivity {
     }
     return(super.onOptionsItemSelected(item));
   }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
+
+  @Override
+  public void onPermissionGranted(String permission) {
+    if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+      exportFile(exportToPerform);
+    }
+  }
+
+  @Override
+  public void onPermissionDenied(String permission) {
+    Log.e("WeightLogger :: ", permission + " denied.");
+  }
+
+  private void exportFileWithPermission(int type) {
+    exportToPerform = type;
+    permissionHelper.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+  }
   
   private void export(){
     final CharSequence[] items = {"FIT", "CSV", "Garmin Connect ©", "Google FIT"};
@@ -192,13 +226,13 @@ public class WeightLoggerActivity extends AppCompatActivity {
       public void onClick(DialogInterface dialog, int item) {
         switch (item) {
           case 0:
-            export(EXPORT_FIT, false);
+            exportFileWithPermission(EXPORT_FIT);
             break;
           case 1:
-            export(EXPORT_CSV, false);
+            exportFileWithPermission(EXPORT_CSV);
             break;
           case 2:
-            export(EXPORT_FIT, true);
+            exportFileWithPermission(EXPORT_GARMIN);
             break;
           case 3:
             GoogleFit.getInstance(WeightLoggerActivity.this).sendData();
@@ -212,7 +246,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
     alert.show();
   }
 
-  private void export(int type, boolean garmin_upload) {
+  private void exportFile(int type) {
     
     class ExportThread implements Runnable {
 
@@ -220,9 +254,9 @@ public class WeightLoggerActivity extends AppCompatActivity {
       private boolean garmin_upload;
       private GarminConnect gc;
       
-      public ExportThread(int type, boolean garmin_upload) {
+      public ExportThread(int type) {
         this.type = type;
-        this.garmin_upload = garmin_upload;
+        this.garmin_upload = (type == EXPORT_GARMIN);
       }
       
       @Override
@@ -234,7 +268,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
           String upload_message = "";
           int icon;
           
-          if (type == EXPORT_FIT)         
+          if ((type == EXPORT_FIT) || (type == EXPORT_GARMIN))
             measurements = Measurement.getAllToExport(WeightLoggerActivity.this);
           else
             measurements = Measurement.getAll(WeightLoggerActivity.this);
@@ -243,7 +277,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
           if (measurements_count == 0) throw new Exception(getString(R.string.no_export));    
 
           // FIT
-          if (type == EXPORT_FIT) {
+          if ((type == EXPORT_FIT) || (type == EXPORT_GARMIN)) {
             // Test connectivity & Garmin account
             if (garmin_upload) {
               ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -331,7 +365,7 @@ public class WeightLoggerActivity extends AppCompatActivity {
     ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
     progressBar.setVisibility(View.VISIBLE);
     
-    Runnable r = new ExportThread(type, garmin_upload);
+    Runnable r = new ExportThread(type);
     new Thread(r).start();
   }
 
