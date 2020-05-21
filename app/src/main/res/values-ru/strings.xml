@@ -44,7 +44,7 @@
   <string name="muscle_mass">Мускульная масса</string>
   <string name="daily_calorie_intake">Ежедневное потребление калорий</string>
   <string name="physique_rating">Оценка телосложения</string>
-  <string name="visceral_fat_rating">Оценка количества жира</string>
+  <string name="visceral_fat_rating">Оценка количества висцерального жира</string>
   <string name="bone_mass">Масса костей</string>
   <string name="metabolic_age">Метаболический возраст</string>
   <string name="metabolic_age_years_old">год/лет</string>
