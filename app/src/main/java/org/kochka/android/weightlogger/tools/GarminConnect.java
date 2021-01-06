@@ -66,8 +66,8 @@ public class GarminConnect {
 
     final String signin_url = "https://sso.garmin.com/sso/signin?service=" +
             "https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
-            "&webhost=https%3A%2F%2Fconnect.garmin.com" +
-            "&source=https%3A%2F%2Fconnect.garmin.com%2Fsignin%2F" +
+            "&webhost=https%3A%2F2%Fconnect.garmin.com%2Fmodern%2F" +
+            "&source=https%3A%2F%2Fconnect.garmin.com%2Fsignin" +
             "&redirectAfterAccountLoginUrl=https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
             "&redirectAfterAccountCreationUrl=https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
             "&gauthHost=https%3A%2F%2Fsso.garmin.com%2Fsso" +
@@ -85,7 +85,7 @@ public class GarminConnect {
             "&initialFocus=true" +
             "&embedWidget=false" +
             "&generateExtraServiceTicket=true" +
-            "&generateTwoExtraServiceTickets=false" +
+            "&generateTwoExtraServiceTickets=true" +
             "&generateNoServiceTicket=false" +
             "&globalOptInShown=true" +
             "&globalOptInChecked=false" +
@@ -96,7 +96,10 @@ public class GarminConnect {
             "&showConnectLegalAge=false" +
             "&locationPromptShown=true" +
             "&showPassword=true" +
-            "&useCustomHeader=false";
+            "&useCustomHeader=false" +
+            "&mfaRequired=false" +
+            "&rememberMyBrowserShown=false" +
+            "&rememberMyBrowserChecked=false";
 
     try {
       HttpParams params = new BasicHttpParams();
