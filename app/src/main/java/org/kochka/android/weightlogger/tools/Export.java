@@ -118,7 +118,7 @@ public class Export {
   }
   
   public static String path(Context context) {
-    String export_dir = PreferenceManager.getDefaultSharedPreferences(context).getString("export_dir", "/WeightLogger");
+    String export_dir = PreferenceManager.getDefaultSharedPreferences(context).getString("export_dir", "/Download/WeightLogger");
     return Environment.getExternalStorageDirectory().getAbsolutePath() + export_dir;
   }
   
