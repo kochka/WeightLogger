@@ -1,0 +1,12 @@
+<i>Weight Logger</i> lets you archive your body composition data using your Tanita scale (or any body composition scale). You then can scroll through your collected data, export it to Garmin, Fit and CSV, and more.
+
+<b>Main features:</b>
+
+* Viewflow display of your data.
+* Scrollable and zoomable graphs of weight, body fat, body water and muscle mass.
+* One click export to “Garmin Connect” account.
+* Google FIT export.
+* FIT and CSV export.
+* Support of Kg or Lb mass unit.
+* Support of mass or percent muscle mass unit.
+* Languages supported : English (default), Catalan, Chinese, Czech, Dutch, French, German, Hebrew, Italian, Polish, Russian, Spanish, Swedish, Ukrainian.
