@@ -1,0 +1,1 @@
+log body composition data using e.g. a Tanita scale
