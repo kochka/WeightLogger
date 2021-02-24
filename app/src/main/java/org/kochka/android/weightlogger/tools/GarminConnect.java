@@ -184,12 +184,12 @@ public class GarminConnect {
   public boolean isSignedIn(String username) {
     if (httpclient == null) return false;
     try {
-      CloseableHttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/proxy/userprofile-service/socialProfile"));
+      CloseableHttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/currentuser-service/user/info"));
       HttpEntity entity = execute.getEntity();
       String json = EntityUtils.toString(entity);
       JSONObject js_user = new JSONObject(json);
       entity.consumeContent();
-      return js_user.getString("userName") != null && !js_user.getString("userName").isEmpty();
+      return js_user.getString("username") != null && !js_user.getString("username").isEmpty();
     } catch (Exception e) {
       return false;
     }
