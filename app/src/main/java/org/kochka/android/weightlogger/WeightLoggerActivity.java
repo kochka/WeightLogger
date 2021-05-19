@@ -295,6 +295,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
             }
             
             // Build FIT file
+            /*
             filename = Export.buildFitFile(WeightLoggerActivity.this, measurements);
             mime = "application/*";
             icon = R.drawable.ic_stat_notify_fit;
@@ -308,7 +309,25 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
                 upload_message = getString(R.string.export_upload_failed);
               this.gc.close();
             }
-            
+            */
+            // Super dirty fix to fast handle stupid Android 11 files access restrictions
+            mime = "application/*";
+            icon = R.drawable.ic_stat_notify_fit;
+
+            // Upload FIT file
+            if (garmin_upload) {
+              filename = Export.buildFitFileInAppDir(WeightLoggerActivity.this, measurements);
+
+              if(this.gc.uploadFitFile(getFilesDir() + File.separator + filename))
+                upload_message = getString(R.string.export_upload_ok);
+              else
+                upload_message = getString(R.string.export_upload_failed);
+              this.gc.close();
+            } else {
+              filename = Export.buildFitFile(WeightLoggerActivity.this, measurements);
+            }
+            Measurement.setAllAsExported(WeightLoggerActivity.this);
+
           // CSV
           } else {
             filename = Export.buildCsvFile(WeightLoggerActivity.this, measurements);

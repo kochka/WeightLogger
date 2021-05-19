@@ -75,6 +75,41 @@ public class Export {
     return filename;
   }
 
+  // OMG :D lol, I've no time so spend on that shit
+  public static String buildFitFileInAppDir(Context context, LinkedList<Measurement> measurements) {
+    SimpleDateFormat fileNameFormater = new SimpleDateFormat("yyyyMMdd_kkmmss");
+
+    String filename = "ws_" + fileNameFormater.format(new Date()) + ".fit";
+    FileEncoder encoder = new FileEncoder(new File(context.getFilesDir(), filename));
+
+    FileIdMesg fileIdMesg = new FileIdMesg();
+    fileIdMesg.setType(com.garmin.fit.File.WEIGHT);
+    fileIdMesg.setManufacturer(Manufacturer.TANITA);
+    fileIdMesg.setProduct(1);
+    fileIdMesg.setSerialNumber(1L);
+    encoder.write(fileIdMesg);
+
+    WeightScaleMesg wm;
+    for (Measurement measurement : measurements) {
+      wm = new WeightScaleMesg();
+      wm.setTimestamp(new DateTime(measurement.getRecordedAt().getTime()));
+      wm.setWeight(measurement.getWeight());
+      wm.setPercentFat(measurement.getBodyFat());
+      wm.setPercentHydration(measurement.getBodyWater());
+      wm.setMuscleMass(measurement.getMuscleMass());
+      if(measurement.getDailyCalorieIntake() != null)
+        wm.setActiveMet((float) measurement.getDailyCalorieIntake());
+      wm.setPhysiqueRating(measurement.getPhysiqueRating());
+      wm.setVisceralFatRating(measurement.getVisceralFatRating());
+      wm.setBoneMass(measurement.getBoneMass());
+      wm.setMetabolicAge(measurement.getMetabolicAge());
+      encoder.write(wm);
+    }
+
+    encoder.close();
+    return filename;
+  }
+
   public static String buildCsvFile(Context context, LinkedList<Measurement> measurements) throws StorageNotMountedException, IOException {
     checkExternalStorage();
 
