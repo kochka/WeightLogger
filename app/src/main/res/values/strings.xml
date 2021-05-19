@@ -17,7 +17,7 @@
 
 <resources>
   <string name="app_name">Weight Logger</string>
-  <string name="app_version">2.4.1</string>
+  <string name="app_version">2.4.2</string>
   <string name="translator"></string>
   
   <!-- Common -->

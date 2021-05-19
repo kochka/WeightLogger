@@ -37,12 +37,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:28.0.0'
     compile 'com.android.support:design:28.0.0'
     compile 'com.google.android.gms:play-services-fitness:16.0.1'
-    compile 'cz.msebera.android:httpclient:4.4.1.2'
+    compile 'cz.msebera.android:httpclient:4.5.8'
     compile project(':viewflow')
     compile files('libs/fit.jar')
     compile files('libs/antpluginlib.jar')
     compile files('libs/hmmapiwsble.jar')
     compile 'com.jjoe64:graphview:4.2.2'
-    compile 'org.apache.httpcomponents:httpcore:4.3.2'
-    compile 'org.apache.httpcomponents:httpmime:4.3.3'
+    compile 'org.apache.httpcomponents:httpcore:4.4.10'
+    compile 'org.apache.httpcomponents:httpmime:4.5.6'
 }
