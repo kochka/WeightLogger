@@ -17,6 +17,7 @@ package org.kochka.android.weightlogger.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -221,14 +222,14 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
         cal.add(Calendar.DATE, -40);
 
         for (int i=0; i<40; i++){
-          new Measurement(getActivity(),
+          new Measurement((Context) getActivity(),
                   (70 + (int)(Math.random() * 110)/10.0f),
                   (15 + (int)(Math.random() * 70)/10.0f),
                   (50 + (int)(Math.random() * 210)/10.0f),
                   (50 + (int)(Math.random() * 210)/10.0f),
                   (short)(1500 + (int)(Math.random() * 20000)/10),
                   (short)(1 + (int)(Math.random() * 90)/10),
-                  (short)(1 + (int)(Math.random() * 200)/10),
+                  (1 + (int)(Math.random() * 200)/10.0f),
                   (2 + (int)(Math.random() * 50)/10.0f),
                   (short)(20 + (int)(Math.random() * 410)/10),
                   cal.getTimeInMillis(),

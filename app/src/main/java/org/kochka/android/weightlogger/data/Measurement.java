@@ -66,7 +66,7 @@ public class Measurement {
   private Float muscle_mass;
   private Short daily_calorie_intake;
   private Short physique_rating;
-  private Short visceral_fat_rating;
+  private Float visceral_fat_rating;
   private Float bone_mass;
   private Short metabolic_age;
   private GregorianCalendar recorded_at = new GregorianCalendar();
@@ -89,7 +89,7 @@ public class Measurement {
   }
   
   public Measurement(Context context, Integer id, Float weight, Float body_fat, Float body_water, Float muscle_mass, Short daily_calorie_intake,
-                     Short physique_rating, Short visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported) {
+                     Short physique_rating, Float visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported) {
     this(context);
     setId(id);
     setWeight(weight);
@@ -106,19 +106,19 @@ public class Measurement {
   }
   
   public Measurement(Context context, Integer id, Float weight, Float body_fat, Float body_water, Float muscle_mass, Short daily_calorie_intake,
-      Short physique_rating, Short visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported, boolean convert_to_lb, boolean muscle_mass_in_percent) {
+      Short physique_rating, Float visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported, boolean convert_to_lb, boolean muscle_mass_in_percent) {
     this(context, id, weight, body_fat, body_water, muscle_mass, daily_calorie_intake, physique_rating, visceral_fat_rating, bone_mass, metabolic_age, recorded_at, exported);
     this.convert_to_lb = convert_to_lb;
     this.muscle_mass_in_percent = muscle_mass_in_percent;
   }
   
   public Measurement(Context context, Float weight, Float body_fat, Float body_water, Float muscle_mass, Short daily_calorie_intake,
-                     Short physique_rating, Short visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported) {
+                     Short physique_rating, Float visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported) {
     this(context, null, weight, body_fat, body_water, muscle_mass, daily_calorie_intake, physique_rating, visceral_fat_rating, bone_mass, metabolic_age, recorded_at, exported);
   }
    
   public Measurement(Context context, Float weight, Float body_fat, Float body_water, Float muscle_mass, Short daily_calorie_intake,
-      Short physique_rating, Short visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported, boolean convert_to_lb, boolean muscle_mass_in_percent) {
+      Short physique_rating, Float visceral_fat_rating, Float bone_mass, Short metabolic_age, Long recorded_at, boolean exported, boolean convert_to_lb, boolean muscle_mass_in_percent) {
     this(context, null, weight, body_fat, body_water, muscle_mass, daily_calorie_intake, physique_rating, visceral_fat_rating, bone_mass, metabolic_age, recorded_at, exported, convert_to_lb, muscle_mass_in_percent);
   }
   // Getters & setters
@@ -271,15 +271,15 @@ public class Measurement {
     this.physique_rating = physique_rating;
   }
   
-  public Short getVisceralFatRating() {
+  public Float getVisceralFatRating() {
     return visceral_fat_rating;
   }
   
   public String getVisceralFatRatingInfo() {
-    return (visceral_fat_rating <= 12) ? context.getString(R.string.vfr_healthy) : context.getString(R.string.vfr_excess);
+    return (visceral_fat_rating <= 12.0f) ? context.getString(R.string.vfr_healthy) : context.getString(R.string.vfr_excess);
   }
   
-  public void setVisceralFatRating(Short visceral_fat_rating) {
+  public void setVisceralFatRating(Float visceral_fat_rating) {
     this.visceral_fat_rating = visceral_fat_rating;
   }
 
@@ -529,7 +529,7 @@ public class Measurement {
                (cursor.isNull(MUSCLE_MASS)) ? null : cursor.getFloat(MUSCLE_MASS), 
                (cursor.isNull(DAILY_CALORY_INTAKE)) ? null : cursor.getShort(DAILY_CALORY_INTAKE), 
                (cursor.isNull(PHYSIQUE_RATING)) ? null : cursor.getShort(PHYSIQUE_RATING), 
-               (cursor.isNull(VISCERAL_FAT_RATING)) ? null : cursor.getShort(VISCERAL_FAT_RATING), 
+               (cursor.isNull(VISCERAL_FAT_RATING)) ? null : cursor.getFloat(VISCERAL_FAT_RATING),
                (cursor.isNull(BONE_MASS)) ? null : cursor.getFloat(BONE_MASS), 
                (cursor.isNull(METABOLIC_AGE)) ? null : cursor.getShort(METABOLIC_AGE), 
                cursor.getLong(RECORDED_AT), 
