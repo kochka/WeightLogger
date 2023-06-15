@@ -52,7 +52,7 @@
 	     <TableRow android:id="@+id/visceral_fat_rating_row" style="@style/EditTableRow">
 	       <ImageView android:src="@drawable/ic_visceral_fat_rating" />
 	       <TextView android:text="@string/visceral_fat_rating" style="@style/EditTableRowText" />
-	       <EditText android:id="@+id/visceral_fat_rating" android:inputType="number" style="@style/EditTableRowEditText" />
+	       <EditText android:id="@+id/visceral_fat_rating" android:inputType="numberDecimal" style="@style/EditTableRowEditText" />
 	     </TableRow>
 	
 	     <TableRow android:id="@+id/bone_mass_row" style="@style/EditTableRow">

@@ -221,7 +221,7 @@ public class EditMeasurementActivity extends AppCompatActivity {
       if (muscle_mass_required)          measurement.setConvertedMuscleMass(Float.parseFloat(((EditText)findViewById(R.id.muscle_mass)).getText().toString()));
       if (daily_calorie_intake_required) measurement.setDailyCalorieIntake(Short.parseShort(((EditText)findViewById(R.id.daily_calorie_intake)).getText().toString()));
       if (physique_rating_required)      measurement.setPhysiqueRating(Short.parseShort(((EditText)findViewById(R.id.physique_rating)).getText().toString()));
-      if (visceral_fat_rating_required)  measurement.setVisceralFatRating(Short.parseShort(((EditText)findViewById(R.id.visceral_fat_rating)).getText().toString()));
+      if (visceral_fat_rating_required)  measurement.setVisceralFatRating(Float.parseFloat(((EditText)findViewById(R.id.visceral_fat_rating)).getText().toString()));
       if (bone_mass_required)            measurement.setConvertedBoneMass(Float.parseFloat(((EditText)findViewById(R.id.bone_mass)).getText().toString()));
       if (metabolic_age_required)        measurement.setMetabolicAge(Short.parseShort(((EditText)findViewById(R.id.metabolic_age)).getText().toString()));
       measurement.setExported(((CheckBox)findViewById(R.id.exported)).isChecked());

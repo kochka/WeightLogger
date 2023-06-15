@@ -65,7 +65,7 @@ public class Export {
       if(measurement.getDailyCalorieIntake() != null)
         wm.setActiveMet((float) measurement.getDailyCalorieIntake());
       wm.setPhysiqueRating(measurement.getPhysiqueRating());
-      wm.setVisceralFatRating(measurement.getVisceralFatRating());
+      wm.setVisceralFatRating((short) Math.round(measurement.getVisceralFatRating()));
       wm.setBoneMass(measurement.getBoneMass());
       wm.setMetabolicAge(measurement.getMetabolicAge());
       encoder.write(wm);
@@ -100,7 +100,7 @@ public class Export {
       if(measurement.getDailyCalorieIntake() != null)
         wm.setActiveMet((float) measurement.getDailyCalorieIntake());
       wm.setPhysiqueRating(measurement.getPhysiqueRating());
-      wm.setVisceralFatRating(measurement.getVisceralFatRating());
+      wm.setVisceralFatRating((short) Math.round(measurement.getVisceralFatRating()));
       wm.setBoneMass(measurement.getBoneMass());
       wm.setMetabolicAge(measurement.getMetabolicAge());
       encoder.write(wm);
