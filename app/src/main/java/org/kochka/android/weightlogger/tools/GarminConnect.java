@@ -27,13 +27,13 @@ import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpHeaders;
 import cz.msebera.android.httpclient.HttpStatus;
 import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
 import cz.msebera.android.httpclient.client.methods.CloseableHttpResponse;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
 import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
@@ -51,20 +51,26 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 public class GarminConnect {
 
   private static final String GET_TICKET_URL = "https://connect.garmin.com/modern/?ticket=";
+  public static final String GET_OAUTH1_URL = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized?login-url=https://sso.garmin.com/sso/embed&accepts-mfa-tokens=true&ticket=";
+  public static final String GET_OAUTH2_URL = "https://connectapi.garmin.com/oauth-service/oauth/exchange/user/2.0";
 
   private static final Pattern LOCATION_PATTERN = Pattern.compile("location: (.*)");
   private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
-  public static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/modern/proxy/upload-service/upload/.fit";
-
+  private static final String OAUTH1_FINDER_PATTERN = "token\":\"([a-z0-9]+?)\"";
+  private static final String OAUTH2_FINDER_PATTERN = "token=([^']+?)\"";
+  public static final String USER_AGENT = "com.garmin.android.apps.connectmobile";
+  public static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/upload-service/upload/.fit";
   private DefaultHttpClient httpclient;
+
+  public String oauth2;
 
   public boolean signin(final String username, final String password) {
     PoolingClientConnectionManager conman = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
     conman.setMaxTotal(20);
     conman.setDefaultMaxPerRoute(20);
     httpclient = new DefaultHttpClient(conman);
-    httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, "Mozilla/5.0 (Linux; Android 10; SM-A205U) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.210 Mobile Safari/537.36");
+    httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, USER_AGENT);
 
     final String signin_url = "https://sso.garmin.com/sso/signin?service=" +
             "https%3A%2F%2Fconnect.garmin.com%2Fmodern%2F" +
@@ -136,22 +142,32 @@ public class GarminConnect {
       // Follow redirections
       get = createHttpGetFromLocationHeader(getTicketLocation);
       get.setParams(params);
-      httpclient.execute(get);
+      HttpEntity entity3 = httpclient.execute(get).getEntity();
+      String entity3ResponseAsString = EntityUtils.toString(entity3);
 
-      // Initialise session. Redirect manually, as there are two URLs
-      // marked by HttpClient as duplicates (but in fact these differ by queryparams).
-      /*
-      RedirectStrategy oldRedirectStrategy = httpclient.getRedirectStrategy();
-      httpclient.setRedirectStrategy(new NoRedirectStrategy());
-      CloseableHttpResponse initSessionResponse = httpclient.execute(new HttpGet(LEGACY_INIT_SESSION_URL));
-      Header initSessionLocation = initSessionResponse.getFirstHeader("location");
-      for(int i=0; i<5; i++){
-        get = createHttpGetFromLocationHeader(initSessionLocation);
-        get.setParams(params);
-        initSessionLocation = httpclient.execute(get).getFirstHeader("location");
+      if (isSignedIn(username)) {
+
+        // Get oauth v1 token
+        HttpGet getOauth1 = new HttpGet(GET_OAUTH1_URL + ticket);
+        getOauth1.setParams(params);
+        HttpEntity oauth1Entity = httpclient.execute(getOauth1).getEntity();
+        String oauth1ResponseAsString = EntityUtils.toString(oauth1Entity);
+        String oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
+
+        // TODO
+        // Fix - getting Status 400 Bad Request
+
+        // Exchange for oauth v2 token
+        post = new HttpPost(GET_OAUTH2_URL);
+        post.addHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate");
+        post.addHeader(HttpHeaders.ACCEPT, "/");
+        post.addHeader(HttpHeaders.AUTHORIZATION, "OAuth " + oauth1Token);
+        HttpEntity oauth2Entity = httpclient.execute(post).getEntity();
+        String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
+        String oauth2Token = getOauth2FromResponse(oauth2ResponseAsString);
+
+        String debug = "breakpoint";
       }
-      httpclient.setRedirectStrategy(oldRedirectStrategy);
-      */
 
       return isSignedIn(username);
     } catch (Exception e) {
@@ -167,6 +183,14 @@ public class GarminConnect {
     String redirect = matcher.group(1);
 
     return new HttpGet(redirect);
+  }
+
+  private String getOauth1FromResponse(String responseAsString) {
+    return getFirstMatch(OAUTH1_FINDER_PATTERN, responseAsString);
+  }
+
+  private String getOauth2FromResponse(String responseAsString) {
+    return getFirstMatch(OAUTH2_FINDER_PATTERN, responseAsString);
   }
 
   private String getTicketIdFromResponse(String responseAsString) {
