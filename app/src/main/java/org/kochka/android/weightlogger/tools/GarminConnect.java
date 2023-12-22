@@ -46,6 +46,7 @@ import cz.msebera.android.httpclient.params.HttpParams;
 import cz.msebera.android.httpclient.util.EntityUtils;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
+import oauth.signpost.signature.HmacSha1MessageSigner;
 // Disable custom entity, need to find a fix to avoid heavy external Apache libs
 // import org.kochka.android.weightlogger.tools.SimpleMultipartEntity;
 
@@ -158,20 +159,19 @@ public class GarminConnect {
       HttpEntity entity2 = httpclient.execute(get).getEntity();
 
       if (isSignedIn(username)) {
+
         // https://github.com/mttkay/signpost/blob/master/docs/GettingStarted.md
-        // Using CommonsHttpOAuth instead of DefaultOAuth as per https://github.com/mttkay/signpost
+        // Using signpost's CommonsHttpOAuth instead of DefaultOAuth as per https://github.com/mttkay/signpost
         OAuthConsumer consumer = new CommonsHttpOAuthConsumer(OAUTH1_CONSUMER_KEY, OAUTH1_CONSUMER_SECRET);
+        consumer.setMessageSigner(new HmacSha1MessageSigner());
+//        consumer.setTokenWithSecret(OAUTH1_CONSUMER_KEY, OAUTH1_CONSUMER_SECRET);
 
-        HttpGet request = new HttpGet(GET_OAUTH1_URL + ticket);
-        consumer.sign(request);
-
-        HttpResponse response = httpclient.execute(request);
+        org.apache.http.client.methods.HttpGet request = new org.apache.http.client.methods.HttpGet(GET_OAUTH1_URL + ticket);
+        String signed = consumer.sign(GET_OAUTH1_URL + ticket);
+        HttpGet getOauth1 = new HttpGet(signed);
+        HttpResponse response = httpclient.execute(getOauth1);
         String oauth1ResponseAsString = EntityUtils.toString(response.getEntity());
         String oauth1Token = getOauth2FromResponse(oauth1ResponseAsString);
-
-//        // TODO Handle non-200 returns
-//        // int code = request.getResponseCode();
-//        String response = request.getResponseMessage();
 
         // Exchange for oauth v2 token
         HttpPost postOauth2 = new HttpPost(GET_OAUTH2_URL);
