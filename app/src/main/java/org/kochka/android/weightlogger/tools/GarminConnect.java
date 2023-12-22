@@ -28,10 +28,10 @@ import java.util.regex.Pattern;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpHeaders;
+import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.HttpStatus;
 import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
-import cz.msebera.android.httpclient.client.methods.CloseableHttpResponse;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
@@ -44,6 +44,8 @@ import cz.msebera.android.httpclient.params.BasicHttpParams;
 import cz.msebera.android.httpclient.params.CoreProtocolPNames;
 import cz.msebera.android.httpclient.params.HttpParams;
 import cz.msebera.android.httpclient.util.EntityUtils;
+import oauth.signpost.OAuthConsumer;
+import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 // Disable custom entity, need to find a fix to avoid heavy external Apache libs
 // import org.kochka.android.weightlogger.tools.SimpleMultipartEntity;
 
@@ -51,19 +53,30 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 public class GarminConnect {
 
   private static final String GET_TICKET_URL = "https://connect.garmin.com/modern/?ticket=";
-  public static final String GET_OAUTH1_URL = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized?login-url=https://sso.garmin.com/sso/embed&accepts-mfa-tokens=true&ticket=";
-  public static final String GET_OAUTH2_URL = "https://connectapi.garmin.com/oauth-service/oauth/exchange/user/2.0";
+
+  // TODO Fetch oauth consumer_secret from here - is this viable from an Android app (extra perms etc)?.
+  // TODO Will store in code for now as URL is public
+  // TODO Secrets provided from @matin's https://thegarth.s3.amazonaws.com/oauth_consumer.json
+  // TODO How to keep secrets secure in Android https://guides.codepath.com/android/storing-secret-keys-in-android
+
+  private static final String OAUTH_CONSUMER_URL = "https://thegarth.s3.amazonaws.com/oauth_consumer.json";
+  private static final String OAUTH1_CONSUMER_KEY = "fc3e99d2-118c-44b8-8ae3-03370dde24c0";
+  private static final String OAUTH1_CONSUMER_SECRET = "E08WAR897WEy2knn7aFBrvegVAf0AFdWBBF";
+  private static final String GET_OAUTH1_URL = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized?login-url=https://sso.garmin.com/sso/embed&accepts-mfa-tokens=true&ticket=";
+  private static final String GET_OAUTH2_URL = "https://connectapi.garmin.com/oauth-service/oauth/exchange/user/2.0";
+  private static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/upload-service/upload/.fit";
 
   private static final Pattern LOCATION_PATTERN = Pattern.compile("location: (.*)");
   private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
+
   private static final String OAUTH1_FINDER_PATTERN = "token\":\"([a-z0-9]+?)\"";
   private static final String OAUTH2_FINDER_PATTERN = "token=([^']+?)\"";
-  public static final String USER_AGENT = "com.garmin.android.apps.connectmobile";
-  public static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/upload-service/upload/.fit";
-  private DefaultHttpClient httpclient;
 
-  public String oauth2;
+  private static final String USER_AGENT = "com.garmin.android.apps.connectmobile";
+
+  private DefaultHttpClient httpclient;
+  private String oauth2;
 
   public boolean signin(final String username, final String password) {
     PoolingClientConnectionManager conman = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
@@ -142,31 +155,32 @@ public class GarminConnect {
       // Follow redirections
       get = createHttpGetFromLocationHeader(getTicketLocation);
       get.setParams(params);
-      HttpEntity entity3 = httpclient.execute(get).getEntity();
-      String entity3ResponseAsString = EntityUtils.toString(entity3);
+      HttpEntity entity2 = httpclient.execute(get).getEntity();
 
       if (isSignedIn(username)) {
+        // https://github.com/mttkay/signpost/blob/master/docs/GettingStarted.md
+        // Using CommonsHttpOAuth instead of DefaultOAuth as per https://github.com/mttkay/signpost
+        OAuthConsumer consumer = new CommonsHttpOAuthConsumer(OAUTH1_CONSUMER_KEY, OAUTH1_CONSUMER_SECRET);
 
-        // Get oauth v1 token
-        HttpGet getOauth1 = new HttpGet(GET_OAUTH1_URL + ticket);
-        getOauth1.setParams(params);
-        HttpEntity oauth1Entity = httpclient.execute(getOauth1).getEntity();
-        String oauth1ResponseAsString = EntityUtils.toString(oauth1Entity);
-        String oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
+        HttpGet request = new HttpGet(GET_OAUTH1_URL + ticket);
+        consumer.sign(request);
 
-        // TODO
-        // Fix - getting Status 400 Bad Request
+        HttpResponse response = httpclient.execute(request);
+        String oauth1ResponseAsString = EntityUtils.toString(response.getEntity());
+        String oauth1Token = getOauth2FromResponse(oauth1ResponseAsString);
+
+//        // TODO Handle non-200 returns
+//        // int code = request.getResponseCode();
+//        String response = request.getResponseMessage();
 
         // Exchange for oauth v2 token
-        post = new HttpPost(GET_OAUTH2_URL);
+        HttpPost postOauth2 = new HttpPost(GET_OAUTH2_URL);
         post.addHeader(HttpHeaders.ACCEPT_ENCODING, "gzip, deflate");
         post.addHeader(HttpHeaders.ACCEPT, "/");
         post.addHeader(HttpHeaders.AUTHORIZATION, "OAuth " + oauth1Token);
-        HttpEntity oauth2Entity = httpclient.execute(post).getEntity();
+        HttpEntity oauth2Entity = httpclient.execute(postOauth2).getEntity();
         String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
         String oauth2Token = getOauth2FromResponse(oauth2ResponseAsString);
-
-        String debug = "breakpoint";
       }
 
       return isSignedIn(username);
@@ -211,7 +225,7 @@ public class GarminConnect {
   public boolean isSignedIn(String username) {
     if (httpclient == null) return false;
     try {
-      CloseableHttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/currentuser-service/user/info"));
+      HttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/currentuser-service/user/info"));
       HttpEntity entity = execute.getEntity();
       String json = EntityUtils.toString(entity);
       JSONObject js_user = new JSONObject(json);
@@ -239,11 +253,11 @@ public class GarminConnect {
       multipartEntity.addBinaryBody("file", fitFile);
       post.setEntity(multipartEntity.build());
 
-      CloseableHttpResponse httpResponse = httpclient.execute(post);
+      HttpResponse httpResponse = httpclient.execute(post);
       if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED){
         Header locationHeader = httpResponse.getFirstHeader("Location");
         String uploadStatusUrl = locationHeader.getValue();
-        CloseableHttpResponse getStatusResponse = httpclient.execute(new HttpGet(uploadStatusUrl));
+        HttpResponse getStatusResponse = httpclient.execute(new HttpGet(uploadStatusUrl));
         String responseString = EntityUtils.toString(getStatusResponse.getEntity());
         JSONObject js_upload = new JSONObject(responseString);
       }
