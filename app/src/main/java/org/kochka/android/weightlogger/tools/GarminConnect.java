@@ -63,7 +63,7 @@ public class GarminConnect {
   private static final String OAUTH_CONSUMER_URL = "https://thegarth.s3.amazonaws.com/oauth_consumer.json";
   private static final String OAUTH1_CONSUMER_KEY = "fc3e99d2-118c-44b8-8ae3-03370dde24c0";
   private static final String OAUTH1_CONSUMER_SECRET = "E08WAR897WEy2knn7aFBrvegVAf0AFdWBBF";
-  private static final String GET_OAUTH1_URL = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized?login-url=https://sso.garmin.com/sso/embed&accepts-mfa-tokens=true&ticket=";
+  private static final String GET_OAUTH1_URL = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized?login-url=https://sso.garmin.com/sso/embed";
   private static final String GET_OAUTH2_URL = "https://connectapi.garmin.com/oauth-service/oauth/exchange/user/2.0";
   private static final String FIT_FILE_UPLOAD_URL = "https://connect.garmin.com/upload-service/upload/.fit";
 
@@ -166,12 +166,12 @@ public class GarminConnect {
         consumer.setMessageSigner(new HmacSha1MessageSigner());
 //        consumer.setTokenWithSecret(OAUTH1_CONSUMER_KEY, OAUTH1_CONSUMER_SECRET);
 
-        org.apache.http.client.methods.HttpGet request = new org.apache.http.client.methods.HttpGet(GET_OAUTH1_URL + ticket);
-        String signed = consumer.sign(GET_OAUTH1_URL + ticket);
-        HttpGet getOauth1 = new HttpGet(signed);
+        org.apache.http.client.methods.HttpGet request = new org.apache.http.client.methods.HttpGet(GET_OAUTH1_URL);
+        String signed = consumer.sign(GET_OAUTH1_URL);
+        HttpGet getOauth1 = new HttpGet(signed + "&accepts-mfa-tokens=true&ticket=" + ticket);
         HttpResponse response = httpclient.execute(getOauth1);
         String oauth1ResponseAsString = EntityUtils.toString(response.getEntity());
-        String oauth1Token = getOauth2FromResponse(oauth1ResponseAsString);
+        String oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
 
         // Exchange for oauth v2 token
         HttpPost postOauth2 = new HttpPost(GET_OAUTH2_URL);
