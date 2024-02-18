@@ -288,7 +288,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
                 if (username.equals("") || password.equals("")) 
                   throw new Exception(getString(R.string.gc_configure_account));
                 this.gc = new GarminConnect();
-                if (!this.gc.signin(username, password))
+                if (!this.gc.signin(username, password, WeightLoggerActivity.this))
                   throw new Exception(getString(R.string.gc_account_error));  
               } else
                 throw new Exception(getString(R.string.network_error));  

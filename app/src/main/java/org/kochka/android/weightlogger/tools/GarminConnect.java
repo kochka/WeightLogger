@@ -15,16 +15,25 @@
 */
 package org.kochka.android.weightlogger.tools;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.InputType;
+import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,22 +46,22 @@ import cz.msebera.android.httpclient.NameValuePair;
 import cz.msebera.android.httpclient.client.entity.UrlEncodedFormEntity;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
+import cz.msebera.android.httpclient.client.protocol.HttpClientContext;
+import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.entity.mime.HttpMultipartMode;
 import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
-import cz.msebera.android.httpclient.impl.client.DefaultHttpClient;
-import cz.msebera.android.httpclient.impl.conn.PoolingClientConnectionManager;
-import cz.msebera.android.httpclient.impl.conn.SchemeRegistryFactory;
+import cz.msebera.android.httpclient.impl.client.CloseableHttpClient;
+import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
+import cz.msebera.android.httpclient.impl.client.LaxRedirectStrategy;
+import cz.msebera.android.httpclient.impl.conn.PoolingHttpClientConnectionManager;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
-import cz.msebera.android.httpclient.params.BasicHttpParams;
-import cz.msebera.android.httpclient.params.CoreProtocolPNames;
-import cz.msebera.android.httpclient.params.HttpParams;
+import cz.msebera.android.httpclient.protocol.HttpContext;
 import cz.msebera.android.httpclient.util.EntityUtils;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
-import oauth.signpost.http.HttpParameters;
 import oauth.signpost.http.HttpRequest;
 import oauth.signpost.signature.HmacSha1MessageSigner;
 // Disable custom entity, need to find a fix to avoid heavy external Apache libs
@@ -94,7 +103,10 @@ public class GarminConnect {
   private static final String GET_OAUTH1_URL = "https://connectapi.garmin.com/oauth-service/oauth/preauthorized?";
   private static final String GET_OAUTH2_URL = "https://connectapi.garmin.com/oauth-service/oauth/exchange/user/2.0";
   private static final String FIT_FILE_UPLOAD_URL = "https://connectapi.garmin.com/upload-service/upload";
-
+  private static final String SSO_URL = "https://sso.garmin.com/sso";
+  private static final String SSO_EMBED_URL = SSO_URL + "/embed";
+  private static final String SSO_SIGNIN_URL = SSO_URL + "/signin";
+  private static final String SSO_MFA_URL = SSO_URL + "/verifyMFA/loginEnterMfaCode";
   private static final Pattern LOCATION_PATTERN = Pattern.compile("location: (.*)");
   private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
@@ -104,46 +116,94 @@ public class GarminConnect {
 
   private static final String USER_AGENT = "com.garmin.android.apps.connectmobile";
 
-  private DefaultHttpClient httpclient;
+  private final List<NameValuePair> EMBED_PARAMS = Arrays.asList(
+          new BasicNameValuePair("id", "gauth-widget"),
+          new BasicNameValuePair("embedWidget", "true"),
+          new BasicNameValuePair("gauthHost", SSO_URL)
+  );
+
+  private final List<NameValuePair> SIGNIN_PARAMS = Arrays.asList(
+          new BasicNameValuePair("id", "gauth-widget"),
+          new BasicNameValuePair("embedWidget", "true"),
+          new BasicNameValuePair("gauthHost", SSO_EMBED_URL),
+          new BasicNameValuePair("service", SSO_EMBED_URL),
+          new BasicNameValuePair("source", SSO_EMBED_URL),
+          new BasicNameValuePair("redirectAfterAccountLoginUrl", SSO_EMBED_URL),
+          new BasicNameValuePair("redirectAfterAccountCreationUrl", SSO_EMBED_URL)
+  );
+
+  //private DefaultHttpClient httpclient;
+  private CloseableHttpClient httpclient;
+  private HttpClientContext httpContext;
   // TODO: Make a class to hold expiry, refresh token, etc. Store this.
   private String oauth2Token;
 
-  public boolean signin(final String username, final String password) {
-    PoolingClientConnectionManager conman = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
+  public boolean signin(final String username, final String password, Activity currentActivity) {
+    PoolingHttpClientConnectionManager conman =  new PoolingHttpClientConnectionManager();
+    //PoolingClientConnectionManager conman = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
     conman.setMaxTotal(20);
     conman.setDefaultMaxPerRoute(20);
-    httpclient = new DefaultHttpClient(conman);
-    httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, USER_AGENT);
 
-    final String signin_url = "https://sso.garmin.com/sso/signin?id=gauth-widget&embedWidget=true" +
-            "&gauthHost=https://sso.garmin.com/sso/embed&service=https://sso.garmin.com/sso/embed" +
-            "&source=https://sso.garmin.com/sso/embed" +
-            "&redirectAfterAccountLoginUrl=https://sso.garmin.com/sso/embed" +
-            "&redirectAfterAccountCreationUrl=https://sso.garmin.com/sso/embed";
+    HttpClientBuilder clientBuilder = HttpClientBuilder.create();
+    clientBuilder.useSystemProperties();
+    clientBuilder.setUserAgent(USER_AGENT);
+
+    httpContext = new HttpClientContext();
+
+    // We need a Lax redirect strategy as Garmin will redirect POSTs.
+    clientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
+    httpclient = clientBuilder.build();
+
+    //httpclient = new DefaultHttpClient(conman);
+    //httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, USER_AGENT);
 
     try {
-      HttpParams params = new BasicHttpParams();
-      params.setParameter("http.protocol.handle-redirects", false);
+      //HttpParams params = new BasicHttpParams();
+      //params.setParameter("http.protocol.handle-redirects", false);
 
-      // Create session
-      HttpEntity loginEntity = httpclient.execute(new HttpGet(signin_url)).getEntity();
-      String loginContent = EntityUtils.toString(loginEntity);
-      String csrf = getCSRFToken(loginContent);
+      // Get cookies
+      URIBuilder cookieURIBuilder = new URIBuilder(SSO_EMBED_URL);
+      cookieURIBuilder.addParameters(EMBED_PARAMS);
+      HttpGet cookieGet = new HttpGet(cookieURIBuilder.build());
+      httpclient.execute(cookieGet,httpContext);
+
+
+      // Create a session.
+      URIBuilder sessionURIBuilder = new URIBuilder(SSO_SIGNIN_URL);
+      sessionURIBuilder.addParameters(EMBED_PARAMS);
+      HttpGet sessionGetRequest = new HttpGet(sessionURIBuilder.build());
+      sessionGetRequest.setHeader(HttpHeaders.REFERER, getLastUri());
+      HttpResponse sessionResponse = httpclient.execute(sessionGetRequest, httpContext);
+      HttpEntity sessionEntity = sessionResponse.getEntity();
+      String sessionContent = EntityUtils.toString(sessionEntity);
+      String csrf = getCSRFToken(sessionContent);
 
       // Sign in
-      HttpPost post = new HttpPost(signin_url);
-      post.setHeader("Referer", signin_url);
-      post.setParams(params);
-      List<NameValuePair> nvp = new ArrayList<>();
-      nvp.add(new BasicNameValuePair("embed", "false"));
-      nvp.add(new BasicNameValuePair("username", username));
-      nvp.add(new BasicNameValuePair("password", password));
-      nvp.add(new BasicNameValuePair("_csrf", csrf));
-      post.setEntity(new UrlEncodedFormEntity(nvp));
-      HttpEntity entity1 = httpclient.execute(post).getEntity();
-      // Todo: Handle MFA codes.
-      String responseAsString = EntityUtils.toString(entity1);
-      String ticket = getTicketIdFromResponse(responseAsString);
+      URIBuilder loginURIBuilder = new URIBuilder(SSO_SIGNIN_URL);
+      loginURIBuilder.addParameters(SIGNIN_PARAMS);
+      HttpPost loginPostRequest = new HttpPost(loginURIBuilder.build());
+      loginPostRequest.setHeader(HttpHeaders.REFERER, getLastUri());
+      List<NameValuePair> loginPostEntity = Arrays.asList(
+              new BasicNameValuePair("username", username),
+              new BasicNameValuePair("password", password),
+              new BasicNameValuePair("embed", "true"),
+              new BasicNameValuePair("_csrf", csrf)
+      );
+      loginPostRequest.setEntity(new UrlEncodedFormEntity(loginPostEntity, "UTF-8"));
+      HttpResponse loginResponse = httpclient.execute(loginPostRequest, httpContext);
+      HttpEntity loginResponseEntity = loginResponse.getEntity();
+      String loginContent = EntityUtils.toString(loginResponseEntity);
+
+      //String uri = httpContext.getRequest();
+
+      String ticket = "";
+      if (loginRequiresMFA(loginContent)) {
+        csrf = getCSRFToken(loginContent);
+        String mfaResponse = handle_mfa(csrf, currentActivity);
+        ticket = getTicketIdFromResponse(mfaResponse);
+      } else {
+        ticket = getTicketIdFromResponse(loginContent);
+      }
 
       if (!isSignedIn(username)) {
         return  false;
@@ -172,7 +232,7 @@ public class GarminConnect {
     //HttpParameters signingParams = consumer.getRequestParameters();
     getOauth1.addHeader("Authorization", signedRequest.getHeader("Authorization"));
 
-    HttpResponse response = httpclient.execute(getOauth1);
+    HttpResponse response = httpclient.execute(getOauth1,httpContext);
     String oauth1ResponseAsString = EntityUtils.toString(response.getEntity());
     OAuth1Token oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
     return oauth1Token;
@@ -189,7 +249,7 @@ public class GarminConnect {
     postOauth2.addHeader(HttpHeaders.USER_AGENT, USER_AGENT);
     postOauth2.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
     postOauth2.addHeader(HttpHeaders.AUTHORIZATION, signedExchangeRequest.getHeader("Authorization"));
-    HttpEntity oauth2Entity = httpclient.execute(postOauth2).getEntity();
+    HttpEntity oauth2Entity = httpclient.execute(postOauth2,httpContext).getEntity();
     String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
     try {
       oauth2Token = getOauth2FromResponse(oauth2ResponseAsString);
@@ -243,7 +303,7 @@ public class GarminConnect {
   public boolean isSignedIn(String username) {
     if (httpclient == null) return false;
     try {
-      HttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/currentuser-service/user/info"));
+      HttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/currentuser-service/user/info"),httpContext);
       HttpEntity entity = execute.getEntity();
       String json = EntityUtils.toString(entity);
       JSONObject js_user = new JSONObject(json);
@@ -272,11 +332,11 @@ public class GarminConnect {
       multipartEntity.addBinaryBody("file", fitFile);
       post.setEntity(multipartEntity.build());
 
-      HttpResponse httpResponse = httpclient.execute(post);
+      HttpResponse httpResponse = httpclient.execute(post, httpContext);
       if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED){
         Header locationHeader = httpResponse.getFirstHeader("Location");
         String uploadStatusUrl = locationHeader.getValue();
-        HttpResponse getStatusResponse = httpclient.execute(new HttpGet(uploadStatusUrl));
+        HttpResponse getStatusResponse = httpclient.execute(new HttpGet(uploadStatusUrl),httpContext);
         String responseString = EntityUtils.toString(getStatusResponse.getEntity());
         JSONObject js_upload = new JSONObject(responseString);
       }
@@ -291,6 +351,80 @@ public class GarminConnect {
     } catch (Exception e) {
       return false;
     }
+  }
+
+
+  private String promptMFAModalDialog(Activity currentActivity) throws InterruptedException {
+
+    BlockingQueue<String> inputQueue = new LinkedBlockingQueue<>();
+
+    currentActivity.runOnUiThread(new Runnable() {
+      @Override
+      public void run() {
+        AlertDialog.Builder mfaModalBuilder = new AlertDialog.Builder(currentActivity);
+        mfaModalBuilder.setTitle("MFA");
+        final EditText mfaInput = new EditText(currentActivity);
+        mfaInput.setInputType(InputType.TYPE_CLASS_TEXT);
+        mfaModalBuilder.setView(mfaInput);
+        mfaModalBuilder.setMessage("Enter the 6 digit MFA code you received by SMS or email:");
+        mfaModalBuilder.setPositiveButton("Submit", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int id) {
+            String textInput = mfaInput.getText().toString();
+            inputQueue.add(textInput);
+          }
+        });
+
+        mfaModalBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int i) {
+            inputQueue.add(""); // Add this so that the queue doesn't block.
+          }
+        });
+
+        mfaModalBuilder.show();
+      }
+    });
+    return inputQueue.take();
+  }
+
+private boolean loginRequiresMFA(String responseAsString) {
+    // Determine whether we need MFA using the title of the response - it will contain the substring
+    // 'MFA' if we get redirected to the MFA page.
+    String pageTitlePattern = "<title>(.*?)</title>";
+    String pageTitle = getFirstMatch(pageTitlePattern,responseAsString);
+    if (pageTitle.toUpperCase().contains("MFA")) {
+      return true;
+    } else {
+      return false;
+    }
+}
+
+  private String handle_mfa(String csrf, Activity currentActivity) throws InterruptedException, URISyntaxException, IOException {
+    final String mfaCode = promptMFAModalDialog(currentActivity);
+
+    URIBuilder mfaURIBuilder = new URIBuilder(SSO_MFA_URL);
+    mfaURIBuilder.addParameters(SIGNIN_PARAMS);
+    HttpPost loginPostRequest = new HttpPost(mfaURIBuilder.build());
+    loginPostRequest.setHeader(HttpHeaders.REFERER, getLastUri());
+    List<NameValuePair> loginPostEntity = Arrays.asList(
+            new BasicNameValuePair("mfa-code", mfaCode),
+            new BasicNameValuePair("embed", "true"),
+            new BasicNameValuePair("_csrf", csrf),
+            new BasicNameValuePair("fromPage", "setupEnterMfaCode")
+    );
+    loginPostRequest.setEntity(new UrlEncodedFormEntity(loginPostEntity, "UTF-8"));
+    HttpResponse loginResponse = httpclient.execute(loginPostRequest,httpContext);
+    int code = loginResponse.getStatusLine().getStatusCode();
+    HttpEntity loginResponseEntity = loginResponse.getEntity();
+    String loginContent = EntityUtils.toString(loginResponseEntity);
+    return  loginContent;
+  }
+
+  private String getLastUri() {
+    String target = this.httpContext.getTargetHost().toString();
+    String partialUri = this.httpContext.getRequest().getRequestLine().getUri();
+    return  target+partialUri;
   }
 
   public boolean uploadFitFile(String fitFilePath) {
