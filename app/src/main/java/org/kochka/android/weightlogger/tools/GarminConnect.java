@@ -28,7 +28,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +54,6 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.impl.client.LaxRedirectStrategy;
 import cz.msebera.android.httpclient.impl.conn.PoolingHttpClientConnectionManager;
 import cz.msebera.android.httpclient.message.BasicNameValuePair;
-import cz.msebera.android.httpclient.protocol.HttpContext;
 import cz.msebera.android.httpclient.util.EntityUtils;
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
@@ -74,11 +72,16 @@ public class GarminConnect {
     private String oauth1Token;
     private String oauth1TokenSecret;
 
-    // TODO: add additional (optional) members for MFA.
+    // These member are currently unused. Maybe they can be used to issue a new OAuth1 token without
+    // requiring the user to re-enter an MFA code.
+    private String mfaToken;
+    private String mfaExpirationTimestamp;
 
-    public OAuth1Token(String oauth1Token, String oauth1TokenSecret) {
+    public OAuth1Token(String oauth1Token, String oauth1TokenSecret, String mfaToken, String mfaExpirationTimestamp) {
       this.oauth1Token = oauth1Token;
       this.oauth1TokenSecret = oauth1TokenSecret;
+      this.mfaToken = mfaToken;
+      this.mfaExpirationTimestamp = mfaExpirationTimestamp;
     }
 
     public String getOauth1Token() {
@@ -87,6 +90,27 @@ public class GarminConnect {
 
     public String getOauth1TokenSecret() {
       return oauth1TokenSecret;
+    }
+
+    public String getMfaToken() {
+      return mfaToken;
+    }
+
+    public String getMfaTokenExpirationTimestamp() {
+      return mfaExpirationTimestamp;
+    }
+  }
+
+  public class Oauth2Token {
+    // TODO: include the expiry date, refresh token, and the refresh token expiry
+    private String oauth2Token;
+
+    public Oauth2Token(String oauth2Token) {
+      this.oauth2Token = oauth2Token;
+    }
+
+    public String getOauth2Token() {
+      return oauth2Token;
     }
   }
 
@@ -111,9 +135,6 @@ public class GarminConnect {
   private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
 
-  private static final String OAUTH1_FINDER_PATTERN = "token\":\"([a-z0-9]+?)\"";
-  private static final String OAUTH2_FINDER_PATTERN = "token=([^']+?)\"";
-
   private static final String USER_AGENT = "com.garmin.android.apps.connectmobile";
 
   private final List<NameValuePair> EMBED_PARAMS = Arrays.asList(
@@ -132,15 +153,14 @@ public class GarminConnect {
           new BasicNameValuePair("redirectAfterAccountCreationUrl", SSO_EMBED_URL)
   );
 
-  //private DefaultHttpClient httpclient;
+  // TODO: manage the HTTP client and context in a wrapper class
   private CloseableHttpClient httpclient;
   private HttpClientContext httpContext;
-  // TODO: Make a class to hold expiry, refresh token, etc. Store this.
-  private String oauth2Token;
+
+  private Oauth2Token oauth2Token;
 
   public boolean signin(final String username, final String password, Activity currentActivity) {
     PoolingHttpClientConnectionManager conman =  new PoolingHttpClientConnectionManager();
-    //PoolingClientConnectionManager conman = new PoolingClientConnectionManager(SchemeRegistryFactory.createDefault());
     conman.setMaxTotal(20);
     conman.setDefaultMaxPerRoute(20);
 
@@ -150,28 +170,18 @@ public class GarminConnect {
 
     httpContext = new HttpClientContext();
 
-    // We need a Lax redirect strategy as Garmin will redirect POSTs.
+    // We need a lax redirect strategy as Garmin will redirect POSTs.
     clientBuilder.setRedirectStrategy(new LaxRedirectStrategy());
     httpclient = clientBuilder.build();
 
-    //httpclient = new DefaultHttpClient(conman);
-    //httpclient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, USER_AGENT);
-
     try {
-      //HttpParams params = new BasicHttpParams();
-      //params.setParameter("http.protocol.handle-redirects", false);
-
       // Get cookies
-      URIBuilder cookieURIBuilder = new URIBuilder(SSO_EMBED_URL);
-      cookieURIBuilder.addParameters(EMBED_PARAMS);
-      HttpGet cookieGet = new HttpGet(cookieURIBuilder.build());
+      // TODO: are cookies actually passed between calls by the http client/context?
+      HttpGet cookieGet = new HttpGet(buildURI(SSO_EMBED_URL,EMBED_PARAMS));
       httpclient.execute(cookieGet,httpContext);
 
-
       // Create a session.
-      URIBuilder sessionURIBuilder = new URIBuilder(SSO_SIGNIN_URL);
-      sessionURIBuilder.addParameters(EMBED_PARAMS);
-      HttpGet sessionGetRequest = new HttpGet(sessionURIBuilder.build());
+      HttpGet sessionGetRequest = new HttpGet(buildURI(SSO_SIGNIN_URL, EMBED_PARAMS));
       sessionGetRequest.setHeader(HttpHeaders.REFERER, getLastUri());
       HttpResponse sessionResponse = httpclient.execute(sessionGetRequest, httpContext);
       HttpEntity sessionEntity = sessionResponse.getEntity();
@@ -179,9 +189,7 @@ public class GarminConnect {
       String csrf = getCSRFToken(sessionContent);
 
       // Sign in
-      URIBuilder loginURIBuilder = new URIBuilder(SSO_SIGNIN_URL);
-      loginURIBuilder.addParameters(SIGNIN_PARAMS);
-      HttpPost loginPostRequest = new HttpPost(loginURIBuilder.build());
+      HttpPost loginPostRequest = new HttpPost(buildURI(SSO_SIGNIN_URL, SIGNIN_PARAMS));
       loginPostRequest.setHeader(HttpHeaders.REFERER, getLastUri());
       List<NameValuePair> loginPostEntity = Arrays.asList(
               new BasicNameValuePair("username", username),
@@ -194,12 +202,10 @@ public class GarminConnect {
       HttpEntity loginResponseEntity = loginResponse.getEntity();
       String loginContent = EntityUtils.toString(loginResponseEntity);
 
-      //String uri = httpContext.getRequest();
-
       String ticket = "";
       if (loginRequiresMFA(loginContent)) {
         csrf = getCSRFToken(loginContent);
-        String mfaResponse = handle_mfa(csrf, currentActivity);
+        String mfaResponse = handleMfa(csrf, currentActivity);
         ticket = getTicketIdFromResponse(mfaResponse);
       } else {
         ticket = getTicketIdFromResponse(loginContent);
@@ -214,8 +220,12 @@ public class GarminConnect {
       OAuthConsumer consumer = new CommonsHttpOAuthConsumer(OAUTH1_CONSUMER_KEY, OAUTH1_CONSUMER_SECRET);
       consumer.setMessageSigner(new HmacSha1MessageSigner());
 
-      OAuth1Token oauth1Token = getOAuth1Token(ticket, consumer);
-      return performOauth2exchange(oauth1Token, consumer);
+      boolean success = getOAuth1Token(ticket, consumer);
+      if (!success) {
+        return false;
+      }
+
+      return performOauth2exchange(consumer);
 
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
@@ -223,36 +233,44 @@ public class GarminConnect {
     }
   }
 
-  private OAuth1Token getOAuth1Token(String ticket, OAuthConsumer consumer) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, IOException {
-    String theRequestStr = GET_OAUTH1_URL+ "ticket=" + ticket + "&login-url=https://sso.garmin.com/sso/embed&accepts-mfa-tokens=true";
-    org.apache.http.client.methods.HttpGet theRequest = new org.apache.http.client.methods.HttpGet(theRequestStr);
-    HttpRequest signedRequest = consumer.sign(theRequest);
-    //String signed = consumer.sign(GET_OAUTH1_URL+"&accepts-mfa-tokens=true&ticket=" + ticket);
-    HttpGet getOauth1 = new HttpGet(theRequestStr);
-    //HttpParameters signingParams = consumer.getRequestParameters();
-    getOauth1.addHeader("Authorization", signedRequest.getHeader("Authorization"));
+  private String buildURI(String root, List<NameValuePair> params) throws URISyntaxException {
+    URIBuilder uriBuilder = new URIBuilder(root);
+    uriBuilder.addParameters(params);
+    return uriBuilder.build().toString();
+  }
 
+  private boolean getOAuth1Token(String ticket, OAuthConsumer consumer) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, IOException, URISyntaxException {
+    List<NameValuePair> oauth1TokenParams = Arrays.asList(
+            new BasicNameValuePair("ticket", ticket),
+            new BasicNameValuePair("login-url", "https://sso.garmin.com/sso/embed"),
+            new BasicNameValuePair("accepts-mfa-tokens", "true")
+    );
+    String oauth1RequestURI = buildURI(GET_OAUTH1_URL,oauth1TokenParams);
+    String signedOauth1RequestURI = consumer.sign(oauth1RequestURI);
+    HttpGet getOauth1 = new HttpGet(signedOauth1RequestURI);
+    getOauth1.setHeader(HttpHeaders.REFERER, getLastUri());
     HttpResponse response = httpclient.execute(getOauth1,httpContext);
     String oauth1ResponseAsString = EntityUtils.toString(response.getEntity());
     OAuth1Token oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
-    return oauth1Token;
+    consumer.setTokenWithSecret(oauth1Token.getOauth1Token(), oauth1Token.getOauth1TokenSecret());
+    return true;
   }
 
-  private boolean performOauth2exchange(OAuth1Token oauth1Token, OAuthConsumer consumer) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, IOException {
+  private boolean performOauth2exchange(OAuthConsumer consumer) throws OAuthMessageSignerException, OAuthExpectationFailedException, OAuthCommunicationException, IOException {
     // Exchange for oauth v2 token
-    consumer.setTokenWithSecret(oauth1Token.getOauth1Token(), oauth1Token.getOauth1TokenSecret());
-
+    // We have to manually create a request object here because sign(String url) only signs GET
+    // requests.
     org.apache.http.client.methods.HttpPost exchangeRequest = new org.apache.http.client.methods.HttpPost(GET_OAUTH2_URL);
     HttpRequest signedExchangeRequest = consumer.sign(exchangeRequest);
 
     HttpPost postOauth2 = new HttpPost(GET_OAUTH2_URL);
-    postOauth2.addHeader(HttpHeaders.USER_AGENT, USER_AGENT);
-    postOauth2.addHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
-    postOauth2.addHeader(HttpHeaders.AUTHORIZATION, signedExchangeRequest.getHeader("Authorization"));
+    postOauth2.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+    postOauth2.setHeader(HttpHeaders.REFERER, getLastUri());
+    postOauth2.setHeader(HttpHeaders.AUTHORIZATION, signedExchangeRequest.getHeader("Authorization"));
     HttpEntity oauth2Entity = httpclient.execute(postOauth2,httpContext).getEntity();
     String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
     try {
-      oauth2Token = getOauth2FromResponse(oauth2ResponseAsString);
+      this.oauth2Token = getOauth2FromResponse(oauth2ResponseAsString);
     }
     catch (JSONException e) {
       return  false;
@@ -275,14 +293,18 @@ public class GarminConnect {
     Uri uri = Uri.parse("http://invalid?"+responseAsString);
     String oauth1Token = uri.getQueryParameter("oauth_token");
     String oauth1TokenSecret = uri.getQueryParameter("oauth_token_secret");
-    // TODO: add additional (optional) query parameters for MFA.
-    return  new OAuth1Token(oauth1Token,oauth1TokenSecret);
+
+    // The following args aren't always present but getQueryParameter will return just null if they
+    // aren't.
+    String mfaToken = uri.getQueryParameter("mfa_token");
+    String mfaExpirationTimestamp = uri.getQueryParameter("mfa_expiration_timestamp");
+    return new OAuth1Token(oauth1Token,oauth1TokenSecret, mfaToken, mfaExpirationTimestamp);
   }
 
-  private String getOauth2FromResponse(String responseAsString) throws JSONException {
+  private Oauth2Token getOauth2FromResponse(String responseAsString) throws JSONException {
     // This time they return JSON.
     JSONObject response = new JSONObject(responseAsString);
-    return response.getString("access_token");
+    return new Oauth2Token(response.getString("access_token"));
   }
 
   private String getTicketIdFromResponse(String responseAsString) {
@@ -325,7 +347,7 @@ public class GarminConnect {
       post.setHeader("referer", "https://connect.garmin.com/modern/import-data");
       post.setHeader("authority", "connect.garmin.com");
       post.setHeader("language", "EN");
-      post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.oauth2Token);
+      post.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.oauth2Token.getOauth2Token());
 
       MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
       multipartEntity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -400,7 +422,7 @@ private boolean loginRequiresMFA(String responseAsString) {
     }
 }
 
-  private String handle_mfa(String csrf, Activity currentActivity) throws InterruptedException, URISyntaxException, IOException {
+  private String handleMfa(String csrf, Activity currentActivity) throws InterruptedException, URISyntaxException, IOException {
     final String mfaCode = promptMFAModalDialog(currentActivity);
 
     URIBuilder mfaURIBuilder = new URIBuilder(SSO_MFA_URL);
