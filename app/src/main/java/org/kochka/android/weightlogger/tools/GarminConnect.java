@@ -18,6 +18,7 @@ package org.kochka.android.weightlogger.tools;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.InputType;
@@ -99,6 +100,18 @@ public class GarminConnect {
     public String getMfaTokenExpirationTimestamp() {
       return mfaExpirationTimestamp;
     }
+
+    public Boolean saveToSharedPreferences(SharedPreferences.Editor sharedPreferenceEditor) {
+      // Todo: support EncryptedSharedPreferences.
+      sharedPreferenceEditor.putString("garminOauth1Token", this.oauth1Token);
+      sharedPreferenceEditor.putString("garminOauth1TokenSecret", this.oauth1TokenSecret);
+      sharedPreferenceEditor.putString("garminOauth1MfaToken", this.mfaToken);
+      // Todo: should the timestamp be stored as a numeric type?
+      sharedPreferenceEditor.putString("garminOauth1MfaExpirationTimestamp", this.getMfaTokenExpirationTimestamp());
+      return sharedPreferenceEditor.commit();
+    }
+
+    // Todo: add ability to load from SharedPreferences.
   }
 
   public class Oauth2Token {
