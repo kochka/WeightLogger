@@ -344,7 +344,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
           i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_share_subject));
           i.putExtra(Intent.EXTRA_TEXT, gen_text);
           i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Export.path(WeightLoggerActivity.this) + File.separator + filename)));
-          PendingIntent pi = PendingIntent.getActivity(WeightLoggerActivity.this, 0, i, 0);
+          PendingIntent pi = PendingIntent.getActivity(WeightLoggerActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
           
           NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(WeightLoggerActivity.this);
           nBuilder.setSmallIcon(icon);
