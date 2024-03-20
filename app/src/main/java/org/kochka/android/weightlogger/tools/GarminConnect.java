@@ -17,12 +17,16 @@ package org.kochka.android.weightlogger.tools;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.InputType;
+import android.util.Pair;
 import android.widget.EditText;
+
+import com.garmin.fit.Bool;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,24 +111,71 @@ public class GarminConnect {
       sharedPreferenceEditor.putString("garminOauth1TokenSecret", this.oauth1TokenSecret);
       sharedPreferenceEditor.putString("garminOauth1MfaToken", this.mfaToken);
       // Todo: should the timestamp be stored as a numeric type?
-      sharedPreferenceEditor.putString("garminOauth1MfaExpirationTimestamp", this.getMfaTokenExpirationTimestamp());
+      sharedPreferenceEditor.putString("garminOauth1MfaExpirationTimestamp", this.mfaExpirationTimestamp);
       return sharedPreferenceEditor.commit();
     }
+  }
 
-    // Todo: add ability to load from SharedPreferences.
+  // In outer scope as static methods in nested classes aren't supported in this version of the JDK.
+  private Pair<Boolean,OAuth1Token> loadOauth1FromSharedPreferences(SharedPreferences sharedPreferences) {
+    String token = sharedPreferences.getString("garminOauth1Token","");
+    String tokenSecret = sharedPreferences.getString("garminOauth1TokenSecret","");
+    String mfaToken = sharedPreferences.getString("garminOauth1MfaToken","");
+    String mfaExpirationTimestamp = sharedPreferences.getString("garminOauth1MfaExpirationTimestamp","");
+
+    OAuth1Token oAuth1Token = new OAuth1Token(token,tokenSecret,mfaToken,mfaExpirationTimestamp);
+    // TODO: Add failure case if the token or secret are invalid.
+    return new Pair<>(true, oAuth1Token);
   }
 
   public class Oauth2Token {
     // TODO: include the expiry date, refresh token, and the refresh token expiry
     private String oauth2Token;
+    private String oauth2RefreshToken;
+    private long timeOfExpiry;
+    private long timeOfRefreshExpiry;
 
-    public Oauth2Token(String oauth2Token) {
+
+    public Oauth2Token(String oauth2Token, String oauth2RefreshToken, long timeOfExpiry, long timeOfRefreshExpiry) {
       this.oauth2Token = oauth2Token;
+      this.oauth2RefreshToken = oauth2RefreshToken;
+      this.timeOfExpiry = timeOfExpiry;
+      this.timeOfRefreshExpiry = timeOfRefreshExpiry;
     }
 
     public String getOauth2Token() {
       return oauth2Token;
     }
+
+    public Boolean saveToSharedPreferences(SharedPreferences.Editor sharedPreferenceEditor) {
+      // Todo: support EncryptedSharedPreferences.
+      sharedPreferenceEditor.putString("garminOauth2Token", this.oauth2Token);
+      sharedPreferenceEditor.putString("garminOauth2RefreshToken", this.oauth2RefreshToken);
+      sharedPreferenceEditor.putLong("garminOauth2ExpiryTimestamp", this.timeOfExpiry);
+      sharedPreferenceEditor.putLong("garminOauth2RefreshExpiryTimestamp", this.timeOfRefreshExpiry);
+      return sharedPreferenceEditor.commit();
+    }
+  }
+
+  private Boolean loadOauth2FromSharedPreferences(SharedPreferences sharedPreferences) {
+    long currentTime = System.currentTimeMillis() / 1000;
+    String oauth2Token = sharedPreferences.getString("garminOauth2Token", "");
+    String oauth2RefreshToken = sharedPreferences.getString("garminOauth2RefreshToken", "");
+    long timeOfExpiry = sharedPreferences.getLong("garminOauth2ExpiryTimestamp",-1);
+    long timeOfRefreshExpiry = sharedPreferences.getLong("garminOauth2RefreshExpiryTimestamp",-1);;
+
+    // Check whether the tokens are valid or whether they have expired.
+    if (oauth2Token == "" || oauth2RefreshToken == "" || timeOfRefreshExpiry < currentTime) {
+      return  false;
+    }
+
+    if (timeOfExpiry < currentTime) {
+      // TODO: implement refresh logic. For now, just fail gracefully.
+      return false;
+    }
+
+    this.oauth2Token = new Oauth2Token(oauth2Token,oauth2RefreshToken,timeOfExpiry, timeOfRefreshExpiry);
+    return true;
   }
 
   private static final String GET_TICKET_URL = "https://connect.garmin.com/modern/?ticket=";
@@ -188,6 +239,13 @@ public class GarminConnect {
     httpclient = clientBuilder.build();
 
     try {
+      // Get the sharedPreferences that (may) contain our auth tokens.
+      // TODO: make this an encrypted shared preferences object.
+      SharedPreferences authPreferences = currentActivity.getSharedPreferences(currentActivity.getApplicationContext().getPackageName() + ".garmintokens", Context.MODE_PRIVATE);
+      if (loadOauth2FromSharedPreferences(authPreferences)) {
+        return true;
+      }
+
       // Get cookies
       // TODO: are cookies actually passed between calls by the http client/context?
       HttpGet cookieGet = new HttpGet(buildURI(SSO_EMBED_URL,EMBED_PARAMS));
@@ -238,7 +296,12 @@ public class GarminConnect {
         return false;
       }
 
-      return performOauth2exchange(consumer);
+      success = performOauth2exchange(consumer);
+      if (!success) {
+        return false;
+      }
+
+      return oauth2Token.saveToSharedPreferences(authPreferences.edit());
 
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
@@ -315,9 +378,14 @@ public class GarminConnect {
   }
 
   private Oauth2Token getOauth2FromResponse(String responseAsString) throws JSONException {
+    long currentTime = System.currentTimeMillis() / 1000;
+
     // This time they return JSON.
     JSONObject response = new JSONObject(responseAsString);
-    return new Oauth2Token(response.getString("access_token"));
+    return new Oauth2Token(response.getString("access_token"),
+            response.getString("refresh_token"),
+            Integer.parseInt(response.getString("expires_in"))+currentTime,
+            Integer.parseInt(response.getString("refresh_token_expires_in"))+currentTime);
   }
 
   private String getTicketIdFromResponse(String responseAsString) {
