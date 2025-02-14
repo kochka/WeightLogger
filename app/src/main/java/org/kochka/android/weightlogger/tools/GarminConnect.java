@@ -129,7 +129,6 @@ public class GarminConnect {
   }
 
   public class Oauth2Token {
-    // TODO: include the expiry date, refresh token, and the refresh token expiry
     private String oauth2Token;
     private String oauth2RefreshToken;
     private long timeOfExpiry;
@@ -164,14 +163,11 @@ public class GarminConnect {
     long timeOfExpiry = sharedPreferences.getLong("garminOauth2ExpiryTimestamp",-1);
     long timeOfRefreshExpiry = sharedPreferences.getLong("garminOauth2RefreshExpiryTimestamp",-1);;
 
-    // Check whether the tokens are valid or whether they have expired.
-    if (oauth2Token == "" || oauth2RefreshToken == "" || timeOfRefreshExpiry < currentTime) {
+    if (oauth2Token == "" || timeOfExpiry < currentTime) {
+      // Get a new oauth2 token using the saved oauth1 token.
+      // According to https://github.com/matin/garth/blob/316787d1e3ff69c09725b2eb8ded748a4422abb3/garth/http.py#L167
+      // Garmin Connect also just uses the OAuth1 token to get a new OAuth2 token.
       return  false;
-    }
-
-    if (timeOfExpiry < currentTime) {
-      // TODO: implement refresh logic. For now, just fail gracefully.
-      return false;
     }
 
     this.oauth2Token = new Oauth2Token(oauth2Token,oauth2RefreshToken,timeOfExpiry, timeOfRefreshExpiry);
