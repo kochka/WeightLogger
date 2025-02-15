@@ -24,8 +24,10 @@ import org.kochka.android.weightlogger.data.Measurement;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
+
 import android.view.ViewTreeObserver;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,7 +52,7 @@ public class GraphActivity extends AppCompatActivity {
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_material));
+    actionBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.baseline_arrow_back_24, getTheme()));
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -88,23 +90,18 @@ public class GraphActivity extends AppCompatActivity {
       item.setVisible(item.getItemId() != item_id);
     }
 
-    switch (item_id) {
-      case R.id.item_graph_weight:
-        actionBar.setSubtitle(R.string.weight);
-        logo.setImageResource(R.drawable.ic_weight);
-        break;
-      case R.id.item_graph_body_fat:
-        actionBar.setSubtitle(R.string.body_fat);
-        logo.setImageResource(R.drawable.ic_body_fat);
-        break;
-      case R.id.item_graph_body_water:
-        actionBar.setSubtitle(R.string.body_water);
-        logo.setImageResource(R.drawable.ic_body_water);
-        break;
-      case R.id.item_graph_muscle_mass:
-        actionBar.setSubtitle(R.string.muscle_mass);
-        logo.setImageResource(R.drawable.ic_muscle_mass);
-        break;
+    if (item_id == R.id.item_graph_weight) {
+      actionBar.setSubtitle(R.string.weight);
+      logo.setImageResource(R.drawable.ic_weight);
+    } else if (item_id == R.id.item_graph_body_fat) {
+      actionBar.setSubtitle(R.string.body_fat);
+      logo.setImageResource(R.drawable.ic_body_fat);
+    } else if (item_id == R.id.item_graph_body_water) {
+      actionBar.setSubtitle(R.string.body_water);
+      logo.setImageResource(R.drawable.ic_body_water);
+    } else if (item_id == R.id.item_graph_muscle_mass) {
+      actionBar.setSubtitle(R.string.muscle_mass);
+      logo.setImageResource(R.drawable.ic_muscle_mass);
     }
     
     // Load data
@@ -117,22 +114,19 @@ public class GraphActivity extends AppCompatActivity {
     for (int i=0; i < measurements.size(); i++) {
       measurement = measurements.get(i);
       dt = measurement.getRecordedAt().getTime().getTime();
-      switch (item_id) {
-        case R.id.item_graph_weight:
-          data.add(new DataPoint(dt, measurement.getConvertedWeight()));
-          break;
-        case R.id.item_graph_body_fat:
-          if (measurement.getBodyFat() != null)
-            data.add(new DataPoint(dt, measurement.getBodyFat()));
-          break;
-        case R.id.item_graph_body_water:
-          if (measurement.getBodyWater() != null)
-            data.add(new DataPoint(dt, measurement.getBodyWater()));
-          break;
-        case R.id.item_graph_muscle_mass:
-          if (measurement.getMuscleMass() != null)
-            data.add(new DataPoint(dt, measurement.getConvertedMuscleMass()));
-          break;
+
+      if (item_id == R.id.item_graph_weight) {
+        data.add(new DataPoint(dt, measurement.getConvertedWeight()));
+      } else if (item_id == R.id.item_graph_body_fat) {
+        if (measurement.getBodyFat() != null)
+          data.add(new DataPoint(dt, measurement.getBodyFat()));
+      }
+      else if (item_id == R.id.item_graph_body_water) {
+        if (measurement.getBodyWater() != null)
+          data.add(new DataPoint(dt, measurement.getBodyWater()));
+      } else if (item_id == R.id.item_graph_muscle_mass) {
+        if (measurement.getMuscleMass() != null)
+          data.add(new DataPoint(dt, measurement.getConvertedMuscleMass()));
       }
     }
 

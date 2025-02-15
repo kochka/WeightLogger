@@ -15,13 +15,13 @@
 */
 package org.kochka.android.weightlogger.tools;
 
+import androidx.annotation.NonNull;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.text.InputType;
 import android.util.Pair;
 import android.widget.EditText;

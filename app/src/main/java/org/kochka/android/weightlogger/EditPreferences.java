@@ -19,8 +19,10 @@ import org.kochka.android.weightlogger.fragments.NestedPreferenceFragment;
 import org.kochka.android.weightlogger.fragments.PreferencesFragment;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
+
 import android.view.View;
 
 public class EditPreferences extends AppCompatActivity implements PreferencesFragment.Callback {
@@ -34,7 +36,7 @@ public class EditPreferences extends AppCompatActivity implements PreferencesFra
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_material));
+    actionBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.baseline_arrow_back_24, getTheme()));
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

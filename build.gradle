@@ -1,17 +1,22 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.2'
+        classpath 'com.android.tools.build:gradle:8.8.1'
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
+    }
+    configurations.all {
+        resolutionStrategy {
+            force('org.jetbrains.kotlin:kotlin-stdlib:1.8.22')
+        }
     }
 }

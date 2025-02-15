@@ -28,8 +28,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -62,7 +63,7 @@ public class EditMeasurementActivity extends AppCompatActivity {
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    actionBar.setNavigationIcon(getResources().getDrawable(R.drawable.abc_ic_ab_back_material));
+    actionBar.setNavigationIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.baseline_arrow_back_24, getTheme()));
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -138,15 +139,15 @@ public class EditMeasurementActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.item_delete:
-        destroyMeasurement();
-        return true;
-      case R.id.item_save:
-        saveMeasurement();
-        return true;       
+    if (item.getItemId() == R.id.item_delete) {
+      destroyMeasurement();
+      return true;
+    } else if (item.getItemId() == R.id.item_save) {
+      saveMeasurement();
+      return true;
+    } else {
+      return super.onOptionsItemSelected(item);
     }
-    return super.onOptionsItemSelected(item);
   }
   
   private void saveMeasurement() {
