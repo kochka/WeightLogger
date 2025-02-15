@@ -192,7 +192,7 @@ public class GarminConnect {
   private static final String SSO_SIGNIN_URL = SSO_URL + "/signin";
   private static final String SSO_MFA_URL = SSO_URL + "/verifyMFA/loginEnterMfaCode";
   private static final Pattern LOCATION_PATTERN = Pattern.compile("location: (.*)");
-  private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" *value=\"([A-Z0-9]+)\"";
+  private static final String CSRF_TOKEN_PATTERN = "name=\"_csrf\" +value=\"([A-Z0-9]+)\"";
   private static final String TICKET_FINDER_PATTERN = "ticket=([^']+?)\";";
 
   private static final String USER_AGENT = "com.garmin.android.apps.connectmobile";
