@@ -14,6 +14,7 @@
   <PreferenceCategory android:title="@string/pref_garmin_category">
     <EditTextPreference android:key="garmin_login" android:title="@string/pref_garmin_login" android:summary="@string/pref_garmin_login_summary" android:singleLine="true" />
     <EditTextPreference android:key="garmin_password" android:title="@string/pref_garmin_password" android:summary="@string/pref_garmin_password_summary" android:password="true" android:singleLine="true" />
+    <Preference android:key="garmin_token_clear" android:title="@string/pref_clear_garmin_token" android:summary="@string/pref_clear_garmin_token_summary" />
   </PreferenceCategory>
 
   <PreferenceCategory android:title="@string/pref_database_category">
