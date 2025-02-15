@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">ストレージがマウントされていません！</string>
   <string name="network_error">ネットワークエラー！</string>
   <string name="gc_configure_account">環境設定でお使いのGarmin Connectアカウントを設定してください！</string>
-  <string name="gc_account_error">ガーミンコネクトのユーザ名、またはパスワードが間違っています！</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">ノーマル</string>
   <string name="abnormal">不正</string>
   <string name="bf_underfat">やせている</string>

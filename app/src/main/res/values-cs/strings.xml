@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Uložiště není připojeno !</string>
   <string name="network_error">Síťová chyba !</string>
   <string name="gc_configure_account">Prosím nastavte Váš Garmin Connect účet v preferencích !</string>
-  <string name="gc_account_error">Chybné jméno nebo heslo pro Garmin Connect !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Normální</string>
   <string name="abnormal">Abnormální</string>
   <string name="bf_underfat">Málo tuku</string>

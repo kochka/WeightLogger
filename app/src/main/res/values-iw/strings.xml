@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">זיכרון לא עלה (not mounted) !</string>
   <string name="network_error">שגיאת רשת !</string>
   <string name="gc_configure_account">נא להגדיר חשבון Garmin בתפריט העדפות !</string>
-  <string name="gc_account_error">שם משתמש או סיסמא שגויים !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">רגיל</string>
   <string name="abnormal">חריג</string>
   <string name="bf_underfat">תת-שומן</string>

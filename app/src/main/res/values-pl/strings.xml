@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Katalog docelowy jest niedostępny!</string>
   <string name="network_error">Błąd połączenia!</string>
   <string name="gc_configure_account">Proszę skonfigurować w ustawieniach swoje konto Garmin Connect!</string>
-  <string name="gc_account_error">Błąd nazwy użytkownika lub hasła Garmin Connect!</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Prawidłowy</string>
   <string name="abnormal">Nieprawodłowy</string>
   <string name="bf_underfat">Zbyt niski</string>

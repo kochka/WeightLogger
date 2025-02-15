@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">存储空间未挂载!</string>
   <string name="network_error">网络错误!</string>
   <string name="gc_configure_account">请在偏好设置中确认您的Garmin Connect帐号!</string>
-  <string name="gc_account_error">Garmin Connect帐号用户名或密码错误!</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">正常</string>
   <string name="abnormal">异常</string>
   <string name="bf_underfat">偏瘦</string>

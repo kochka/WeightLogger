@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Scheda memoria non installata !</string>
   <string name="network_error">Errore di rete !</string>
   <string name="gc_configure_account">Perfavore configurate il vostro account per Garmin Connect nelle preferenze !</string>
-  <string name="gc_account_error">Nome utente o password per Garmin Connect non corrette !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Normopeso</string>
   <string name="abnormal">Anormale</string>
   <string name="bf_underfat">Sottopeso</string>

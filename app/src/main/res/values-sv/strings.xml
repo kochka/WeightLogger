@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Minnes arean är inte monterad !</string>
   <string name="network_error">Nätverks fel !</string>
   <string name="gc_configure_account">Vänligen konfigurera ditt Garmin Connect konto under inställningarna !</string>
-  <string name="gc_account_error">Felaktigt Garmin Connect användarnamn eller lösenord !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Normalvikt</string>
   <string name="abnormal">Abnormal</string>
   <string name="bf_underfat">Undervikt</string>

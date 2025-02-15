@@ -115,6 +115,14 @@ public class GarminConnect {
       sharedPreferenceEditor.putLong("garminOauth1MfaExpirationTimestamp", this.mfaExpirationTimestamp);
       return sharedPreferenceEditor.commit();
     }
+
+    public static Boolean clearFromSharedPreferences(SharedPreferences.Editor sharedPreferenceEditor) {
+      sharedPreferenceEditor.remove("garminOauth1Token");
+      sharedPreferenceEditor.remove("garminOauth1TokenSecret");
+      sharedPreferenceEditor.remove("garminOauth1MfaToken");
+      sharedPreferenceEditor.remove("garminOauth1MfaExpirationTimestamp");
+      return sharedPreferenceEditor.commit();
+    }
   }
 
   // In outer scope as static methods in nested classes aren't supported in this version of the JDK.
@@ -157,6 +165,14 @@ public class GarminConnect {
       sharedPreferenceEditor.putString("garminOauth2RefreshToken", this.oauth2RefreshToken);
       sharedPreferenceEditor.putLong("garminOauth2ExpiryTimestamp", this.timeOfExpiry);
       sharedPreferenceEditor.putLong("garminOauth2RefreshExpiryTimestamp", this.timeOfRefreshExpiry);
+      return sharedPreferenceEditor.commit();
+    }
+
+    public static Boolean clearFromSharedPreferences(SharedPreferences.Editor sharedPreferenceEditor) {
+      sharedPreferenceEditor.remove("garminOauth2Token");
+      sharedPreferenceEditor.remove("garminOauth2RefreshToken");
+      sharedPreferenceEditor.remove("garminOauth2ExpiryTimestamp");
+      sharedPreferenceEditor.remove("garminOauth2RefreshExpiryTimestamp");
       return sharedPreferenceEditor.commit();
     }
   }
@@ -222,6 +238,7 @@ public class GarminConnect {
   private CloseableHttpClient httpclient;
   private HttpClientContext httpContext;
 
+  private SharedPreferences authPreferences;
   private  OAuth1Token oauth1Token;
   private OAuth2Token oauth2Token;
 
@@ -243,7 +260,7 @@ public class GarminConnect {
     try {
       // Get the sharedPreferences that (may) contain our auth tokens.
       // TODO: make this an encrypted shared preferences object.
-      SharedPreferences authPreferences = currentActivity.getSharedPreferences(currentActivity.getApplicationContext().getPackageName() + ".garmintokens", Context.MODE_PRIVATE);
+      authPreferences = currentActivity.getSharedPreferences(currentActivity.getApplicationContext().getPackageName() + ".garmintokens", Context.MODE_PRIVATE);
 
       // If we have an unexpired OAuth2 token then we don't need to go through the login flow.
       // TODO: Allow user to invalidate stored tokens (or do it automatically). Currently, if the
@@ -359,7 +376,15 @@ public class GarminConnect {
     postOauth2.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
     //postOauth2.setHeader(HttpHeaders.REFERER, getLastUri());
     postOauth2.setHeader(HttpHeaders.AUTHORIZATION, signedExchangeRequest.getHeader("Authorization"));
+    HttpResponse oauth2Response = httpclient.execute(postOauth2,httpContext);
+    int responseStatusCode = oauth2Response.getStatusLine().getStatusCode();
+    if (responseStatusCode == HttpStatus.SC_UNAUTHORIZED) {
+      // If we are unauthorised, clear the oauth1 token and report failure.
+      OAuth1Token.clearFromSharedPreferences(authPreferences.edit());
+      return false;
+    }
     HttpEntity oauth2Entity = httpclient.execute(postOauth2,httpContext).getEntity();
+
     String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
     try {
       this.oauth2Token = getOauth2FromResponse(oauth2ResponseAsString);
@@ -455,12 +480,17 @@ public class GarminConnect {
       post.setEntity(multipartEntity.build());
 
       HttpResponse httpResponse = httpclient.execute(post, httpContext);
-      if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_ACCEPTED){
+      int responseStatusCode = httpResponse.getStatusLine().getStatusCode();
+      if(responseStatusCode == HttpStatus.SC_ACCEPTED){
         Header locationHeader = httpResponse.getFirstHeader("Location");
         String uploadStatusUrl = locationHeader.getValue();
         HttpResponse getStatusResponse = httpclient.execute(new HttpGet(uploadStatusUrl),httpContext);
         String responseString = EntityUtils.toString(getStatusResponse.getEntity());
         JSONObject js_upload = new JSONObject(responseString);
+      } else if (responseStatusCode == HttpStatus.SC_UNAUTHORIZED) {
+        // If the status unauthorised, our token is probably invalid, so we need to clear it.
+        OAuth2Token.clearFromSharedPreferences(this.authPreferences.edit());
+        return false;
       }
 
       HttpEntity entity = httpResponse.getEntity();

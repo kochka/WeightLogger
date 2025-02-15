@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Місце зберігання даних не встановлено !</string>
   <string name="network_error">Помилка мережі !</string>
   <string name="gc_configure_account">Будь ласка, налаштуйте свій аккаунт Garmin Connect в налаштуваннях !</string>
-  <string name="gc_account_error">Невірний логін або пароль Garmin Connect !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Нормально</string>
   <string name="abnormal">Ненормально</string>
   <string name="bf_underfat">Худорлявість</string>

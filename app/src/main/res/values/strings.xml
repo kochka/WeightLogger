@@ -64,7 +64,7 @@
   <string name="storage_not_mounted">Storage space is not mounted !</string>
   <string name="network_error">Network error !</string>
   <string name="gc_configure_account">Please configure your Garmin Connect account in preferences !</string>
-  <string name="gc_account_error">Bad Garmin Connect username or password !</string>
+  <string name="gc_account_error">Failed to log in to Garmin Connect!</string>
   <string name="gc_token_cleared">Cleared Garmin OAuth tokens!</string>
   <string name="gc_token_clear_failed">Failed to clear Garmin OAuth tokens!</string>
   

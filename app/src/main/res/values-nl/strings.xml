@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Opslagruimte niet gemount !</string>
   <string name="network_error">Networkfout!</string>
   <string name="gc_configure_account">AUB uw Garmin Connect account instellen bij voorkeuren !</string>
-  <string name="gc_account_error">Foutieve Garmin Connect gebruikersnaam of wachtwoord !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Normaal</string>
   <string name="abnormal">Abnormaal</string>
   <string name="bf_underfat">Te lag vet</string>
