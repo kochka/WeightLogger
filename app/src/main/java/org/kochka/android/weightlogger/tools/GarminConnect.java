@@ -26,8 +26,6 @@ import android.text.InputType;
 import android.util.Pair;
 import android.widget.EditText;
 
-import com.garmin.fit.Bool;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -117,25 +115,29 @@ public class GarminConnect {
   }
 
   // In outer scope as static methods in nested classes aren't supported in this version of the JDK.
-  private Pair<Boolean,OAuth1Token> loadOauth1FromSharedPreferences(SharedPreferences sharedPreferences) {
+  private Boolean loadOauth1FromSharedPreferences(SharedPreferences sharedPreferences) {
     String token = sharedPreferences.getString("garminOauth1Token","");
     String tokenSecret = sharedPreferences.getString("garminOauth1TokenSecret","");
     String mfaToken = sharedPreferences.getString("garminOauth1MfaToken","");
     String mfaExpirationTimestamp = sharedPreferences.getString("garminOauth1MfaExpirationTimestamp","");
 
-    OAuth1Token oAuth1Token = new OAuth1Token(token,tokenSecret,mfaToken,mfaExpirationTimestamp);
-    // TODO: Add failure case if the token or secret are invalid.
-    return new Pair<>(true, oAuth1Token);
+    // Todo: check for timestamp expiry.
+    if (token.isEmpty() || tokenSecret.isEmpty() || mfaToken.isEmpty() || mfaExpirationTimestamp.isEmpty()) {
+      return false;
+    }
+
+    this.oauth1Token = new OAuth1Token(token,tokenSecret,mfaToken,mfaExpirationTimestamp);
+    return true;
   }
 
-  public class Oauth2Token {
+  public class OAuth2Token {
     private String oauth2Token;
     private String oauth2RefreshToken;
     private long timeOfExpiry;
     private long timeOfRefreshExpiry;
 
 
-    public Oauth2Token(String oauth2Token, String oauth2RefreshToken, long timeOfExpiry, long timeOfRefreshExpiry) {
+    public OAuth2Token(String oauth2Token, String oauth2RefreshToken, long timeOfExpiry, long timeOfRefreshExpiry) {
       this.oauth2Token = oauth2Token;
       this.oauth2RefreshToken = oauth2RefreshToken;
       this.timeOfExpiry = timeOfExpiry;
@@ -170,7 +172,7 @@ public class GarminConnect {
       return  false;
     }
 
-    this.oauth2Token = new Oauth2Token(oauth2Token,oauth2RefreshToken,timeOfExpiry, timeOfRefreshExpiry);
+    this.oauth2Token = new OAuth2Token(oauth2Token,oauth2RefreshToken,timeOfExpiry, timeOfRefreshExpiry);
     return true;
   }
 
@@ -217,7 +219,8 @@ public class GarminConnect {
   private CloseableHttpClient httpclient;
   private HttpClientContext httpContext;
 
-  private Oauth2Token oauth2Token;
+  private  OAuth1Token oauth1Token;
+  private OAuth2Token oauth2Token;
 
   public boolean signin(final String username, final String password, Activity currentActivity) {
     PoolingHttpClientConnectionManager conman =  new PoolingHttpClientConnectionManager();
@@ -238,48 +241,10 @@ public class GarminConnect {
       // Get the sharedPreferences that (may) contain our auth tokens.
       // TODO: make this an encrypted shared preferences object.
       SharedPreferences authPreferences = currentActivity.getSharedPreferences(currentActivity.getApplicationContext().getPackageName() + ".garmintokens", Context.MODE_PRIVATE);
+
+      // If we have an unexpired OAuth2 token then we don't need to go through the login flow.
       if (loadOauth2FromSharedPreferences(authPreferences)) {
         return true;
-      }
-
-      // Get cookies
-      // TODO: are cookies actually passed between calls by the http client/context?
-      HttpGet cookieGet = new HttpGet(buildURI(SSO_EMBED_URL,EMBED_PARAMS));
-      httpclient.execute(cookieGet,httpContext);
-
-      // Create a session.
-      HttpGet sessionGetRequest = new HttpGet(buildURI(SSO_SIGNIN_URL, EMBED_PARAMS));
-      sessionGetRequest.setHeader(HttpHeaders.REFERER, getLastUri());
-      HttpResponse sessionResponse = httpclient.execute(sessionGetRequest, httpContext);
-      HttpEntity sessionEntity = sessionResponse.getEntity();
-      String sessionContent = EntityUtils.toString(sessionEntity);
-      String csrf = getCSRFToken(sessionContent);
-
-      // Sign in
-      HttpPost loginPostRequest = new HttpPost(buildURI(SSO_SIGNIN_URL, SIGNIN_PARAMS));
-      loginPostRequest.setHeader(HttpHeaders.REFERER, getLastUri());
-      List<NameValuePair> loginPostEntity = Arrays.asList(
-              new BasicNameValuePair("username", username),
-              new BasicNameValuePair("password", password),
-              new BasicNameValuePair("embed", "true"),
-              new BasicNameValuePair("_csrf", csrf)
-      );
-      loginPostRequest.setEntity(new UrlEncodedFormEntity(loginPostEntity, "UTF-8"));
-      HttpResponse loginResponse = httpclient.execute(loginPostRequest, httpContext);
-      HttpEntity loginResponseEntity = loginResponse.getEntity();
-      String loginContent = EntityUtils.toString(loginResponseEntity);
-
-      String ticket = "";
-      if (loginRequiresMFA(loginContent)) {
-        csrf = getCSRFToken(loginContent);
-        String mfaResponse = handleMfa(csrf, currentActivity);
-        ticket = getTicketIdFromResponse(mfaResponse);
-      } else {
-        ticket = getTicketIdFromResponse(loginContent);
-      }
-
-      if (!isSignedIn(username)) {
-        return  false;
       }
 
       // https://github.com/mttkay/signpost/blob/master/docs/GettingStarted.md
@@ -287,17 +252,58 @@ public class GarminConnect {
       OAuthConsumer consumer = new CommonsHttpOAuthConsumer(OAUTH1_CONSUMER_KEY, OAUTH1_CONSUMER_SECRET);
       consumer.setMessageSigner(new HmacSha1MessageSigner());
 
-      boolean success = getOAuth1Token(ticket, consumer);
-      if (!success) {
-        return false;
+      if(!loadOauth1FromSharedPreferences(authPreferences)) {
+        // Get cookies
+        // TODO: are cookies actually passed between calls by the http client/context?
+        HttpGet cookieGet = new HttpGet(buildURI(SSO_EMBED_URL,EMBED_PARAMS));
+        httpclient.execute(cookieGet,httpContext);
+
+        // Create a session.
+        HttpGet sessionGetRequest = new HttpGet(buildURI(SSO_SIGNIN_URL, EMBED_PARAMS));
+        sessionGetRequest.setHeader(HttpHeaders.REFERER, getLastUri());
+        HttpResponse sessionResponse = httpclient.execute(sessionGetRequest, httpContext);
+        HttpEntity sessionEntity = sessionResponse.getEntity();
+        String sessionContent = EntityUtils.toString(sessionEntity);
+        String csrf = getCSRFToken(sessionContent);
+
+        // Sign in
+        HttpPost loginPostRequest = new HttpPost(buildURI(SSO_SIGNIN_URL, SIGNIN_PARAMS));
+        loginPostRequest.setHeader(HttpHeaders.REFERER, getLastUri());
+        List<NameValuePair> loginPostEntity = Arrays.asList(
+                new BasicNameValuePair("username", username),
+                new BasicNameValuePair("password", password),
+                new BasicNameValuePair("embed", "true"),
+                new BasicNameValuePair("_csrf", csrf)
+        );
+        loginPostRequest.setEntity(new UrlEncodedFormEntity(loginPostEntity, "UTF-8"));
+        HttpResponse loginResponse = httpclient.execute(loginPostRequest, httpContext);
+        HttpEntity loginResponseEntity = loginResponse.getEntity();
+        String loginContent = EntityUtils.toString(loginResponseEntity);
+
+        String ticket = "";
+        if (loginRequiresMFA(loginContent)) {
+          csrf = getCSRFToken(loginContent);
+          String mfaResponse = handleMfa(csrf, currentActivity);
+          ticket = getTicketIdFromResponse(mfaResponse);
+        } else {
+          ticket = getTicketIdFromResponse(loginContent);
+        }
+
+        if (!isSignedIn(username)) {
+          return  false;
+        }
+
+        boolean success = getOAuth1Token(ticket, consumer);
+        if (!success) {
+          return false;
+        }
+        this.oauth1Token.saveToSharedPreferences(authPreferences.edit());
       }
 
-      success = performOauth2exchange(consumer);
-      if (!success) {
-        return false;
-      }
+      // Use the OAuth1 token to get an OAuth2 token.
+      consumer.setTokenWithSecret(oauth1Token.getOauth1Token(), oauth1Token.getOauth1TokenSecret());
+      return performOauth2exchange(consumer); // If OAuth2 exchange is successful, we are logged in.
 
-      return oauth2Token.saveToSharedPreferences(authPreferences.edit());
 
     } catch (Exception e) {
       httpclient.getConnectionManager().shutdown();
@@ -323,8 +329,7 @@ public class GarminConnect {
     getOauth1.setHeader(HttpHeaders.REFERER, getLastUri());
     HttpResponse response = httpclient.execute(getOauth1,httpContext);
     String oauth1ResponseAsString = EntityUtils.toString(response.getEntity());
-    OAuth1Token oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
-    consumer.setTokenWithSecret(oauth1Token.getOauth1Token(), oauth1Token.getOauth1TokenSecret());
+    this.oauth1Token = getOauth1FromResponse(oauth1ResponseAsString);
     return true;
   }
 
@@ -337,7 +342,7 @@ public class GarminConnect {
 
     HttpPost postOauth2 = new HttpPost(GET_OAUTH2_URL);
     postOauth2.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
-    postOauth2.setHeader(HttpHeaders.REFERER, getLastUri());
+    //postOauth2.setHeader(HttpHeaders.REFERER, getLastUri());
     postOauth2.setHeader(HttpHeaders.AUTHORIZATION, signedExchangeRequest.getHeader("Authorization"));
     HttpEntity oauth2Entity = httpclient.execute(postOauth2,httpContext).getEntity();
     String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
@@ -373,12 +378,12 @@ public class GarminConnect {
     return new OAuth1Token(oauth1Token,oauth1TokenSecret, mfaToken, mfaExpirationTimestamp);
   }
 
-  private Oauth2Token getOauth2FromResponse(String responseAsString) throws JSONException {
+  private OAuth2Token getOauth2FromResponse(String responseAsString) throws JSONException {
     long currentTime = System.currentTimeMillis() / 1000;
 
     // This time they return JSON.
     JSONObject response = new JSONObject(responseAsString);
-    return new Oauth2Token(response.getString("access_token"),
+    return new OAuth2Token(response.getString("access_token"),
             response.getString("refresh_token"),
             Integer.parseInt(response.getString("expires_in"))+currentTime,
             Integer.parseInt(response.getString("refresh_token_expires_in"))+currentTime);
