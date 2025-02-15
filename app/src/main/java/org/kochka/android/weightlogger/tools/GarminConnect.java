@@ -308,7 +308,11 @@ public class GarminConnect {
 
       // Use the OAuth1 token to get an OAuth2 token.
       consumer.setTokenWithSecret(oauth1Token.getOauth1Token(), oauth1Token.getOauth1TokenSecret());
-      return performOauth2exchange(consumer); // If OAuth2 exchange is successful, we are logged in.
+      if (!performOauth2exchange(consumer)) {
+        // If OAuth2 exchange fails, we cannot upload.
+        return false;
+      }
+      return oauth2Token.saveToSharedPreferences(authPreferences.edit());
 
 
     } catch (Exception e) {
