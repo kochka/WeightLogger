@@ -383,7 +383,7 @@ public class GarminConnect {
       OAuth1Token.clearFromSharedPreferences(authPreferences.edit());
       return false;
     }
-    HttpEntity oauth2Entity = httpclient.execute(postOauth2,httpContext).getEntity();
+    HttpEntity oauth2Entity = oauth2Response.getEntity();
 
     String oauth2ResponseAsString = EntityUtils.toString(oauth2Entity);
     try {
