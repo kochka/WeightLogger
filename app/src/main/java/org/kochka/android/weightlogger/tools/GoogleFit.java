@@ -89,10 +89,17 @@ public class GoogleFit {
   }
 
   private void buildFitnessClient() {
+    // These URIs were previously defined in Scopes.FITNESS_BODY_READ_WRITE and
+    // Scopes.FITNESS_ACTIVITY_READ_WRITE. Google removed these scopes from their current version of
+    // the APIs. The constants were determined from https://web.archive.org/web/20150909015924/https://developers.google.com/android/reference/com/google/android/gms/common/Scopes
+    // This is a quick fix. The REST API being used here is being removed after 30 June 2025, so
+    // this code will need to be removed soon anyway. See issue #74 (https://github.com/kochka/WeightLogger/issues/74)
+    final String FITNESS_BODY_READ_WRITE = "https://www.googleapis.com/auth/fitness.body.write";
+    final String FITNESS_ACTIVITY_READ_WRITE = "https://www.googleapis.com/auth/fitness.activity.write";
     mClient = new GoogleApiClient.Builder(getContext())
             .addApi(Fitness.HISTORY_API)
-            .addScope(new Scope(Scopes.FITNESS_BODY_READ_WRITE))
-            .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+            .addScope(new Scope(FITNESS_BODY_READ_WRITE))
+            .addScope(new Scope(FITNESS_ACTIVITY_READ_WRITE))
             .addConnectionCallbacks(
                     new GoogleApiClient.ConnectionCallbacks() {
                       @Override

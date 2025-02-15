@@ -15,7 +15,7 @@
 */
 package org.kochka.android.weightlogger.tools;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import org.json.JSONObject;
 

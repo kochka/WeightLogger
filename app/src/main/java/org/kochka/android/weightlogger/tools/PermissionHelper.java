@@ -2,8 +2,8 @@ package org.kochka.android.weightlogger.tools;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class PermissionHelper {
   private static final int PERMISSION_REQUEST_CODE = 1664;

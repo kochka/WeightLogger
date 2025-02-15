@@ -34,10 +34,10 @@ import android.app.NotificationChannel;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.support.design.widget.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -49,7 +49,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -170,27 +170,15 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
   
   /* Handles menu selections */
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.item_graph:
-        startActivity((new Intent(this, GraphActivity.class)).putExtra("type", "line"));
-        break;
-      case R.id.item_export:
-        export();
-        break;
-      case R.id.item_preferences:
-    	  startActivityForResult(new Intent(this, EditPreferences.class), 0);
-        break;
-      /*
-      case R.id.item_ant:
-        antTest();
-        break;
-      case R.id.item_ble_smartlab:
-        bleTest();
-        break;
-      */
-      case 1:
-        this.finish();
-        return true;
+    if (item.getItemId() == R.id.item_graph) {
+      startActivity((new Intent(this, GraphActivity.class)).putExtra("type", "line"));
+    } else if (item.getItemId() == R.id.item_export) {
+      export();
+    } else if (item.getItemId() == R.id.item_preferences) {
+      startActivityForResult(new Intent(this, EditPreferences.class), 0);
+    } else if (item.getItemId() == 1) {
+      this.finish();
+      return true;
     }
     return(super.onOptionsItemSelected(item));
   }
