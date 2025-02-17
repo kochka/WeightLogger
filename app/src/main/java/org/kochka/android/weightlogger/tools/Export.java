@@ -30,6 +30,8 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 import com.garmin.fit.DateTime;
 import com.garmin.fit.FileEncoder;
 import com.garmin.fit.WeightScaleMesg;
@@ -154,7 +156,19 @@ public class Export {
   
   public static String path(Context context) {
     String export_dir = PreferenceManager.getDefaultSharedPreferences(context).getString("export_dir", "/Download/WeightLogger");
-    return Environment.getExternalStorageDirectory().getAbsolutePath() + export_dir;
+    String root_dir = null;
+    File[] ext = ContextCompat.getExternalFilesDirs(context, null);
+    // This if-else block is a little ugly but ensures that we are writing to the correct locations.
+    if (export_dir.equals("$appdata/org.kochka.android.weightlogger/files")) {
+      // The app data folder is now accessed with the following function.
+      return context.getFilesDir().getAbsolutePath();
+    }
+    else if (export_dir.equals("~/Documents/WeightLogger")) {
+      return Environment.getExternalStorageDirectory().getAbsolutePath() + "/Documents/WeightLogger";
+    }
+    else {
+      return Environment.getExternalStorageDirectory().getAbsolutePath() + export_dir;
+    }
   }
   
   private static void checkExternalStorage() throws StorageNotMountedException {

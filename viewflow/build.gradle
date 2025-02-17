@@ -1,11 +1,16 @@
 apply plugin: 'com.android.library'
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    namespace 'org.taptwo.android.widget.viewflow'
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 35
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -14,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    buildToolsVersion '35.0.0'
 }
 
 dependencies {

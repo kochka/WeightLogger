@@ -1,9 +1,13 @@
 package org.kochka.android.weightlogger.tools;
 
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.os.Build;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class PermissionHelper {
   private static final int PERMISSION_REQUEST_CODE = 1664;
@@ -27,7 +31,13 @@ public class PermissionHelper {
   }
 
   public void checkPermission(Activity activity, String permission) {
-    if (ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED) {
+    // If we are above the API version where this is required, we have access by default.
+    // This default permission is restrictive but sufficient for our needs.
+    if (permission.equals(WRITE_EXTERNAL_STORAGE) && Build.VERSION.SDK_INT >= 29) {
+      resultListener.onPermissionGranted(permission);
+    }
+    // If we are running on an older API version, we do need this permission
+    else if (ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED) {
       resultListener.onPermissionGranted(permission);
     }
     else {

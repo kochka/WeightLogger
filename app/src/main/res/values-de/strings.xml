@@ -63,9 +63,8 @@
   <string name="storage_not_mounted">Speicherkarte ist nicht eingelegt !</string>
   <string name="network_error">Netzwerkfehler !</string>
   <string name="gc_configure_account">Bitte Garmin Connect Konto konfigurieren !</string>
-  <string name="gc_account_error">Garmin Connect Benutzername oder Passwort falsch !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Normal</string>
   <string name="abnormal">Abnormal</string>
   <string name="bf_underfat">Untergewichtig</string>

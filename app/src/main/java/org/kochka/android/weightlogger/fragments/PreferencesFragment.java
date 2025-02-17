@@ -17,6 +17,7 @@ package org.kochka.android.weightlogger.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -68,6 +69,7 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
     ((EditTextPreference) findPreference("age")).getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
 
     findPreference("optional_fields").setOnPreferenceClickListener(this);
+    findPreference("garmin_token_clear").setOnPreferenceClickListener(this);
     findPreference("db_backup").setOnPreferenceClickListener(this);
     findPreference("db_restore").setOnPreferenceClickListener(this);
     findPreference("db_purge").setOnPreferenceClickListener(this);
@@ -91,7 +93,9 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
   public boolean onPreferenceClick(Preference preference) {
     if (preference.getKey().equals("optional_fields"))
       mCallback.onNestedPreferenceSelected(NestedPreferenceFragment.NESTED_SCREEN_FIELDS);
-    else if (preference.getKey().equals("db_backup"))
+    else if (preference.getKey().equals("garmin_token_clear")) {
+      clearGarminTokens();
+    } else if (preference.getKey().equals("db_backup"))
       dbBackup();
     else if (preference.getKey().equals("db_restore"))
       dbRestore();
@@ -143,6 +147,26 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
             pref.setSummary(sPref.getText());
         }
       }
+    }
+  }
+
+  /* Clear Garmin OAuth Tokens */
+  private void clearGarminTokens() {
+    SharedPreferences authPreferences = getActivity().getSharedPreferences(getActivity().getApplicationContext().getPackageName() + ".garmintokens", Context.MODE_PRIVATE);
+    SharedPreferences.Editor authPreferencesEditor = authPreferences.edit();
+    authPreferencesEditor.remove("garminOauth1Token");
+    authPreferencesEditor.remove("garminOauth1TokenSecret");
+    authPreferencesEditor.remove("garminOauth1MfaToken");
+    authPreferencesEditor.remove("garminOauth1MfaExpirationTimestamp");
+    authPreferencesEditor.remove("garminOauth2Token");
+    authPreferencesEditor.remove("garminOauth2RefreshToken");
+    authPreferencesEditor.remove("garminOauth2ExpiryTimestamp");
+    authPreferencesEditor.remove("garminOauth2RefreshExpiryTimestamp");
+    if (authPreferencesEditor.commit()) {
+      Toast.makeText(getActivity(), R.string.gc_token_cleared, Toast.LENGTH_SHORT).show();
+    }
+    else {
+      Toast.makeText(getActivity(), R.string.gc_token_clear_failed, Toast.LENGTH_SHORT).show();
     }
   }
 

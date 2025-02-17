@@ -62,9 +62,8 @@
   <string name="storage_not_mounted">L\'espace de stockage n\'est pas monté</string>
   <string name="network_error">Erreur réseau !</string>
   <string name="gc_configure_account">Merci de configurer votre compte Garmin Connect dans les préférences !</string>
-  <string name="gc_account_error">Erreur de nom d\'utilisateur ou de mot de passe Garmin Connect !</string>
-  
-  <!-- Show -->
+
+    <!-- Show -->
   <string name="normal">Normal</string>
   <string name="abnormal">Anormal</string>
   <string name="bf_underfat">Maigreur</string>

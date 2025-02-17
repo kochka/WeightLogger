@@ -17,7 +17,7 @@
 
 <resources>
   <string name="app_name">Weight Logger</string>
-  <string name="app_version">2.4.2</string>
+  <string name="app_version">2.5.0-beta.3</string>
   <string name="translator"></string>
   
   <!-- Common -->
@@ -64,7 +64,9 @@
   <string name="storage_not_mounted">Storage space is not mounted !</string>
   <string name="network_error">Network error !</string>
   <string name="gc_configure_account">Please configure your Garmin Connect account in preferences !</string>
-  <string name="gc_account_error">Bad Garmin Connect username or password !</string>
+  <string name="gc_account_error">Failed to log in to Garmin Connect!</string>
+  <string name="gc_token_cleared">Cleared Garmin OAuth tokens!</string>
+  <string name="gc_token_clear_failed">Failed to clear Garmin OAuth tokens!</string>
   
   <!-- Show -->
   <string name="normal">Normal</string>
@@ -117,6 +119,8 @@
   <string name="pref_garmin_login_summary">Your Garmin Connect login.</string> 
   <string name="pref_garmin_password">Password</string>
   <string name="pref_garmin_password_summary">Your Garmin Connect password.</string>
+  <string name="pref_clear_garmin_token">Clear Garmin Tokens</string>
+  <string name="pref_clear_garmin_token_summary">Clear Garmin OAuth1 and OAuth2 Tokens. They will be regenerated on a successful login.</string>
   <string name="pref_database_category">Database</string>
   <string name="pref_backup_database">Backup database</string>
   <string name="pref_backup_database_summary">Backup database in export directory.</string>

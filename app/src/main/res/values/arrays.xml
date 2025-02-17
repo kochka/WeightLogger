@@ -40,8 +40,8 @@
   </string-array>
 
   <string-array name="export_dir">
-    <item>/WeightLogger</item>
-    <item>/Android/data/org.kochka.android.weightlogger/files</item>
+    <item>~/Documents/WeightLogger</item>
+    <item>$appdata/org.kochka.android.weightlogger/files</item>
     <item>/Download/WeightLogger</item>
     <item>/Download</item>
   </string-array>
