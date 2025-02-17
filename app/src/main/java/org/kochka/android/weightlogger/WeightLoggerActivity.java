@@ -63,9 +63,9 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class WeightLoggerActivity extends AppCompatActivity implements PermissionHelperResultListener {
-  
+
   ListView mList;
-  
+
   final int EXPORT_NONE = 0;
   final int EXPORT_FIT = 1;
   final int EXPORT_CSV = 2;
@@ -83,11 +83,11 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
-    
+
     mList = (ListView)findViewById(R.id.mListView);
     MeasurementsListAdapter adapter = new MeasurementsListAdapter(this);
     mList.setAdapter(adapter);
-    
+
     mList.setOnItemClickListener(new OnItemClickListener() {
       public void onItemClick(AdapterView<?> a, View v, int position, long id) {
         Intent i = new Intent(WeightLoggerActivity.this, ShowMeasurementActivity.class);
@@ -120,7 +120,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
       menu.add(Menu.NONE, 1, 1, R.string.delete);
     }
   }
-  
+
   @Override
   public boolean onContextItemSelected(MenuItem item) {
     AdapterView.AdapterContextMenuInfo menuInfo;
@@ -134,20 +134,20 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
         break;
       case 1:
         new AlertDialog.Builder(this)
-        .setTitle(R.string.confirm_delete)
-        .setIcon(android.R.drawable.ic_dialog_alert)
-        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-              measurement.destroy();
-              ((MeasurementsListAdapter) mList.getAdapter()).refresh();
-              Toast.makeText(WeightLoggerActivity.this, R.string.record_deleted, Toast.LENGTH_SHORT).show();
-            }})
-        .setNegativeButton(android.R.string.no, null).show();
+                .setTitle(R.string.confirm_delete)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int whichButton) {
+                    measurement.destroy();
+                    ((MeasurementsListAdapter) mList.getAdapter()).refresh();
+                    Toast.makeText(WeightLoggerActivity.this, R.string.record_deleted, Toast.LENGTH_SHORT).show();
+                  }})
+                .setNegativeButton(android.R.string.no, null).show();
         break;
     }
     return true;
   }
-  
+
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == RESULT_OK) {
@@ -160,14 +160,14 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
       }
     }
   }
-  
+
   /* Creates the menu items */
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.home_actionbar, menu);
     return true;
   }
-  
+
   /* Handles menu selections */
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == R.id.item_graph) {
@@ -204,7 +204,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
     exportToPerform = type;
     permissionHelper.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
-  
+
   private void export(){
     final CharSequence[] items = {"FIT", "CSV", "Garmin Connect ©", "Google FIT"};
 
@@ -235,37 +235,37 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
   }
 
   private void exportFile(int type) {
-    
+
     class ExportThread implements Runnable {
 
       private int type;
       private boolean garmin_upload;
       private GarminConnect gc;
-      
+
       public ExportThread(int type) {
         this.type = type;
         this.garmin_upload = (type == EXPORT_GARMIN);
       }
-      
+
       @Override
       public void run() {
-        try {         
+        try {
           LinkedList<Measurement> measurements;
           String filename;
           String mime;
           String upload_message = "";
           int icon;
-          
-          if ((type == EXPORT_FIT) || (type == EXPORT_GARMIN))
+
+          if (type == EXPORT_FIT || type == EXPORT_GARMIN)
             measurements = Measurement.getAllToExport(WeightLoggerActivity.this);
           else
             measurements = Measurement.getAll(WeightLoggerActivity.this);
-          
+
           int measurements_count = measurements.size();
-          if (measurements_count == 0) throw new Exception(getString(R.string.no_export));    
+          if (measurements_count == 0) throw new Exception(getString(R.string.no_export));
 
           // FIT
-          if ((type == EXPORT_FIT) || (type == EXPORT_GARMIN)) {
+          if (type == EXPORT_FIT || type == EXPORT_GARMIN) {
             // Test connectivity & Garmin account
             if (garmin_upload) {
               ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -273,31 +273,15 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(WeightLoggerActivity.this);
                 String username = preferences.getString("garmin_login", "").trim();
                 String password = preferences.getString("garmin_password", "").trim();
-                if (username.equals("") || password.equals("")) 
+                if (username.isEmpty() || password.isEmpty())
                   throw new Exception(getString(R.string.gc_configure_account));
                 this.gc = new GarminConnect();
                 if (!this.gc.signin(username, password, WeightLoggerActivity.this))
-                  throw new Exception(getString(R.string.gc_account_error));  
+                  throw new Exception(getString(R.string.gc_account_error));
               } else
-                throw new Exception(getString(R.string.network_error));  
+                throw new Exception(getString(R.string.network_error));
             }
-            
-            // Build FIT file
-            /*
-            filename = Export.buildFitFile(WeightLoggerActivity.this, measurements);
-            mime = "application/*";
-            icon = R.drawable.ic_stat_notify_fit;
-            Measurement.setAllAsExported(WeightLoggerActivity.this);
-            
-            // Upload FIT file
-            if (garmin_upload) {
-              if(this.gc.uploadFitFile(Export.path(WeightLoggerActivity.this) + File.separator + filename))
-                upload_message = getString(R.string.export_upload_ok);
-              else
-                upload_message = getString(R.string.export_upload_failed);
-              this.gc.close();
-            }
-            */
+
             // Super dirty fix to fast handle stupid Android 11 files access restrictions
             mime = "application/*";
             icon = R.drawable.ic_stat_notify_fit;
@@ -316,38 +300,43 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
             }
             Measurement.setAllAsExported(WeightLoggerActivity.this);
 
-          // CSV
+            // CSV
           } else {
             filename = Export.buildCsvFile(WeightLoggerActivity.this, measurements);
             mime = "text/csv";
             icon = R.drawable.ic_stat_notify_csv;
           }
-          
-          // Notify
-          NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
           String gen_text = getResources().getQuantityString(R.plurals.exported_records_count, measurements_count, measurements_count) + " : " + filename;
-          
-          Intent i = new Intent(Intent.ACTION_SEND);
-          i.setType(mime);
-          i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_share_subject));
-          i.putExtra(Intent.EXTRA_TEXT, gen_text);
-          i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Export.path(WeightLoggerActivity.this) + File.separator + filename)));
-          PendingIntent pi = PendingIntent.getActivity(WeightLoggerActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
-          
-          NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(WeightLoggerActivity.this);
-          nBuilder.setSmallIcon(icon);
-          nBuilder.setContentTitle(getString(R.string.file_generated));
-          nBuilder.setContentText((garmin_upload) ? upload_message : gen_text);
-          nBuilder.setContentIntent(pi);
 
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "weightlogger";
-            NotificationChannel channel = new NotificationChannel(channelId,"Weight Logger", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-            nBuilder.setChannelId(channelId);
+          // Display Toast
+          displayToast(getString(R.string.file_generated) + "\n" + ((garmin_upload) ? upload_message : gen_text));
+
+          // Notify
+          if (type == EXPORT_FIT || type == EXPORT_CSV) {
+            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType(mime);
+            i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_share_subject));
+            i.putExtra(Intent.EXTRA_TEXT, gen_text);
+            i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Export.path(WeightLoggerActivity.this) + File.separator + filename)));
+            PendingIntent pi = PendingIntent.getActivity(WeightLoggerActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
+
+            NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(WeightLoggerActivity.this);
+            nBuilder.setSmallIcon(icon);
+            nBuilder.setContentTitle(getString(R.string.file_generated));
+            nBuilder.setContentText((garmin_upload) ? upload_message : gen_text);
+            nBuilder.setContentIntent(pi);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+              String channelId = "weightlogger";
+              NotificationChannel channel = new NotificationChannel(channelId, "Weight Logger", NotificationManager.IMPORTANCE_DEFAULT);
+              notificationManager.createNotificationChannel(channel);
+              nBuilder.setChannelId(channelId);
+            }
+
+            notificationManager.notify(1, nBuilder.build());
           }
-
-          notificationManager.notify(1, nBuilder.build());
         } catch (StorageNotMountedException e) {
           displayToast(getString(R.string.storage_not_mounted));
         } catch (Exception e) {
@@ -359,7 +348,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
           }});
         }
       }
-      
+
       private void displayToast(final String message) {
         WeightLoggerActivity.this.runOnUiThread(new Runnable() {
           public void run() {
@@ -371,7 +360,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
 
     ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress_spinner);
     progressBar.setVisibility(View.VISIBLE);
-    
+
     Runnable r = new ExportThread(type);
     new Thread(r).start();
   }
