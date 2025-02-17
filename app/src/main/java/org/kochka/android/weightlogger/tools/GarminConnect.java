@@ -130,7 +130,7 @@ public class GarminConnect {
     String token = sharedPreferences.getString("garminOauth1Token","");
     String tokenSecret = sharedPreferences.getString("garminOauth1TokenSecret","");
     String mfaToken = sharedPreferences.getString("garminOauth1MfaToken","");
-    long mfaExpirationTimestamp = sharedPreferences.getLong("garminOauth1MfaExpirationTimestamp",0);
+    long mfaExpirationTimestamp = sharedPreferences.getLong("garminOauth1MfaExpirationTimestamp",Long.MAX_VALUE); // Default to unexpired
 
     long currentTime = System.currentTimeMillis() / 1000;
     if (token.isEmpty() || tokenSecret.isEmpty() || mfaExpirationTimestamp < currentTime) {
@@ -415,10 +415,18 @@ public class GarminConnect {
     // aren't.
     String mfaToken = uri.getQueryParameter("mfa_token");
     String mfaExpirationTimestampString = uri.getQueryParameter("mfa_expiration_timestamp");
-    SimpleDateFormat mfaExpirationFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
-    mfaExpirationFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-    Date mfaExpirationTimestamp = mfaExpirationFormat.parse(mfaExpirationTimestampString);
-    return new OAuth1Token(oauth1Token,oauth1TokenSecret, mfaToken, mfaExpirationTimestamp.getTime());
+
+    // If there is no MFA expiration timestamp, assume that the token doesn't expire and set expiry
+    // to max representable value. If the assumption is wrong, the token will be invalidated when a
+    // 401 is received.
+    // Otherwise, parse the date to a timestamp.
+    long mfaExpirationTimestamp = Long.MAX_VALUE;
+    if (mfaExpirationTimestampString != null) {
+      SimpleDateFormat mfaExpirationFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
+      mfaExpirationFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+      mfaExpirationTimestamp = mfaExpirationFormat.parse(mfaExpirationTimestampString).getTime();
+    }
+    return new OAuth1Token(oauth1Token,oauth1TokenSecret, mfaToken, mfaExpirationTimestamp);
   }
 
   private OAuth2Token getOauth2FromResponse(String responseAsString) throws JSONException {
