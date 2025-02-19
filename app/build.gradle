@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     namespace "org.kochka.android.weightlogger"
-    compileSdk 34
+    compileSdk 35
     defaultConfig {
         applicationId "org.kochka.android.weightlogger"
         minSdkVersion 21

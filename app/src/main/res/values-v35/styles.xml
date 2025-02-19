@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <!-- Theme -->
+  <style name="Theme.WeightLogger" parent="Theme.AppCompat.Light.NoActionBar" >
+    <item name="colorPrimary">@color/primary</item>
+    <item name="colorPrimaryDark">@color/primary_dark</item>
+    <item name="colorAccent">@color/primary</item>
+    <item name="android:navigationBarColor">@color/primary</item>
+    <item name="android:dialogTheme">@style/Theme.WeightLogger.Dialog</item>
+    <item name="android:listViewStyle">@style/CommonList</item>
+    <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+  </style>
+
+  <style name="ToolBar">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:background">@color/primary</item>
+    <item name="android:elevation">15dp</item>
+  </style>
+
+  <style name="Theme.WeightLogger.Dialog" parent="Theme.AppCompat.Light.Dialog">
+    <item name="android:colorPrimary">@color/primary</item>
+    <item name="android:colorPrimaryDark">@color/primary_dark</item>
+    <item name="android:colorAccent">@color/primary</item>
+  </style>
+
+</resources>
