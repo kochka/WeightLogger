@@ -312,9 +312,7 @@ public class GarminConnect {
           ticket = getTicketIdFromResponse(loginContent);
         }
 
-        if (!isSignedIn(username)) {
-          return  false;
-        }
+
 
         boolean success = getOAuth1Token(ticket, consumer);
         if (!success) {
@@ -451,19 +449,26 @@ public class GarminConnect {
   private String getFirstMatch(String regex, String within) {
     Pattern pattern = Pattern.compile(regex);
     Matcher matcher = pattern.matcher(within);
-    matcher.find();
+    if (!matcher.find()) return null;
     return matcher.group(1);
   }
 
   public boolean isSignedIn(String username) {
     if (httpclient == null) return false;
     try {
-      HttpResponse execute = httpclient.execute(new HttpGet("https://connect.garmin.com/modern/currentuser-service/user/info"),httpContext);
+      HttpGet request = new HttpGet("https://connectapi.garmin.com/userprofile-service/userprofile/personal-information");
+      request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.oauth2Token.getOauth2Token());
+      request.setHeader("Accept", "application/json");
+      request.setHeader("User-Agent", USER_AGENT);
+      HttpResponse execute = httpclient.execute(request, httpContext);
       HttpEntity entity = execute.getEntity();
-      String json = EntityUtils.toString(entity);
-      JSONObject js_user = new JSONObject(json);
+      String body = EntityUtils.toString(entity);
       entity.consumeContent();
-      return js_user.getString("username") != null && !js_user.getString("username").isEmpty();
+      if (body.trim().startsWith("<")) return false;
+      JSONObject profile = new JSONObject(body);
+      JSONObject userInfo = profile.optJSONObject("userInfo");
+      if (userInfo == null) return false;
+      return !userInfo.optString("email", "").isEmpty();
     } catch (Exception e) {
       return false;
     }
