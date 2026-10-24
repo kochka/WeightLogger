@@ -15,6 +15,8 @@
 */
 package org.kochka.android.weightlogger;
 
+import org.kochka.android.weightlogger.tools.SystemBars;
+
 import java.io.File;
 import java.util.LinkedList;
 
@@ -78,6 +80,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
+    SystemBars.setup(this);
 
     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder(); StrictMode.setVmPolicy(builder.build());
 

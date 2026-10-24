@@ -15,6 +15,8 @@
 */
 package org.kochka.android.weightlogger;
 
+import org.kochka.android.weightlogger.tools.SystemBars;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class GraphActivity extends AppCompatActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.graph);
+    SystemBars.setup(this);
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
@@ -56,7 +59,7 @@ public class GraphActivity extends AppCompatActivity {
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
       }
     });
     getSupportActionBar().setTitle(R.string.graph_title);

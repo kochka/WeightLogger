@@ -15,6 +15,8 @@
 */
 package org.kochka.android.weightlogger;
 
+import org.kochka.android.weightlogger.tools.SystemBars;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -60,6 +62,7 @@ public class EditMeasurementActivity extends AppCompatActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.edit_measurement);
+    SystemBars.setup(this);
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
@@ -67,7 +70,7 @@ public class EditMeasurementActivity extends AppCompatActivity {
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
       }
     });
     

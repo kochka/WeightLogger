@@ -15,10 +15,13 @@
 */
 package org.kochka.android.weightlogger;
 
+import org.kochka.android.weightlogger.tools.SystemBars;
+
 import org.kochka.android.weightlogger.fragments.NestedPreferenceFragment;
 import org.kochka.android.weightlogger.fragments.PreferencesFragment;
 
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
@@ -33,6 +36,7 @@ public class EditPreferences extends AppCompatActivity implements PreferencesFra
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.preferences);
+    SystemBars.setup(this);
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
@@ -40,23 +44,26 @@ public class EditPreferences extends AppCompatActivity implements PreferencesFra
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
       }
     });
     getSupportActionBar().setTitle(R.string.pref);
 
     getFragmentManager().beginTransaction()
                         .replace(R.id.preferences, new PreferencesFragment()).commit();
-  }
 
-  @Override
-  public void onBackPressed() {
-    if (getFragmentManager().getBackStackEntryCount() == 0) {
-      setResult(RESULT_OK);
-      finish();
-    } else {
-      getFragmentManager().popBackStack();
-    }
+    setResult(RESULT_OK);
+
+    // Pop nested preference screens on back, otherwise let the system finish the activity
+    OnBackPressedCallback nestedBackCallback = new OnBackPressedCallback(getFragmentManager().getBackStackEntryCount() > 0) {
+      @Override
+      public void handleOnBackPressed() {
+        getFragmentManager().popBackStack();
+      }
+    };
+    getOnBackPressedDispatcher().addCallback(this, nestedBackCallback);
+    getFragmentManager().addOnBackStackChangedListener(() ->
+      nestedBackCallback.setEnabled(getFragmentManager().getBackStackEntryCount() > 0));
   }
 
   @Override

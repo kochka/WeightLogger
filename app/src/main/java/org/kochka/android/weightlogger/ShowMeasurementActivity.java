@@ -15,6 +15,8 @@
 */
 package org.kochka.android.weightlogger;
 
+import org.kochka.android.weightlogger.tools.SystemBars;
+
 import org.kochka.android.weightlogger.adapter.MeasurementsShowAdapter;
 import org.kochka.android.weightlogger.data.Measurement;
 import org.taptwo.android.widget.ViewFlow;
@@ -33,12 +35,12 @@ import android.view.MenuItem;
 public class ShowMeasurementActivity extends AppCompatActivity {
 
   ViewFlow viewFlow;
-  boolean dataChanged = false;
   
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.show_measurement);
+    SystemBars.setup(this);
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
@@ -46,7 +48,7 @@ public class ShowMeasurementActivity extends AppCompatActivity {
     actionBar.setNavigationOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        onBackPressed();
+        getOnBackPressedDispatcher().onBackPressed();
       }
     });
 
@@ -79,15 +81,6 @@ public class ShowMeasurementActivity extends AppCompatActivity {
   }
   
   @Override
-  public void onBackPressed() {
-    if (dataChanged) {
-      setResult(RESULT_OK);
-      finish();
-    } else 
-      super.onBackPressed();
-  }
-  
-  @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (resultCode == RESULT_OK && data != null) {
       if (data.getBooleanExtra("deleted", false)) {
@@ -96,7 +89,7 @@ public class ShowMeasurementActivity extends AppCompatActivity {
       } else {
         ((MeasurementsShowAdapter) viewFlow.getAdapter()).refresh();
         viewFlow.setSelection(data.getIntExtra("position", 1));
-        dataChanged = true;
+        setResult(RESULT_OK);
       }
     }
   }
