@@ -54,6 +54,4 @@ dependencies {
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation 'org.apache.httpcomponents:httpcore:4.4.16'
     implementation 'org.apache.httpcomponents:httpmime:4.5.14'
-    implementation group: 'oauth.signpost', name: 'signpost-core', version: '2.0.0'
-    implementation group: 'oauth.signpost', name: 'signpost-commonshttp4', version: '2.0.0'
 }

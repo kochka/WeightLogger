@@ -17,7 +17,6 @@ package org.kochka.android.weightlogger.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,6 +34,7 @@ import org.kochka.android.weightlogger.R;
 import org.kochka.android.weightlogger.data.Database;
 import org.kochka.android.weightlogger.data.Measurement;
 import org.kochka.android.weightlogger.tools.Export;
+import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
 import java.io.File;
@@ -150,19 +150,9 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
     }
   }
 
-  /* Clear Garmin OAuth Tokens */
+  /* Clear Garmin Tokens */
   private void clearGarminTokens() {
-    SharedPreferences authPreferences = getActivity().getSharedPreferences(getActivity().getApplicationContext().getPackageName() + ".garmintokens", Context.MODE_PRIVATE);
-    SharedPreferences.Editor authPreferencesEditor = authPreferences.edit();
-    authPreferencesEditor.remove("garminOauth1Token");
-    authPreferencesEditor.remove("garminOauth1TokenSecret");
-    authPreferencesEditor.remove("garminOauth1MfaToken");
-    authPreferencesEditor.remove("garminOauth1MfaExpirationTimestamp");
-    authPreferencesEditor.remove("garminOauth2Token");
-    authPreferencesEditor.remove("garminOauth2RefreshToken");
-    authPreferencesEditor.remove("garminOauth2ExpiryTimestamp");
-    authPreferencesEditor.remove("garminOauth2RefreshExpiryTimestamp");
-    if (authPreferencesEditor.commit()) {
+    if (GarminConnect.clearTokens(getActivity())) {
       Toast.makeText(getActivity(), R.string.gc_token_cleared, Toast.LENGTH_SHORT).show();
     }
     else {
@@ -274,7 +264,7 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
   /* Display "About" dialog */
   private void showAbout() {
     String message = "v" + getString(R.string.app_version);
-    message += "\nSébastien Vrillaud © 2025";
+    message += "\nSébastien Vrillaud © 2026";
 
     if (!getString(R.string.translator).equals("")) {
       message += "\n\n" + Locale.getDefault().getDisplayLanguage().substring(0,1).toUpperCase() + Locale.getDefault().getDisplayLanguage().substring(1);
