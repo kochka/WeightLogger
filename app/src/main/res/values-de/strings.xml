@@ -109,8 +109,8 @@
   <string name="pref_fields_summary">Anzuzeigende optionale Felder für neue Aufzeichnung wählen.</string>
   <string name="pref_export_dir">Export- Verzeichnis</string>       
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Anmeldung</string>
-  <string name="pref_garmin_login_summary">Ihr Garmin Connect Login.</string> 
+  <string name="pref_garmin_login">E-Mail</string>
+  <string name="pref_garmin_login_summary">Die E-Mail-Adresse Ihres Garmin-Kontos.</string> 
   <string name="pref_garmin_password">Passwort</string>
   <string name="pref_garmin_password_summary">Ihr Garmin Connect Passwort.</string>
   <string name="pref_database_category">Datenbank</string>

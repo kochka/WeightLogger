@@ -110,8 +110,8 @@
   <string name="pref_fields_summary">Wybierz pola widoczne dla nowego pomiaru.</string>
   <string name="pref_export_dir">Eksportuj do</string>       
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Użytkownik</string>
-  <string name="pref_garmin_login_summary">Twoja nazwa użytkownika w Garmin Connect.</string> 
+  <string name="pref_garmin_login">E-mail</string>
+  <string name="pref_garmin_login_summary">Adres e-mail Twojego konta Garmin.</string> 
   <string name="pref_garmin_password">Hasło</string>
   <string name="pref_garmin_password_summary">Twoje hasło w Garmin Connect.</string> 
   <string name="pref_database_category">Baza danych</string>

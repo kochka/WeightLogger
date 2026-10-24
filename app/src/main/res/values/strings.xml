@@ -17,7 +17,7 @@
 
 <resources>
   <string name="app_name">Weight Logger</string>
-  <string name="app_version">2.5.2</string>
+  <string name="app_version">2.6.0</string>
   <string name="translator"></string>
   
   <!-- Common -->
@@ -115,8 +115,8 @@
   <string name="pref_fields_summary">Choose optional fields to display for a new record.</string>
   <string name="pref_export_dir">Export directory</string>       
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Login</string>
-  <string name="pref_garmin_login_summary">Your Garmin Connect login.</string> 
+  <string name="pref_garmin_login">Email</string>
+  <string name="pref_garmin_login_summary">The email address of your Garmin account.</string> 
   <string name="pref_garmin_password">Password</string>
   <string name="pref_garmin_password_summary">Your Garmin Connect password.</string>
   <string name="pref_clear_garmin_token">Clear Garmin Tokens</string>

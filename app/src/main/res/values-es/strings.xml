@@ -108,8 +108,8 @@
   <string name="pref_fields_summary">Elige los campos opcionales a mostrar para nuevos registros.</string>
   <string name="pref_export_dir">Directorio de exportación</string>
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Nombre de usuario</string>
-  <string name="pref_garmin_login_summary">Tu nombre de usuario Garmin Connect.</string>
+  <string name="pref_garmin_login">Correo electrónico</string>
+  <string name="pref_garmin_login_summary">La dirección de correo electrónico de tu cuenta Garmin.</string>
   <string name="pref_garmin_password">Contraseña</string>
   <string name="pref_garmin_password_summary">Tu contraseña Garmin Connect.</string>
   <string name="pref_database_category">Base de datos</string>

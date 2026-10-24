@@ -111,8 +111,8 @@
   <string name="pref_fields_summary">בחר אילו שדות יופיעו עבור רשומה חדשה.</string>
   <string name="pref_export_dir">ספריית ייצוא</string>       
   <string name="pref_garmin_category">Garmin חשבון</string>
-  <string name="pref_garmin_login">שם משתמש</string>
-  <string name="pref_garmin_login_summary">שם משתמש בחשבון Garmin שלך</string> 
+  <string name="pref_garmin_login">אימייל</string>
+  <string name="pref_garmin_login_summary">כתובת האימייל של חשבון Garmin שלך</string> 
   <string name="pref_garmin_password">סיסמא</string>
   <string name="pref_garmin_password_summary">סיסמא בחשבון Garmin שלך</string>
   <string name="pref_database_category">בסיס נתונים</string>

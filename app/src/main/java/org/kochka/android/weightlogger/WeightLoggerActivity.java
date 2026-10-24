@@ -26,7 +26,6 @@ import org.kochka.android.weightlogger.tools.AntPlus;
 import org.kochka.android.weightlogger.tools.BleSmartLab;
 import org.kochka.android.weightlogger.tools.Export;
 import org.kochka.android.weightlogger.tools.GarminConnect;
-import org.kochka.android.weightlogger.tools.GoogleFit;
 import org.kochka.android.weightlogger.tools.PermissionHelperResultListener;
 import org.kochka.android.weightlogger.tools.PermissionHelper;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
@@ -153,15 +152,8 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (resultCode == RESULT_OK) {
-      switch (requestCode) {
-        case GoogleFit.REQUEST_OAUTH:
-          GoogleFit.getInstance(WeightLoggerActivity.this).sendData();
-          break;
-        default:
-          ((MeasurementsListAdapter) mList.getAdapter()).refresh();
-      }
-    }
+    if (resultCode == RESULT_OK)
+      ((MeasurementsListAdapter) mList.getAdapter()).refresh();
   }
 
   /* Creates the menu items */
@@ -209,7 +201,7 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
   }
 
   private void export(){
-    final CharSequence[] items = {"FIT", "CSV", "Garmin Connect ©", "Google FIT"};
+    final CharSequence[] items = {"FIT", "CSV", "Garmin Connect ©"};
 
     AlertDialog.Builder builder = new AlertDialog.Builder(this);
     builder.setTitle(R.string.export);
@@ -224,9 +216,6 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
             break;
           case 2:
             exportFileWithPermission(EXPORT_GARMIN);
-            break;
-          case 3:
-            GoogleFit.getInstance(WeightLoggerActivity.this).sendData();
             break;
           default:
             break;

@@ -107,8 +107,8 @@
   <string name="pref_fields_summary">Trieu els camps opcionals a mostrar per nous registres.</string>
   <string name="pref_export_dir">Directori d\'exportació</string>
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Nom d\'usuari</string>
-  <string name="pref_garmin_login_summary">El vostre nom d\'usuari Garmin Connect.</string>
+  <string name="pref_garmin_login">Correu electrònic</string>
+  <string name="pref_garmin_login_summary">L\'adreça de correu electrònic del vostre compte Garmin.</string>
   <string name="pref_garmin_password">Contrasenya</string>
   <string name="pref_garmin_password_summary">La vostra contrasenya Garmin Connect.</string>
   <string name="pref_database_category">Base de dades</string>

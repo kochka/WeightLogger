@@ -109,8 +109,8 @@
   <string name="pref_fields_summary">选择新纪录中需要使用的表单字段.</string>
   <string name="pref_export_dir">导出目录</string>
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">用户名</string>
-  <string name="pref_garmin_login_summary">你的Garmin Connect登录帐号.</string>
+  <string name="pref_garmin_login">电子邮箱</string>
+  <string name="pref_garmin_login_summary">你的Garmin账户的电子邮箱地址</string>
   <string name="pref_garmin_password">Password</string>
   <string name="pref_garmin_password_summary">你的Garmin Connect登录密码.</string>
   <string name="pref_database_category">数据库</string>

@@ -112,8 +112,8 @@
   <string name="pref_fields_summary">Vyberte volitelná pole k zobrazení u nového záznamu.</string>
   <string name="pref_export_dir">Exportní adresář</string>       
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Uživatel</string>
-  <string name="pref_garmin_login_summary">Váš Garmin Connect uživatel.</string> 
+  <string name="pref_garmin_login">E-mail</string>
+  <string name="pref_garmin_login_summary">E-mailová adresa vašeho účtu Garmin.</string> 
   <string name="pref_garmin_password">Heslo</string>
   <string name="pref_garmin_password_summary">Vaše Garmin Connect heslo.</string>
   <string name="pref_database_category">Databáze</string>

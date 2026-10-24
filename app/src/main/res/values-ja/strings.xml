@@ -111,8 +111,8 @@
   <string name="pref_fields_summary">新しいレコードに表示する追加のフィールドを選択してください。</string>
   <string name="pref_export_dir">エクスポート先ディレクトリ</string>       
   <string name="pref_garmin_category">ガーミンコネクト</string>
-  <string name="pref_garmin_login">ログイン</string>
-  <string name="pref_garmin_login_summary">ガーミンコネクトログイン</string> 
+  <string name="pref_garmin_login">メールアドレス</string>
+  <string name="pref_garmin_login_summary">Garminアカウントのメールアドレス</string> 
   <string name="pref_garmin_password">パスワード</string>
   <string name="pref_garmin_password_summary">ガーミンコネクトのパスワード</string>
   <string name="pref_database_category">データベース</string>

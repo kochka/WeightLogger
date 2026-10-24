@@ -112,8 +112,8 @@
   <string name="pref_fields_summary">Виберіть необов\'язкові поля для відображення у новому записі.</string>
   <string name="pref_export_dir">Директорія експорту</string>       
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Логін</string>
-  <string name="pref_garmin_login_summary">Ваш логін у Garmin Connect.</string> 
+  <string name="pref_garmin_login">Ел. пошта</string>
+  <string name="pref_garmin_login_summary">Адреса електронної пошти вашого облікового запису Garmin.</string> 
   <string name="pref_garmin_password">Пароль</string>
   <string name="pref_garmin_password_summary">Ваш пароль у Garmin Connect.</string>
   <string name="pref_clear_garmin_token">Очистити кеш OAuth</string>

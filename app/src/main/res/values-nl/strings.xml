@@ -109,8 +109,8 @@
   <string name="pref_fields_summary">Kies welke velden getoond moeten worden voor een nieuw record.</string>
   <string name="pref_export_dir">Export directory</string>
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Login</string>
-  <string name="pref_garmin_login_summary">Je Garmin Connect login.</string>
+  <string name="pref_garmin_login">E-mail</string>
+  <string name="pref_garmin_login_summary">Het e-mailadres van je Garmin-account.</string>
   <string name="pref_garmin_password">Wachtwoord</string>
   <string name="pref_garmin_password_summary">Je Garmin Connect wachtwoord.</string>
   <string name="pref_database_category">Database</string>

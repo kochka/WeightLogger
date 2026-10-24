@@ -109,8 +109,8 @@
   <string name="pref_fields_summary">Välj valfria fälta att visa för ny inmatning.</string>
   <string name="pref_export_dir">Export katalog</string>
   <string name="pref_garmin_category">Garmin Connect</string>
-  <string name="pref_garmin_login">Användarnamn</string>
-  <string name="pref_garmin_login_summary">Ditt Garmin Connect användarnamn.</string>
+  <string name="pref_garmin_login">E-post</string>
+  <string name="pref_garmin_login_summary">E-postadressen till ditt Garmin-konto.</string>
   <string name="pref_garmin_password">Lösenord</string>
   <string name="pref_garmin_password_summary">Ditt Garmin Connect lösenord.</string>
   <string name="pref_database_category">Databas</string>
