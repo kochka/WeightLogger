@@ -89,8 +89,9 @@ public class Database extends SQLiteOpenHelper {
   private static void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
     try {
       byte[] buffer = new byte[1024];
-      while (fromFile.read(buffer) > 0) {
-        toFile.write(buffer);
+      int length;
+      while ((length = fromFile.read(buffer)) > 0) {
+        toFile.write(buffer, 0, length);
       }
       toFile.flush();
     } finally {

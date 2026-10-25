@@ -18,13 +18,17 @@ package org.kochka.android.weightlogger.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceGroup;
+import android.provider.OpenableColumns;
 import android.text.InputType;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -38,12 +42,19 @@ import org.kochka.android.weightlogger.tools.GarminConnect;
 import org.kochka.android.weightlogger.tools.StorageNotMountedException;
 
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
 
 public class PreferencesFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+
+  private static final int REQUEST_RESTORE = 1;
 
   private Callback mCallback;
 
@@ -172,41 +183,73 @@ public class PreferencesFragment extends PreferenceFragment implements Preferenc
     }
   }
 
-  /* Restore database */
+  /* Restore database: backups made by a previous install are not readable
+     through the file system since Android 11, let the user pick the file */
   private void dbRestore() {
-    File dir = new File(Export.path(getActivity()));
-    FilenameFilter filter = new FilenameFilter() {
-      public boolean accept(File dir, String name) {
-        return name.endsWith(".bkp");
-      }
-    };
-    final String[] bkpList = dir.list(filter);
+    Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    intent.addCategory(Intent.CATEGORY_OPENABLE);
+    intent.setType("*/*");
+    startActivityForResult(intent, REQUEST_RESTORE);
+  }
 
-    if (bkpList != null && bkpList.length > 0) {
-      AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-      builder.setTitle(R.string.pref_restore_database);
-      builder.setItems(bkpList, new DialogInterface.OnClickListener() {
-        public void onClick(DialogInterface dialog, final int item) {
-          new AlertDialog.Builder(getActivity())
-                  .setTitle(R.string.pref_restore_database)
-                  .setMessage(String.format(getString(R.string.pref_restore_database_confirm), bkpList[item]))
-                  .setIcon(android.R.drawable.ic_dialog_alert)
-                  .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                      try {
-                        Database.getRawInstance(getActivity()).importDatabase(Export.path(getActivity()) + "/" + bkpList[item]);
-                        Toast.makeText(getActivity(), R.string.pref_restore_database_ok, Toast.LENGTH_SHORT).show();
-                      } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.pref_restore_database_failed, Toast.LENGTH_SHORT).show();
-                      }
-                    }})
-                  .setNegativeButton(android.R.string.no, null).show();
-        }
-      });
-      AlertDialog alert = builder.create();
-      alert.show();
-    } else {
-      Toast.makeText(getActivity(), R.string.pref_restore_database_nofiles, Toast.LENGTH_SHORT).show();
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == REQUEST_RESTORE && resultCode == Activity.RESULT_OK && data != null && data.getData() != null)
+      confirmRestore(data.getData());
+  }
+
+  private void confirmRestore(final Uri uri) {
+    new AlertDialog.Builder(getActivity())
+            .setTitle(R.string.pref_restore_database)
+            .setMessage(String.format(getString(R.string.pref_restore_database_confirm), displayName(uri)))
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+              public void onClick(DialogInterface dialog, int whichButton) {
+                restore(uri);
+              }})
+            .setNegativeButton(android.R.string.no, null).show();
+  }
+
+  private void restore(Uri uri) {
+    File backup = new File(getActivity().getCacheDir(), "restore.bkp");
+    try {
+      copy(getActivity().getContentResolver().openInputStream(uri), new FileOutputStream(backup));
+      if (!isSQLiteFile(backup))
+        throw new IOException("Not a database backup");
+      Database.getRawInstance(getActivity()).importDatabase(backup.getPath());
+      Toast.makeText(getActivity(), R.string.pref_restore_database_ok, Toast.LENGTH_SHORT).show();
+    } catch (Exception e) {
+      Toast.makeText(getActivity(), R.string.pref_restore_database_failed, Toast.LENGTH_SHORT).show();
+    } finally {
+      backup.delete();
+    }
+  }
+
+  private String displayName(Uri uri) {
+    try (Cursor cursor = getActivity().getContentResolver().query(uri, new String[] { OpenableColumns.DISPLAY_NAME }, null, null, null)) {
+      if (cursor != null && cursor.moveToFirst())
+        return cursor.getString(0);
+    } catch (Exception ignored) {
+    }
+    return uri.getLastPathSegment();
+  }
+
+  private static void copy(InputStream in, OutputStream out) throws IOException {
+    try {
+      byte[] buffer = new byte[8192];
+      int length;
+      while ((length = in.read(buffer)) > 0)
+        out.write(buffer, 0, length);
+    } finally {
+      out.close();
+      in.close();
+    }
+  }
+
+  private static boolean isSQLiteFile(File file) throws IOException {
+    byte[] header = new byte[16];
+    try (FileInputStream in = new FileInputStream(file)) {
+      return in.read(header) == header.length && Arrays.equals(header, "SQLite format 3\0".getBytes("US-ASCII"));
     }
   }
 

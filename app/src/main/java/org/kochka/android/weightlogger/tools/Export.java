@@ -19,18 +19,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 
+import org.kochka.android.weightlogger.R;
 import org.kochka.android.weightlogger.data.Database;
 import org.kochka.android.weightlogger.data.Measurement;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
-import androidx.core.content.ContextCompat;
 
 import com.garmin.fit.DateTime;
 import com.garmin.fit.FileEncoder;
@@ -39,6 +40,8 @@ import com.garmin.fit.FileIdMesg;
 import com.garmin.fit.Manufacturer;
 
 public class Export {
+
+  public static final String DEFAULT_EXPORT_DIR = "/Download/WeightLogger";
   
   public static String buildFitFile(Context context, LinkedList<Measurement> measurements) throws StorageNotMountedException {
     checkExternalStorage();
@@ -155,20 +158,18 @@ public class Export {
   }
   
   public static String path(Context context) {
-    String export_dir = PreferenceManager.getDefaultSharedPreferences(context).getString("export_dir", "/Download/WeightLogger");
-    String root_dir = null;
-    File[] ext = ContextCompat.getExternalFilesDirs(context, null);
-    // This if-else block is a little ugly but ensures that we are writing to the correct locations.
-    if (export_dir.equals("$appdata/org.kochka.android.weightlogger/files")) {
-      // The app data folder is now accessed with the following function.
-      return context.getFilesDir().getAbsolutePath();
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    String export_dir = preferences.getString("export_dir", DEFAULT_EXPORT_DIR);
+    if (export_dir.equals("~/Documents/WeightLogger")) {
+      export_dir = "/Documents/WeightLogger";
+      preferences.edit().putString("export_dir", export_dir).apply();
     }
-    else if (export_dir.equals("~/Documents/WeightLogger")) {
-      return Environment.getExternalStorageDirectory().getAbsolutePath() + "/Documents/WeightLogger";
+    // Values from older versions (storage root, app private folder) are not usable since Android 11
+    if (!Arrays.asList(context.getResources().getStringArray(R.array.export_dir)).contains(export_dir)) {
+      export_dir = DEFAULT_EXPORT_DIR;
+      preferences.edit().putString("export_dir", export_dir).apply();
     }
-    else {
-      return Environment.getExternalStorageDirectory().getAbsolutePath() + export_dir;
-    }
+    return Environment.getExternalStorageDirectory().getAbsolutePath() + export_dir;
   }
   
   private static void checkExternalStorage() throws StorageNotMountedException {

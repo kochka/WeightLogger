@@ -121,7 +121,6 @@
   <string name="pref_backup_database_failed">Błąd wykonywania kopii bezpieczeństwa</string>
   <string name="pref_restore_database">Odtwórz bazę danych</string>
   <string name="pref_restore_database_summary">Odtwarza pomiary z kopii bezpieczeństwa.</string>
-  <string name="pref_restore_database_nofiles">Brak kopii bezpieczeństwa!</string>
   <string name="pref_restore_database_confirm">Czy na pewno chcesz odtworzyć pomiary z tego pliku: %1$s ? Bieżące pomiary zostaną zastąpione!</string>
   <string name="pref_restore_database_ok">Odtwarzanie bazy danych powiodło się</string>
   <string name="pref_restore_database_failed">Błąd odtwarzania bazy danych</string>

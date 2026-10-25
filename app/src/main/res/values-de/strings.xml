@@ -120,7 +120,6 @@
   <string name="pref_backup_database_failed">Wiederherstellen der Datenbank fehlgeschlagen</string>
   <string name="pref_restore_database">Datenbank wiederherstellen</string>
   <string name="pref_restore_database_summary">Datenbank von einer Sicherungsdatei wiederherstellen.</string>
-  <string name="pref_restore_database_nofiles">Keine Sicherungsdateien zum Wiederherstellen !</string>
   <string name="pref_restore_database_confirm">Die Sicherung wirklich wiederherstellen : %1$s ? Die aktuelle Datenbank wird ersetzt !</string>
   <string name="pref_restore_database_ok">Datenbank erfolgreich wiederherrgestellt</string>
   <string name="pref_restore_database_failed">Datenbankwiederherstellung ist fehlgeschlagen</string>

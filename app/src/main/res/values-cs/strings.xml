@@ -123,7 +123,6 @@
   <string name="pref_backup_database_failed">Záloha databáze selhala</string>
   <string name="pref_restore_database">Obnova databáze</string>
   <string name="pref_restore_database_summary">Obnova databáze ze souboru zálohy.</string>
-  <string name="pref_restore_database_nofiles">Žádné soubory zálohy k obnovení !</string>
   <string name="pref_restore_database_confirm">Skutečně obnovit tuto zálohu : %1$s ? Současná databáze bude nahrazena !</string>
   <string name="pref_restore_database_ok">Databáze úspěšně obnovena</string>
   <string name="pref_restore_database_failed">Obnova databáze selhala</string>

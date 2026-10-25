@@ -34,7 +34,6 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.StrictMode;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -47,10 +46,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -80,8 +79,6 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
     SystemBars.setup(this);
-
-    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder(); StrictMode.setVmPolicy(builder.build());
 
     Toolbar actionBar = (Toolbar) findViewById(R.id.actionbar);
     setSupportActionBar(actionBar);
@@ -185,7 +182,9 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
 
   @Override
   public void onPermissionGranted(String permission) {
-    if (permission == Manifest.permission.WRITE_EXTERNAL_STORAGE) {
+    if (permission.equals(Manifest.permission.POST_NOTIFICATIONS)) {
+      permissionHelper.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    } else if (permission.equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
       exportFile(exportToPerform);
     }
   }
@@ -193,11 +192,18 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
   @Override
   public void onPermissionDenied(String permission) {
     Log.e("WeightLogger :: ", permission + " denied.");
+    // The export works without its notification
+    if (permission.equals(Manifest.permission.POST_NOTIFICATIONS))
+      permissionHelper.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
 
   private void exportFileWithPermission(int type) {
     exportToPerform = type;
-    permissionHelper.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    // Android 13+: the notification is needed to share the exported file
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && type != EXPORT_GARMIN)
+      permissionHelper.checkPermission(this, Manifest.permission.POST_NOTIFICATIONS);
+    else
+      permissionHelper.checkPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
   }
 
   private void export(){
@@ -311,8 +317,11 @@ public class WeightLoggerActivity extends AppCompatActivity implements Permissio
             i.setType(mime);
             i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_share_subject));
             i.putExtra(Intent.EXTRA_TEXT, gen_text);
-            i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Export.path(WeightLoggerActivity.this) + File.separator + filename)));
-            PendingIntent pi = PendingIntent.getActivity(WeightLoggerActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
+            i.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(WeightLoggerActivity.this, getPackageName() + ".fileprovider",
+                    new File(Export.path(WeightLoggerActivity.this) + File.separator + filename)));
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            PendingIntent pi = PendingIntent.getActivity(WeightLoggerActivity.this, 0, Intent.createChooser(i, null),
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(WeightLoggerActivity.this);
             nBuilder.setSmallIcon(icon);

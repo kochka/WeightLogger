@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+  <!-- Exported FIT / CSV files shared from the notification -->
+  <external-path name="export" path="." />
+</paths>

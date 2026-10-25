@@ -118,7 +118,6 @@
   <string name="pref_backup_database_failed">La còpia de seguretat ha fallat</string>
   <string name="pref_restore_database">Restaurar la base de dades</string>
   <string name="pref_restore_database_summary">Restaurar la base de dades des d\'un fitxer de còpia de seguretat.</string>
-  <string name="pref_restore_database_nofiles">Cap fitxer de còpia de seguretat per restaurar!</string>
   <string name="pref_restore_database_ok">La base de dades ha estat restaurada amb èxit</string>
   <string name="pref_restore_database_confirm">Realment vols restaurar aquesta còpia de seguretat: %1$s? La base de dades actual serà substituïda!</string>
   <string name="pref_restore_database_failed">La restauració ha fallat</string>

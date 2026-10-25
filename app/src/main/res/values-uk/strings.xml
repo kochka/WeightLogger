@@ -125,7 +125,6 @@
   <string name="pref_backup_database_failed">Не вдалося зберегти базу даних</string>
   <string name="pref_restore_database">Відновити базу даних</string>
   <string name="pref_restore_database_summary">Відновити базу даних із резервного файлу.</string>
-  <string name="pref_restore_database_nofiles">Немає резервних файлів !</string>
   <string name="pref_restore_database_confirm">Ви дійсно хочете відновити базу даних з : %1$s ? Всі теперішні дані будуть замінені !</string>
   <string name="pref_restore_database_ok">Базу даних успішно відновлено</string>
   <string name="pref_restore_database_failed">Не вдалося відновити базу даних</string>

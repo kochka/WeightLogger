@@ -120,7 +120,6 @@
   <string name="pref_backup_database_failed">La sauvegarde a échoué</string>
   <string name="pref_restore_database">Restaurer la base de données</string>
   <string name="pref_restore_database_summary">Restaurer la base de données depuis un fichier de sauvegarde.</string>
-  <string name="pref_restore_database_nofiles">Aucun fichier de sauvegarde à restaurer !</string>
   <string name="pref_restore_database_confirm">Voulez-vous vraiment restaurer cette sauvegarde : %1$s ? La base de donnée actuelle sera remplacée !</string>
   <string name="pref_restore_database_ok">La base de donnée a été restaurée avec succès</string>
   <string name="pref_restore_database_failed">La restauration a échoué</string>

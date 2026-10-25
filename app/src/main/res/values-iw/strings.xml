@@ -122,7 +122,6 @@
   <string name="pref_backup_database_failed">גיבוי בסיס נתונים נכשל</string>
   <string name="pref_restore_database">שחזר בסיס נתונים</string>
   <string name="pref_restore_database_summary">שחזר בסיס נתונים מקובץ גיבוי</string>
-  <string name="pref_restore_database_nofiles">קובץ גיבוי לא נמצא !</string>
   <string name="pref_restore_database_confirm">בטוח שברצונך לשחזר ?  : %1$s ? בסיס הנתונים הנוכחי יוחלף!</string>
   <string name="pref_restore_database_ok">בסיס הנתונים שוחזר בהצלחה</string>
   <string name="pref_restore_database_failed">שחזור בסיס הנתונים נכשל</string>

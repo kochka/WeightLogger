@@ -8,7 +8,7 @@
     <ListPreference android:key="muscle_mass_unit" android:entries="@array/muscle_mass_units" android:entryValues="@array/muscle_mass_unit_values" android:title="@string/pref_muscle_mass_unit" android:defaultValue="1" />
     <CheckBoxPreference android:key="preload" android:title="@string/pref_preload" android:summary="@string/pref_preload_summary" android:defaultValue="true" />
 	  <Preference android:key="optional_fields"  android:title="@string/pref_fields" android:summary="@string/pref_fields_summary" />
-	  <ListPreference android:key="export_dir" android:entries="@array/export_dir" android:entryValues="@array/export_dir" android:title="@string/pref_export_dir" android:defaultValue="/WeightLogger" />
+	  <ListPreference android:key="export_dir" android:entries="@array/export_dir" android:entryValues="@array/export_dir" android:title="@string/pref_export_dir" android:defaultValue="/Download/WeightLogger" />
   </PreferenceCategory>
   
   <PreferenceCategory android:title="@string/pref_garmin_category">

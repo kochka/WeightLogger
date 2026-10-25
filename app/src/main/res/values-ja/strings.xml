@@ -122,7 +122,6 @@
   <string name="pref_backup_database_failed">データベースへのバックアップが失敗しました</string>
   <string name="pref_restore_database">データベースから復元</string>
   <string name="pref_restore_database_summary">バックアップファイルからデータベースを復元します。</string>
-  <string name="pref_restore_database_nofiles">復元するバックアップファイルがありません！</string>
   <string name="pref_restore_database_confirm">本当にこのバックアップ :%1$s からリストアしますか？　現在のデータベースが置き換えられます!</string>
   <string name="pref_restore_database_ok">データベースが正常に復元されました</string>
   <string name="pref_restore_database_failed">データベースの復元が失敗しました</string>

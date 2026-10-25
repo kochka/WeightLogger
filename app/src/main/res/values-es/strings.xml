@@ -119,7 +119,6 @@
   <string name="pref_backup_database_failed">La copia de seguridad ha fallado</string>
   <string name="pref_restore_database">Restaurar la base de datos</string>
   <string name="pref_restore_database_summary">Restaurar la base de datos desde un fichero de copia de seguridad.</string>
-  <string name="pref_restore_database_nofiles">Ningún fichero de copia de seguridad a restaurar!</string>
   <string name="pref_restore_database_confirm">Realmente quieres restaurar esta copia: %1$s? La base de datos actual será reemplazada!</string>
   <string name="pref_restore_database_ok">La base de datos se ha restaurado con éxito</string>
   <string name="pref_restore_database_failed">La restauración ha fallado</string>
