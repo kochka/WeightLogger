@@ -1,48 +1,40 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "org.kochka.android.weightlogger"
-    compileSdk 36
+    namespace = "org.kochka.android.weightlogger"
+    compileSdk = 36
     defaultConfig {
-        applicationId "org.kochka.android.weightlogger"
-        minSdkVersion 21
-        targetSdkVersion 36
+        applicationId = "org.kochka.android.weightlogger"
+        minSdk = 21
+        targetSdk = 36
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled = true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
         }
     }
-    packagingOptions {
+    packaging {
         resources {
             excludes += ['META-INF/DEPENDENCIES', 'META-INF/NOTICE', 'META-INF/LICENSE', 'META-INF/LICENSE.txt', 'META-INF/NOTICE.txt']
         }
     }
 
     lint {
-        abortOnError false
-        checkReleaseBuilds false
+        abortOnError = false
+        checkReleaseBuilds = false
     }
 
 }
 
 dependencies {
-    constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22") {
-            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-        }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22") {
-            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-        }
-    }
     implementation 'androidx.appcompat:appcompat:1.7.1'
     implementation("com.google.android.material:material:1.12.0")
     implementation 'cz.msebera.android:httpclient:4.5.8'

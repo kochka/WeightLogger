@@ -1,22 +1,20 @@
 apply plugin: 'com.android.library'
 android {
-    namespace 'org.taptwo.android.widget.viewflow'
-    compileSdk 36
+    namespace = 'org.taptwo.android.widget.viewflow'
+    compileSdk = 36
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 36
+        minSdk = 21
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            minifyEnabled = false
         }
     }
 }
